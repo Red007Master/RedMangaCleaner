@@ -1,0 +1,74 @@
+﻿<Application x:Class="RedMangaCleanerCGUI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RedMangaCleanerCGUI"
+             xmlns:viewMW="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.MainWindow.View"
+             xmlns:viewModelMW="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.MainWindow.ViewModel"
+             xmlns:viewModelSMW="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.ViewModel"
+             xmlns:viewModelUA="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.UserAgreementAndFirstInitWindow.ViewModel"
+             xmlns:viewSMW="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View"
+             xmlns:viewUA="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.UserAgreementAndFirstInitWindow.View"
+             StartupUri="/WPFDesign/Code/Xaml/Windows/StartupLoadingWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Themes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" />
+
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonAgreeStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonLanguageStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonNextStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonLeftCornerTabStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsInfoButtonStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonTopTabStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsToggleButtonDropDownStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsToggleButtonCheckBoxStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsButtonCustomBackgroundStyle.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsTextBoxWithTextPreview.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type viewModelUA:LanguageViewModel}">
+                <viewUA:LanguageView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelUA:BaseSettingsViewModel}">
+                <viewUA:BaseSettingsView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelUA:UserAgreementViewModel}">
+                <viewUA:UserAgreementView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelUA:IntroductionViewModel}">
+                <viewUA:IntroductionView />
+            </DataTemplate>
+
+
+            <DataTemplate DataType="{x:Type viewModelMW:StartMenuViewModel}">
+                <viewMW:StartMenuView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelMW:ImageEditorViewModel}">
+                <viewMW:ImageEditorView />
+            </DataTemplate>
+
+
+            <DataTemplate DataType="{x:Type viewModelSMW:HomePageViewModel}">
+                <viewSMW:HomePageView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelSMW:CreateCleaningProjectViewModel}">
+                <viewSMW:CreateCleaningProjectView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelSMW:ImageProcessingStatusViewModel}">
+                <viewSMW:ImagesProcessingView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModelSMW:LoadCleaningProjectViewModel}">
+                <viewSMW:LoadCleaningProjectView />
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

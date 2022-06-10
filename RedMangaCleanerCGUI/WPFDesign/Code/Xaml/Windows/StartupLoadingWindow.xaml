@@ -1,0 +1,48 @@
+﻿<Window x:Class="RedMangaCleanerCGUI.Code.Xaml.Windows.StartupLoadingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RedMangaCleanerCGUI"
+        Width="1000"
+        Height="400"
+        AllowsTransparency="True"
+        Background="#00005555"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Image Name="splashScreenImage"
+               Grid.Row="0"
+               Grid.RowSpan="7"
+               Grid.Column="0"
+               Grid.ColumnSpan="6"
+               Source="\WPFDesign\Data\Images\RedMangaCleanerLogo.png"
+               Stretch="Uniform" />
+        <TextBlock x:Name="LoadingStatusBox"
+                   Grid.Row="6"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Background="#4C000000"
+                   FontSize="15"
+                   FontStretch="Medium"
+                   Foreground="White"
+                   Text="TextBlock"
+                   TextWrapping="Wrap" />
+    </Grid>
+</Window>

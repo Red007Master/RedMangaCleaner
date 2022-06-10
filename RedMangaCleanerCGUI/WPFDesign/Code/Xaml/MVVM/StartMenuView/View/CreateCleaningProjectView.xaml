@@ -1,0 +1,273 @@
+﻿<UserControl x:Class="RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View.CreateCleaningProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Background="Transparent"
+             Loaded="UserControl_Loaded"
+             mc:Ignorable="d">
+    <Grid x:Name="MainGrid" Background="#19000000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Content="CreateNewCleaningProjectLabel"
+               x:Name="CreateNewCleaningProjectLabel_Localize_Content"
+               Grid.Row="0"
+               Margin="5,0,10,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Background="#33000000"
+               FontSize="18" />
+        <ScrollViewer x:Name="MainScrollViewer"
+                      Grid.Row="1"
+                      Margin="10,5,10,10">
+            <StackPanel Grid.Row="1" Background="#19000000">
+                <Grid Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid0Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,5,0,0"
+                                   Fill="#33000000" />
+                        <Label Content="SelectImageInputPathLabel"
+                               x:Name="SelectImageInputPathLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5,10,5,5"
+                               HorizontalAlignment="Left"
+                               FontSize="15" />
+
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid0ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,60,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                        <ToggleButton Content="Test"
+                                      x:Name="Grid0DropDownToggleButton"
+                                      Grid.Column="1"
+                                      Height="20"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      Click="DropDown0_Click"
+                                      FontSize="30"
+                                      Style="{StaticResource RedsToggleButtonDropDownStyle}" />
+                    </Grid>
+                    <Grid x:Name="SubGrid"
+                          Grid.Row="1"
+                          Background="#19000000">
+
+                        <TextBox x:Name="InputImagePathPreviewTB_Localize_Tag"
+                                 MinWidth="400"
+                                 Margin="5,5,5,5"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource RedsTextBoxWithTextPreview}"
+                                 Tag="InputImagePathPreviewTB" />
+
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button Content="SelectFolderBTN"
+                                    x:Name="SelectFolderBTN_Localize_Content"
+                                    Grid.Column="1"
+                                    Margin="5"
+                                    HorizontalAlignment="Right"
+                                    Click="DropDown0SelectFolderButton_Click" />
+
+                            <Button Content="ConfirmBTN"
+                                    x:Name="ConfirmBTN1_Localize_Content"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    HorizontalAlignment="Right"
+                                    Background="Green"
+                                    Click="DropDown0ConfirmButton_Click"
+                                    FontSize="16"
+                                    Foreground="White"
+                                    Style="{StaticResource RedsButtonCustomBackgroundStyle}" />
+                        </StackPanel>
+
+                    </Grid>
+                </Grid>
+                <Grid Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid1Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Fill="#33000000" />
+                        <Label Content="UserTagForThisProjectLabel"
+                               x:Name="UserTagForThisProjectLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               FontSize="15" />
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid1ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,60,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                        <ToggleButton Content="Test"
+                                      x:Name="Grid1DropDownToggleButton"
+                                      Grid.Column="1"
+                                      Height="20"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      Click="DropDown1_Click"
+                                      FontSize="30"
+                                      Style="{StaticResource RedsToggleButtonDropDownStyle}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Background="#19000000">
+                        <TextBox x:Name="UserTagTB_Localize_Tag"
+                                 MinWidth="400"
+                                 Margin="5,5,5,5"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource RedsTextBoxWithTextPreview}"
+                                 Tag="UserTagTB" />
+                        <Button Content="ConfirmBTN"
+                                x:Name="ConfirmBTN2_Localize_Content"
+                                Margin="5"
+                                HorizontalAlignment="Right"
+                                Background="Green"
+                                Click="DropDown1ConfirmButton_Click"
+                                FontSize="16"
+                                Foreground="White"
+                                Style="{StaticResource RedsButtonCustomBackgroundStyle}" />
+                    </Grid>
+                </Grid>
+                <Grid Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid2Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Fill="#33000000" />
+                        <Label Content="ProjectConfigLabel"
+                               x:Name="ProjectConfigLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               FontSize="15" />
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid2ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,60,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                        <ToggleButton Content="Test"
+                                      x:Name="Grid2DropDownToggleButton"
+                                      Grid.Column="1"
+                                      Height="20"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      Click="DropDown2_Click"
+                                      FontSize="30"
+                                      Style="{StaticResource RedsToggleButtonDropDownStyle}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Background="#19000000">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Rectangle Grid.Row="0"
+                                       Margin="4"
+                                       Fill="#33000000" />
+                            <StackPanel Grid.Row="0"
+                                        FlowDirection="LeftToRight"
+                                        Orientation="Horizontal">
+                                <TextBlock Margin="5,2,2,2"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Foreground="White"
+                                           Text="OutputBlackAndWhiteImages" />
+                                <ToggleButton x:Name="OutputBlackAndWhiteImagesCheckbox"
+                                              Height="20"
+                                              IsChecked="False"
+                                              Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                            </StackPanel>
+                            <Rectangle Grid.Row="1"
+                                       Margin="4"
+                                       Fill="#33000000" />
+                            <StackPanel Grid.Row="1"
+                                        FlowDirection="LeftToRight"
+                                        Orientation="Horizontal">
+                                <TextBlock Margin="5,2,2,2"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Foreground="White"
+                                           Text="ConductObjectDetectionOnBlackAndWhiteVariants" />
+                                <ToggleButton x:Name="ConductObjectDetectionOnBlackAndWhiteVariantsCheckbox"
+                                              Height="20"
+                                              IsChecked="True"
+                                              Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                            </StackPanel>
+                            <Rectangle Grid.Row="2"
+                                       Margin="4"
+                                       Fill="#33000000" />
+                            <StackPanel Grid.Row="2"
+                                        FlowDirection="LeftToRight"
+                                        Orientation="Horizontal">
+                                <TextBlock Margin="5,2,2,2"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Foreground="White"
+                                           Text="ConductTextBoxFillingOnBlackAndWhiteVariants" />
+                                <ToggleButton x:Name="ConductTextBoxFillingOnBlackAndWhiteVariantsCheckbox"
+                                              Height="20"
+                                              IsChecked="True"
+                                              Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                            </StackPanel>
+                        </Grid>
+                        <Button Content="ConfirmBTN"
+                                x:Name="ConfirmBTN3_Localize_Content"
+                                Grid.Column="1"
+                                Margin="5"
+                                HorizontalAlignment="Right"
+                                Background="Green"
+                                Click="DropDown2ConfirmButton_Click"
+                                FontSize="16"
+                                Foreground="White"
+                                Style="{StaticResource RedsButtonCustomBackgroundStyle}" />
+                    </Grid>
+                </Grid>
+
+                <Button Content="CreateNewCleaningProjectBTN"
+                        x:Name="CreateNewCleaningProjectBTN_Localize_Content"
+                        Margin="10"
+                        Background="Green"
+                        Click="CreatenewProjectButton_Click"
+                        FontSize="20"
+                        Foreground="White"
+                        Style="{StaticResource RedsButtonCustomBackgroundStyle}" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

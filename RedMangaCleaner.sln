@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedMangaCleanerPROR", "RedMangaCleanerPROR\RedMangaCleanerPROR.csproj", "{AE55B2C3-01B6-409B-8856-AC039F2D13C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedMangaCleanerCGUI", "RedMangaCleanerCGUI\RedMangaCleanerCGUI.csproj", "{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE55B2C3-01B6-409B-8856-AC039F2D13C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE55B2C3-01B6-409B-8856-AC039F2D13C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE55B2C3-01B6-409B-8856-AC039F2D13C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE55B2C3-01B6-409B-8856-AC039F2D13C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0347F26A-0891-41E0-A8EA-1914BB341388}
+	EndGlobalSection
+EndGlobal

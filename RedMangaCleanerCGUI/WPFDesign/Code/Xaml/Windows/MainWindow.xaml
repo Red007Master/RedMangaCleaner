@@ -1,0 +1,116 @@
+﻿<Window x:Class="RedMangaCleanerCGUI.WPFDesign.Code.Xaml.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.MainWindow.ViewModel"
+        Title="RedMangaCleaner:MainWindow:"
+        Width="1200"
+        Height="600"
+        MinWidth="400"
+        MinHeight="300"
+        Background="Transparent"
+        mc:Ignorable="d">
+
+    <Window.DataContext>
+        <viewModel:MainViewModel />
+    </Window.DataContext>
+
+    <Border Background="#FF2D2D30">
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Rectangle Grid.Row="0" Fill="#FF252526" />
+
+            <StackPanel Orientation="Horizontal">
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="MainMenuBtn"
+                             x:Name="MainMenuBtn"
+                             Command="{Binding StartMenuViewCommand}"
+                             IsChecked="True"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="ImageEditorBtn"
+                             x:Name="ImageEditorBtn"
+                             Command="{Binding ImageEditorViewCommand}"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="SettingsBtn"
+                             x:Name="SettingsBtn"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <Rectangle Width="100"
+                           VerticalAlignment="Stretch"
+                           Fill="Transparent" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="AboutBtn"
+                             x:Name="AboutBtn"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="HelpBtn"
+                             x:Name="HelpBtn"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="UpdateInfoBtn"
+                             x:Name="UpdateInfoBtn"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="NewsBtn"
+                             x:Name="NewsBtn"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+                <RadioButton Content="DonateBtn"
+                             x:Name="DonateBtn"
+                             Style="{StaticResource RedsRadioButtonTopTabStyle}" />
+
+                <Rectangle Width="5"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF3D3D3D" />
+
+
+            </StackPanel>
+
+            <ContentControl Content="{Binding CurrentView}" Grid.Row="1" />
+
+        </Grid>
+    </Border>
+</Window>

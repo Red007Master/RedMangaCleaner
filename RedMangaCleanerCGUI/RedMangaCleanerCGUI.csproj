@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RedMangaCleanerCGUI</RootNamespace>
+    <AssemblyName>RedMangaCleanerCGUI</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Layout.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Layout.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\WPFToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\..\YoloObjectDetectionWeightsTesterWPF\packages\Extended.Wpf.Toolkit.4.1.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Zavolokas.GdiExtensions, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zavolokas.GdiExtensions.2.0.0.5\lib\netstandard2.0\Zavolokas.GdiExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Zavolokas.ImageProcessing.PatchMatch, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zavolokas.ImageProcessing.PatchMatch.2.0.0.3\lib\netstandard2.0\Zavolokas.ImageProcessing.PatchMatch.dll</HintPath>
+    </Reference>
+    <Reference Include="Zavolokas.Math, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zavolokas.Math.1.0.1.24\lib\netstandard2.0\Zavolokas.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Zavolokas.Structures, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zavolokas.Structures.2.0.0.13\lib\netstandard2.0\Zavolokas.Structures.dll</HintPath>
+    </Reference>
+    <Reference Include="Zavolokas.Structures.Gdi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zavolokas.Structures.Gdi.2.0.0.13\lib\netstandard2.0\Zavolokas.Structures.Gdi.dll</HintPath>
+    </Reference>
+    <Reference Include="Zavolokas.Utils, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zavolokas.Utils.2.0.0.7\lib\netstandard2.0\Zavolokas.Utils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="WPFDesign\Code\Xaml\Other\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\CleaningProject.cs">
+      <Link>Code\Classes\CleaningProject.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\Config.cs">
+      <Link>Code\Classes\Config.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\DirectBitmap.cs">
+      <Link>Code\Classes\DirectBitmap.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\FillParam.cs">
+      <Link>Code\Classes\FillParam.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\FillPoint.cs">
+      <Link>Code\Classes\FillPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\Link.cs">
+      <Link>Code\Classes\Link.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\LocalizedList.cs">
+      <Link>Code\Classes\LocalizedList.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\LocalizedString.cs">
+      <Link>Code\Classes\LocalizedString.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\ProjectProcessingStatus.cs">
+      <Link>Code\Classes\ProjectProcessingStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Publics.cs">
+      <Link>Code\Publics.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Dir.cs">
+      <Link>Code\Tools\Dir.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Initialization.cs">
+      <Link>Code\Tools\Initialization.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\LanguageManager.cs">
+      <Link>Code\Tools\LanguageManager.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Logger.cs">
+      <Link>Code\Tools\Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsDrawing.cs">
+      <Link>Code\Tools\RedTools\RedToolsDrawing.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsFiles.cs">
+      <Link>Code\Tools\RedTools\RedToolsFiles.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsImages.cs">
+      <Link>Code\Tools\RedTools\RedToolsImages.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsStrings.cs">
+      <Link>Code\Tools\RedTools\RedToolsStrings.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsTypes.cs">
+      <Link>Code\Tools\RedTools\RedToolsTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsWPF.cs">
+      <Link>Code\Tools\RedTools\RedToolsWPF.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Settings.cs">
+      <Link>Code\Tools\Settings.cs</Link>
+    </Compile>
+    <Compile Include="Code\Classes\ImagesProcessingProgressInfo.cs" />
+    <Compile Include="Code\Classes\PRORLauncher.cs" />
+    <Compile Include="Code\Tools\InitializationPersonalized.cs" />
+    <Compile Include="Code\Tools\Inpainter\ColorResolvers\ColorResolver.cs" />
+    <Compile Include="Code\Tools\Inpainter\ColorResolvers\MeanShiftColorResolver.cs" />
+    <Compile Include="Code\Tools\Inpainter\ColorResolvers\SimpleColorResolver.cs" />
+    <Compile Include="Code\Tools\Inpainter\ImageNotProvidedException.cs" />
+    <Compile Include="Code\Tools\Inpainter\InpaintAreaIsNotSetException.cs" />
+    <Compile Include="Code\Tools\Inpainter\Inpainter.cs" />
+    <Compile Include="Code\Tools\Inpainter\InpainterSettings.cs" />
+    <Compile Include="Code\Tools\Inpainter\InpaintingResult.cs" />
+    <Compile Include="Code\Tools\Inpainter\InpaintIterationFinishedEventArgs.cs" />
+    <Compile Include="Code\Tools\Inpainter\InpaintMapBuilder.cs" />
+    <Compile Include="Code\Tools\Inpainter\Pyramid.cs" />
+    <Compile Include="Code\Tools\Inpainter\PyramidBuilder.cs" />
+    <Compile Include="Code\Tools\Inpainter\PyramidLevelsDetector.cs" />
+    <Compile Include="Code\Classes\MyYoloConfigurationED.cs" />
+    <Compile Include="Code\Classes\MyYoloItemED.cs" />
+    <Compile Include="Code\Pseudo.cs" />
+    <Compile Include="Code\PV.cs" />
+    <Compile Include="Code\Tools\Web.cs" />
+    <Compile Include="Code\Tools\SecurityController.cs" />
+    <Compile Include="Code\Tools\WPFGate.cs" />
+    <Compile Include="Code\WorkED.cs" />
+    <Compile Include="Code\Classes\ObservableObject.cs" />
+    <Compile Include="Code\Classes\RelayCommand.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\Controls\ZoomBorder.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\ImageEditorViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\MainViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\StartMenuViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\View\ImageEditorView.xaml.cs">
+      <DependentUpon>ImageEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\View\StartMenuView.xaml.cs">
+      <DependentUpon>StartMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\ViewModel\CreateCleaningProjectViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\ViewModel\HomePageViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\ViewModel\ImageProcessingViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\ViewModel\LoadCleaningProjectViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\ViewModel\MainViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\CreateCleaningProjectView.xaml.cs">
+      <DependentUpon>CreateCleaningProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\HomePageView.xaml.cs">
+      <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\ImagesProcessingView.xaml.cs">
+      <DependentUpon>ImagesProcessingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\LoadCleaningProjectView.xaml.cs">
+      <DependentUpon>LoadCleaningProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\ViewModel\BaseSettingsViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\ViewModel\IntroductionViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\ViewModel\LanguageViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\ViewModel\MainViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\ViewModel\UserAgreementViewModel.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\BaseSettingsView.xaml.cs">
+      <DependentUpon>BaseSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\IntroductionView.xaml.cs">
+      <DependentUpon>IntroductionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\LanguageView.xaml.cs">
+      <DependentUpon>LanguageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\UserAgreementView.xaml.cs">
+      <DependentUpon>UserAgreementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\Windows\UserAgreementAndFirstInitWindow.xaml.cs">
+      <DependentUpon>UserAgreementAndFirstInitWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\Windows\StartupLoadingWindow.xaml.cs">
+      <DependentUpon>StartupLoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFDesign\Code\Xaml\Other\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\MainWindow\View\ImageEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\MainWindow\View\StartMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\CreateCleaningProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\HomePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\ImagesProcessingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\StartMenuView\View\LoadCleaningProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\BaseSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\IntroductionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\LanguageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\MVVM\UserAgreementAndFirstInitWindow\View\UserAgreementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsButtonCustomBackgroundStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsInfoButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsTextBoxWithTextPreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsToggleButtonCheckBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsRadioButtonAgreeStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsRadioButtonLanguageStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsRadioButtonNextStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsRadioButtonLeftCornerTabStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsToggleButtonDropDownStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Styles\RedsRadioButtonTopTabStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\MetroDark.MSControls.Core.Implicit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\MetroDark.MSControls.Toolkit.Implicit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\Styles.Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\Styles.WPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\Theme.Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Windows\UserAgreementAndFirstInitWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\Windows\StartupLoadingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Resource Include="WPFDesign\Data\Fonts\PermanentMarker-Regular.ttf" />
+    <Resource Include="WPFDesign\Data\Fonts\ArchitectsDaughter.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WPFDesign\Data\Images\RedMangaCleanerLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WPFDesign\Data\Images\ArrowDownBlack.ico" />
+    <Resource Include="WPFDesign\Data\Images\ArrowDownWhite.ico" />
+    <Resource Include="WPFDesign\Data\Images\ArrowUpBlack.ico" />
+    <Resource Include="WPFDesign\Data\Images\ArrowUpWhite.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WPFDesign\Data\Images\InfoWhite.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WPFDesign\Data\Images\InfoBlue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WPFDesign\Data\Images\CheckboxOff.ico" />
+    <Resource Include="WPFDesign\Data\Images\CheckboxOn.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

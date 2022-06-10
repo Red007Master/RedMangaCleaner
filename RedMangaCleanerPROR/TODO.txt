@@ -1,0 +1,4 @@
+﻿TODO
+
+Localisation.Localise(window type)
+Datatype (class) for one project (redimagesfulls redimagescores etc)

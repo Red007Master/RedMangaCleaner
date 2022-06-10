@@ -1,0 +1,199 @@
+﻿<UserControl x:Class="RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View.ImagesProcessingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Loaded="UserControl_Loaded"
+             mc:Ignorable="d">
+    <Grid x:Name="MainGrid" Background="#19000000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Content="Processing....."
+               x:Name="ProcessingLabel_Localize_Content"
+               Grid.Row="0"
+               Margin="5,0,5,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Background="#33000000"
+               FontSize="18" />
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Background="#19000000">
+                <Grid x:Name="Grid0" Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid0Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,5,0,0"
+                                   Fill="#33000000" />
+                        <Label Content="Copying Images to Processing Directory"
+                               x:Name="CopyingImagestoProcessingDirectoryLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5,0,5,5"
+                               HorizontalAlignment="Left"
+                               FontSize="20" />
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid0ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Background="#19000000">
+                        <ProgressBar x:Name="CopyingImagesProgressbar"
+                                     Height="15"
+                                     Margin="10,10,55,10"
+                                     Value="0" />
+
+                        <TextBlock x:Name="CopyingImagesCounter"
+                                   Margin="0,0,5,1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Foreground="White"
+                                   Text="XX/XX" />
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Grid1" Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid1Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,5,0,0"
+                                   Fill="#33000000" />
+                        <Label Content="Converting Images to Grayscale"
+                               x:Name="ConvertingImagesToGrayscaleLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5,0,5,5"
+                               HorizontalAlignment="Left"
+                               FontSize="20" />
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid1ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Background="#19000000">
+                        <ProgressBar x:Name="ConvertingToGrayscaleProgressbar"
+                                     Height="15"
+                                     Margin="10,10,55,10"
+                                     Value="0" />
+
+                        <TextBlock x:Name="ConvertingToGrayscaleCounter"
+                                   Margin="0,0,5,1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Foreground="White"
+                                   Text="XX/XX" />
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Grid2" Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid2Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,5,0,0"
+                                   Fill="#33000000" />
+                        <Label Content="Detecting Objects on Images"
+                               x:Name="DetectingObjectsonImagesLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5,0,5,5"
+                               HorizontalAlignment="Left"
+                               FontSize="20" />
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid2ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Background="#19000000">
+                        <ProgressBar x:Name="DetectingObjectsProgressbar"
+                                     Height="15"
+                                     Margin="10,10,55,10"
+                                     Value="0" />
+
+                        <TextBlock x:Name="DetectingObjectsCounter"
+                                   Margin="0,0,5,1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Foreground="White"
+                                   Text="XX/XX" />
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Grid3" Margin="5,0,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition x:Name="Grid3Row1" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Rectangle Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Margin="0,5,0,0"
+                                   Fill="#33000000" />
+                        <Label Content="Precompiling Images"
+                               x:Name="PrecompilingImagesLabel_Localize_Content"
+                               Grid.Column="0"
+                               Margin="5,0,5,5"
+                               HorizontalAlignment="Left"
+                               FontSize="20" />
+                        <ToggleButton Content="CheckBox"
+                                      x:Name="Grid3ToggleButtonCheckbox"
+                                      Grid.Column="1"
+                                      Width="25"
+                                      Height="25"
+                                      Margin="0,0,10,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource RedsToggleButtonCheckBoxStyle}" />
+                    </Grid>
+                    <Grid Grid.Row="1" Background="#19000000">
+                        <ProgressBar x:Name="PrecompilingProgressbar"
+                                     Height="15"
+                                     Margin="10,10,55,10"
+                                     Value="0" />
+
+                        <TextBlock x:Name="PrecompilingCounter"
+                                   Margin="0,0,5,1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontSize="15"
+                                   Foreground="White"
+                                   Text="XX/XX" />
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View.LoadCleaningProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid x:Name="MainGrid" Background="#19000000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Content="Load Cleaning Project"
+               x:Name="LoadCleaningProjectLabel_Localize_Content"
+               Grid.Row="0"
+               Margin="5,0,10,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Background="#33000000"
+               FontSize="18" />
+        <ScrollViewer x:Name="MainScrollViewer"
+                      Grid.Row="1"
+                      Margin="10,5,10,10">
+            <StackPanel x:Name="ButtonsStackPanel"
+                        Grid.Row="1"
+                        Background="#19000000" />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

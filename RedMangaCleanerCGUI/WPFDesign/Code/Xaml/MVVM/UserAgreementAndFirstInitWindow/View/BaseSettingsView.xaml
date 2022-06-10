@@ -1,0 +1,185 @@
+﻿<UserControl x:Class="RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.UserAgreementAndFirstInitWindow.View.BaseSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Background="#FF252526"
+             Loaded="UserControl_Loaded"
+             mc:Ignorable="d">
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="BaseSettingsLabel_Localize_Text"
+                   Margin="0,0,20,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontSize="20"
+                   Foreground="White"
+                   Text="BaseSettingsLabelTB" />
+
+        <RadioButton Content="NextBtn"
+                     x:Name="NextBtn"
+                     Grid.Row="2"
+                     Width="200"
+                     HorizontalAlignment="Right"
+                     Click="NextBtn_Click"
+                     Style="{StaticResource RedsRadioButtonNextStyle}" />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Content="Save"
+                    x:Name="SaveBtn_Localize_Content"
+                    Height="40"
+                    MinWidth="100"
+                    Margin="5,0,0,0"
+                    Click="SaveBtn_Click"
+                    FontSize="20" />
+
+            <Button Content="Load"
+                    x:Name="LoadBtn_Localize_Content"
+                    Height="40"
+                    MinWidth="100"
+                    Margin="5,0,0,0"
+                    Click="LoadBtn_Click"
+                    FontSize="20" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" FlowDirection="LeftToRight">
+            <Grid>
+                <Rectangle HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF1C1C1C" />
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="UseAlturosYoloObjectRecognition"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           Foreground="White" />
+                    <Button x:Name="BSBTNUseAlturosYoloObjectRecognitionInfoBtn"
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            Click="InfoBtn_Click"
+                            Style="{StaticResource RedsInfoButtonStyle}" />
+                </StackPanel>
+                <CheckBox x:Name="UseAlturosYoloObjectRecognitionCheckBox"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Style="{StaticResource CheckBoxStyle}" />
+            </Grid>
+            <Grid>
+                <Rectangle HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF333334" />
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="YoloProcessingMode"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           Foreground="White" />
+                    <Button x:Name="BSBTNYoloProcessingModeInfoBtn"
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            Click="InfoBtn_Click"
+                            Style="{StaticResource RedsInfoButtonStyle}" />
+                </StackPanel>
+                <ComboBox x:Name="YoloProcessingModeComboBox"
+                          Width="75"
+                          Height="25"
+                          Margin="0,0,10,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          SelectedIndex="0"
+                          Style="{StaticResource ComboBoxStyle}">
+
+                    <ComboBoxItem Content="CPU" />
+                    <ComboBoxItem Content="GPU" />
+                </ComboBox>
+            </Grid>
+            <Grid>
+                <Rectangle HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF1C1C1C" />
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="ProcessingBufferSize"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           Foreground="White" />
+                    <Button x:Name="BSBTNProcessingBufferSizeInfoBtn"
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            Click="InfoBtn_Click"
+                            Style="{StaticResource RedsInfoButtonStyle}" />
+                </StackPanel>
+                <TextBox x:Name="ProcessingBufferSizeTextBox"
+                         Width="40"
+                         Margin="0,0,5,0"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Foreground="White"
+                         MaxLength="3"
+                         PreviewTextInput="PreviewTextInput" />
+            </Grid>
+            <Grid>
+                <Rectangle HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF333334" />
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="PrecompileRedImageFullsThreadsCount"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           Foreground="White" />
+                    <Button x:Name="BSBTNPrecompileRedImageFullsThreadsCountInfoBtn"
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            Click="InfoBtn_Click"
+                            Style="{StaticResource RedsInfoButtonStyle}" />
+                </StackPanel>
+                <TextBox x:Name="PrecompileRedImageFullsThreadsCountTextBox"
+                         Width="40"
+                         Margin="0,0,5,0"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Foreground="White"
+                         MaxLength="3"
+                         PreviewTextInput="PreviewTextInput" />
+            </Grid>
+            <Grid>
+                <Rectangle HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Fill="#FF1C1C1C" />
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <Label Content="ImagesToBlackAndWhiteThreadsCount"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           Foreground="White" />
+                    <Button x:Name="BSBTNImagesToBlackAndWhiteThreadsCountInfoBtn"
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            Click="InfoBtn_Click"
+                            Style="{StaticResource RedsInfoButtonStyle}" />
+                </StackPanel>
+                <TextBox x:Name="ImagesToBlackAndWhiteThreadsCountTextBox"
+                         Width="40"
+                         Margin="0,0,5,0"
+                         HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Foreground="White"
+                         MaxLength="3"
+                         PreviewTextInput="PreviewTextInput" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

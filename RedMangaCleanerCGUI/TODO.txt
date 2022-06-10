@@ -1,0 +1,3 @@
+﻿TODO
+
+Info buttons adapt to new language manager 
