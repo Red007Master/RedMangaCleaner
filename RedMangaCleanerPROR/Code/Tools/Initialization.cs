@@ -37,20 +37,20 @@ class Initalization
         }
         else
         {
-            StartArguments dewSetInputArgs = new StartArguments();
+            StartArguments devSetInputArgs = new StartArguments();
 
-            dewSetInputArgs.FolderOptions = FolderOptions.AutoCreateById;
-            dewSetInputArgs.CleaningProjectId = 7;
-            dewSetInputArgs.OutputBlackAndWhiteImages = true;
-            dewSetInputArgs.ConductObjectDetectionOnBlackAndWhiteVariants = true;
-            dewSetInputArgs.ConductTextBoxFillingOnBlackAndWhiteVariants = true;
-            dewSetInputArgs.InputPath = 
+            devSetInputArgs.FolderOptions = FolderOptions.AutoCreateById;
+            devSetInputArgs.CleaningProjectId = 7;
+            devSetInputArgs.OutputBlackAndWhiteImages = true;
+            devSetInputArgs.ConductObjectDetectionOnBlackAndWhiteVariants = true;
+            devSetInputArgs.ConductTextBoxFillingOnBlackAndWhiteVariants = true;
+            devSetInputArgs.InputPath = 
             @"E:\Other\Translate\I Was Caught up in a Hero Summoning, but That World Is at Peace\I Was Caught up in a Hero Summoning, but That World Is at Peace Chapter 6\MangaOUT1";
-            dewSetInputArgs.CleaningProjectFolderName = @"CleaningProject_ID-[0]";
+            devSetInputArgs.CleaningProjectFolderName = @"CleaningProject_ID-[0]";
 
-            string dewSetInputArgsString = JsonConvert.SerializeObject(dewSetInputArgs);
+            string devSetInputArgsString = JsonConvert.SerializeObject(devSetInputArgs);
             //string dewSetInputArgsString = File.ReadAllText(@"D:\args.json");
-            P.StartArguments = JsonConvert.DeserializeObject<StartArguments>(dewSetInputArgsString);
+            P.StartArguments = JsonConvert.DeserializeObject<StartArguments>(devSetInputArgsString);
         }
     }
 
@@ -70,8 +70,8 @@ class Initalization
     }
     internal static void VersionInit()
     {
-        P.ConstantData.VersionName = "Beta_2.0.0";
-        P.ConstantData.VersionId = 2;
+        P.ConstantData.VersionName = "Beta_3.0.0";
+        P.ConstantData.VersionId = 3;
     }
     private static void PathDirsInit()
     {

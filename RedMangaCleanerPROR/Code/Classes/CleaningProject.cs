@@ -139,8 +139,7 @@ namespace RedsCleaningProjects
                 {
                     CleaningProjectsGlobalInfo buffer = new CleaningProjectsGlobalInfo();
 
-                    string serialized = JsonConvert.SerializeObject(buffer);
-                    File.WriteAllText(Path, serialized);
+                    Save();
                 }
             }
             public void Save()
