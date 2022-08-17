@@ -180,15 +180,14 @@ class Work
                 P.Logger.Log($"DetectObjectsOnAllImagesInDir: Detect Objects on image=[{imagesToProcess[i]}]-Try", LogLevel.Information, 1);
                 List<YoloPrediction> predictions = scorer.Predict(image);
                 P.Logger.Log($"Detect Objects on image-Success", LogLevel.Information, 2);
+                
                 result.Add(new ImageData(imagesToProcess[i], P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, DetectedObject.ConvertYPLToDetectedObjectList(predictions)));
 
                 P.ProjectProcessingStatus.Set(i);
                 P.ProjectProcessingStatus.Save();
             }
+            
             image.Dispose();
-
-
-            //wraper.Dispose();
             scorer.Dispose();
             GC.Collect();
 
