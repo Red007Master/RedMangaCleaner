@@ -1,10 +1,10 @@
-﻿using Alturos.Yolo;
-using Alturos.Yolo.Model;
+﻿using System.Drawing;
+using Yolov5Net.Scorer;
+using Yolov5Net.Scorer.Models;
 using Newtonsoft.Json;
 using RedsCleaningProjects.RedImages;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -168,23 +168,28 @@ class Work
             P.ProjectProcessingStatus.Set(Operation.IsDetectingObjects, imagesToProcess.Length, 0);
             P.ProjectProcessingStatus.Save();
 
-            YoloConfigurationDetector configurationDetector = new YoloConfigurationDetector();
-            YoloConfiguration config = P.CurrentYoloConfiguration.GetYoloConfig();
-            GpuConfig gpuConfig = new GpuConfig(); gpuConfig.GpuIndex = 0;
-            YoloWrapper wraper = new YoloWrapper(config, gpuConfig);
+            string config = File.ReadAllText(P.CurrentYoloConfiguration.ModelConfigPath);
+            RedsYoloConfig redsYoloConfig = JsonConvert.DeserializeObject<RedsYoloConfig>(config);
+            YoloScorer<RedsGeneralModel> scorer = new YoloScorer<RedsGeneralModel>(P.CurrentYoloConfiguration.WeightsPath, redsYoloConfig);
 
+            Image image = null;
             for (int i = 0; i < imagesToProcess.Length; i++)
             {
+                image = Image.FromFile(imagesToProcess[i]);
+
                 P.Logger.Log($"DetectObjectsOnAllImagesInDir: Detect Objects on image=[{imagesToProcess[i]}]-Try", LogLevel.Information, 1);
-                List<YoloItem> buffer = wraper.Detect(imagesToProcess[i]).ToList();
+                List<YoloPrediction> predictions = scorer.Predict(image);
                 P.Logger.Log($"Detect Objects on image-Success", LogLevel.Information, 2);
-                result.Add(new ImageData(imagesToProcess[i], P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, MyYoloItem.ConvertYIListToMyYiList(buffer)));
+                result.Add(new ImageData(imagesToProcess[i], P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, DetectedObject.ConvertYPLToDetectedObjectList(predictions)));
 
                 P.ProjectProcessingStatus.Set(i);
                 P.ProjectProcessingStatus.Save();
             }
+            image.Dispose();
 
-            wraper.Dispose();
+
+            //wraper.Dispose();
+            scorer.Dispose();
             GC.Collect();
 
             return result;

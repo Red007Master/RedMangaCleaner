@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedMangaCleanerPROR", "RedMangaCleanerPROR\RedMangaCleanerPROR.csproj", "{AE55B2C3-01B6-409B-8856-AC039F2D13C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedMangaCleanerCGUI", "RedMangaCleanerCGUI\RedMangaCleanerCGUI.csproj", "{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yolov5Net.Scorer", "D:\Development\ObjectDetection\yolov5-net-SaveLoadModels\src\Yolov5Net.Scorer\Yolov5Net.Scorer.csproj", "{1745955E-636F-46AF-945E-4825426E97CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BD40B8E-8ED0-4C2C-BDEA-903D0B1E9A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1745955E-636F-46AF-945E-4825426E97CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1745955E-636F-46AF-945E-4825426E97CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1745955E-636F-46AF-945E-4825426E97CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1745955E-636F-46AF-945E-4825426E97CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

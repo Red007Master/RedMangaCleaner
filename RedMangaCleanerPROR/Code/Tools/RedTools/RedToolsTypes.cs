@@ -9,8 +9,9 @@ namespace RedsTools
     {
         public static class TypeConverter
         {
+            //converts TInput to TOutput(with values) (converts only common properties other ignored) and return it
             public static TOutput ChildParent<TInput, TOutput>(TInput input)
-            {
+             {
                 string[] inputProps = typeof(TInput).GetProperties().Select(x => x.Name).ToArray();
                 string[] outputProps = typeof(TOutput).GetProperties().Select(x => x.Name).ToArray();
 
@@ -27,20 +28,7 @@ namespace RedsTools
                 return output;
             }
 
-            public static void ChildParentSetTo<TInput, TOutput>(TInput input, TOutput output)
-            {
-                string[] inputProps = typeof(TInput).GetProperties().Select(x => x.Name).ToArray();
-                string[] outputProps = typeof(TOutput).GetProperties().Select(x => x.Name).ToArray();
-
-                string[] commonProps = inputProps.Intersect(outputProps).ToArray();
-
-                foreach (string prop in commonProps)
-                {
-                    object inputValue = typeof(TInput).GetProperty(prop).GetValue(input);
-                    typeof(TOutput).GetProperty(prop).SetValue(output, inputValue);
-                }
-            }
-
+            //curently same as "ChildParent"
             public static TOutput StrangerStranger<TInput, TOutput>(TInput input)
             {
                 string[] inputProps = typeof(TInput).GetProperties().Select(x => x.Name).ToArray();
@@ -57,6 +45,36 @@ namespace RedsTools
                 }
 
                 return output;
+            }
+
+            //converts TInput to TOutput(with values) (converts only common properties other ignored) and set result to TOutput (output)
+            public static void ChildParentSetTo<TInput, TOutput>(TInput input, TOutput output)
+            {
+                string[] inputProps = typeof(TInput).GetProperties().Select(x => x.Name).ToArray();
+                string[] outputProps = typeof(TOutput).GetProperties().Select(x => x.Name).ToArray();
+
+                string[] commonProps = inputProps.Intersect(outputProps).ToArray();
+
+                foreach (string prop in commonProps)
+                {
+                    object inputValue = typeof(TInput).GetProperty(prop).GetValue(input);
+                    typeof(TOutput).GetProperty(prop).SetValue(output, inputValue);
+                }
+            }
+
+            //curently same as "ChildParentSetTo"
+            public static void StrangerStrangerSetTo<TInput, TOutput>(TInput input, TOutput output)
+            {
+                string[] inputProps = typeof(TInput).GetProperties().Select(x => x.Name).ToArray();
+                string[] outputProps = typeof(TOutput).GetProperties().Select(x => x.Name).ToArray();
+
+                string[] commonProps = inputProps.Intersect(outputProps).ToArray();
+
+                foreach (string prop in commonProps)
+                {
+                    object inputValue = typeof(TInput).GetProperty(prop).GetValue(input);
+                    typeof(TOutput).GetProperty(prop).SetValue(output, inputValue);
+                }
             }
 
             public static void StrangerStranger<TInput, TOutput>(TInput input, TOutput output, string[] propPairs, bool onlyInputPairs = false) //prop pair == inputpropname>>>outputpropname

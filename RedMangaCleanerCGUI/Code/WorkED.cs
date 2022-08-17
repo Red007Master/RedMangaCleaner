@@ -45,19 +45,19 @@ class Work
         public static DirectBitmap CleanRGBImage(ImageData inputImageData)
         {
             Color[,] inputBaWImageAsColorArray = Images.RGB.BitmapToColorArray(new Bitmap(inputImageData.ImageFilePath));
-            List<MyYoloItem> textBoxesAsMyYoloItems = inputImageData.MyYoloItemsList;
+            List<DetectedObject> textBoxesAsDetectedObjects = inputImageData.DetectedObjects;
             List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
 
-            for (int i = 0; i < textBoxesAsMyYoloItems.Count; i++)
+            for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
             {
-                Color[,] imagePartOcupiedByMyYoloItem = RGB.GetImagePartOccupiedByMyYoloItem(inputBaWImageAsColorArray, textBoxesAsMyYoloItems[i]);
+                Color[,] imagePartOcupiedByMyYoloItem = RGB.GetImagePartOccupiedByDetectedObject(inputBaWImageAsColorArray, textBoxesAsDetectedObjects[i]);
                 byte[,] textBoxPixels = RGB.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250); //TODO1 out
                 textBoxPixels = FillGapsInsideGrid(textBoxPixels);
 
                 textBoxesAsByteArrays.Add(textBoxPixels);
             }
 
-            Color[,] inputBaWImageAsColorArrayFinall = RGB.FillTextboxesInMainImage(inputBaWImageAsColorArray, textBoxesAsByteArrays, textBoxesAsMyYoloItems, Color.Red);
+            Color[,] inputBaWImageAsColorArrayFinall = RGB.FillTextboxesInMainImage(inputBaWImageAsColorArray, textBoxesAsByteArrays, textBoxesAsDetectedObjects, Color.Red);
             DirectBitmap result = Images.RGB.ColorArrayToDirectBitmap(inputBaWImageAsColorArrayFinall);
 
             return result;
@@ -66,12 +66,12 @@ class Work
         public static DirectBitmap CleanBaWImage(ImageData inputImageData)
         {
             byte[,] inputBaWImageAsByteArray = Images.BlackAndWhite.ByteArrayFromBitmap(new Bitmap(inputImageData.ImageFilePath));
-            List<MyYoloItem> textBoxesAsMyYoloItems = inputImageData.MyYoloItemsList;
+            List<DetectedObject> textBoxesAsMyYoloItems = inputImageData.DetectedObjects;
             List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
 
             for (int i = 0; i < textBoxesAsMyYoloItems.Count; i++)
             {
-                byte[,] imagePartOcupiedByMyYoloItem = BlackAndWhite.GetImagePartOccupiedByMyYoloItem(inputBaWImageAsByteArray, textBoxesAsMyYoloItems[i]);
+                byte[,] imagePartOcupiedByMyYoloItem = BlackAndWhite.GetImagePartOccupiedByDetectedObject(inputBaWImageAsByteArray, textBoxesAsMyYoloItems[i]);
                 byte[,] textBoxPixels = BlackAndWhite.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250);
                 textBoxPixels = FillGapsInsideGrid(textBoxPixels);
 
@@ -86,25 +86,25 @@ class Work
 
         private static class BlackAndWhite
         {
-            public static byte[,] GetImagePartOccupiedByMyYoloItem(byte[,] inputImageAsByteArray, MyYoloItem inputYoloItem)
+            public static byte[,] GetImagePartOccupiedByDetectedObject(byte[,] iImageAsByteArray, DetectedObject iDetectedObject)
             {
                 int counterX = 0, counterY = 0;
                 //byte[,] textBoxAsByteArray = new Bitmap(inputYoloItem.Width, inputYoloItem.Height);
-                byte[,] textBoxAsByteArray = new byte[inputYoloItem.Width, inputYoloItem.Height];
+                byte[,] textBoxAsByteArray = new byte[iDetectedObject.Rectangle.Width, iDetectedObject.Rectangle.Height];
 
-                int endPointOfX = inputYoloItem.X + inputYoloItem.Width;
-                if (endPointOfX > inputImageAsByteArray.GetLength(0))
-                    endPointOfX = inputImageAsByteArray.GetLength(0);
+                int endPointOfX = iDetectedObject.Rectangle.X + iDetectedObject.Rectangle.Width;
+                if (endPointOfX > iImageAsByteArray.GetLength(0))
+                    endPointOfX = iImageAsByteArray.GetLength(0);
 
-                int endPointOfY = inputYoloItem.Y + inputYoloItem.Height;
-                if (endPointOfY > inputImageAsByteArray.GetLength(1))
-                    endPointOfY = inputImageAsByteArray.GetLength(1);
+                int endPointOfY = iDetectedObject.Rectangle.Y + iDetectedObject.Rectangle.Height;
+                if (endPointOfY > iImageAsByteArray.GetLength(1))
+                    endPointOfY = iImageAsByteArray.GetLength(1);
 
-                for (int x = inputYoloItem.X; x < endPointOfX; x++)
+                for (int x = iDetectedObject.Rectangle.X; x < endPointOfX; x++)
                 {
-                    for (int y = inputYoloItem.Y; y < endPointOfY; y++)
+                    for (int y = iDetectedObject.Rectangle.Y; y < endPointOfY; y++)
                     {
-                        textBoxAsByteArray[counterX, counterY] = inputImageAsByteArray[x, y];
+                        textBoxAsByteArray[counterX, counterY] = iImageAsByteArray[x, y];
                         //image.SetPixel(counterX, counterY, inputImageAsByteArray[x, y]);
                         counterY++;
                     }
@@ -187,12 +187,12 @@ class Work
 
                 return result;
             }
-            public static byte[,] FillTextboxesInMainImage(byte[,] inputMainImage, List<byte[,]> inputTextBoxesAsByteArray, List<MyYoloItem> inputTextboxesAsYoloItems, byte fillColorValue)
+            public static byte[,] FillTextboxesInMainImage(byte[,] inputMainImage, List<byte[,]> inputTextBoxesAsByteArray, List<DetectedObject> inputTextboxesAsDetectedObject, byte fillColorValue)
             {
                 for (int i = 0; i < inputTextBoxesAsByteArray.Count; i++)
                 {
-                    int width = inputTextboxesAsYoloItems[i].Width;
-                    int height = inputTextboxesAsYoloItems[i].Height;
+                    int width = inputTextboxesAsDetectedObject[i].Rectangle.Width;
+                    int height = inputTextboxesAsDetectedObject[i].Rectangle.Height;
 
                     for (int x = 0; x < width; x++)
                     {
@@ -200,7 +200,7 @@ class Work
                         {
                             if (inputTextBoxesAsByteArray[i][x, y] == 1)
                             {
-                                inputMainImage[x + inputTextboxesAsYoloItems[i].X, y + inputTextboxesAsYoloItems[i].Y] = fillColorValue;
+                                inputMainImage[x + inputTextboxesAsDetectedObject[i].Rectangle.X, y + inputTextboxesAsDetectedObject[i].Rectangle.Y] = fillColorValue;
                             }
                         }
                     }
@@ -211,24 +211,24 @@ class Work
         }
         private static class RGB
         {
-            public static Color[,] GetImagePartOccupiedByMyYoloItem(Color[,] inputImageAsColorArray, MyYoloItem inputYoloItem)
+            public static Color[,] GetImagePartOccupiedByDetectedObject(Color[,] iImageAsColorArray, DetectedObject iDetectedObject)
             {
                 int counterX = 0, counterY = 0;
-                Color[,] textBoxAsColorArray = new Color[inputYoloItem.Width, inputYoloItem.Height];
+                Color[,] textBoxAsColorArray = new Color[iDetectedObject.Rectangle.Width, iDetectedObject.Rectangle.Height];
 
-                int endPointOfX = inputYoloItem.X + inputYoloItem.Width;
-                if (endPointOfX > inputImageAsColorArray.GetLength(0))
-                    endPointOfX = inputImageAsColorArray.GetLength(0);
+                int endPointOfX = iDetectedObject.Rectangle.X + iDetectedObject.Rectangle.Width;
+                if (endPointOfX > iImageAsColorArray.GetLength(0))
+                    endPointOfX = iImageAsColorArray.GetLength(0);
 
-                int endPointOfY = inputYoloItem.Y + inputYoloItem.Height;
-                if (endPointOfY > inputImageAsColorArray.GetLength(1))
-                    endPointOfY = inputImageAsColorArray.GetLength(1);
+                int endPointOfY = iDetectedObject.Rectangle.Y + iDetectedObject.Rectangle.Height;
+                if (endPointOfY > iImageAsColorArray.GetLength(1))
+                    endPointOfY = iImageAsColorArray.GetLength(1);
 
-                for (int x = inputYoloItem.X; x < endPointOfX; x++)
+                for (int x = iDetectedObject.Rectangle.X; x < endPointOfX; x++)
                 {
-                    for (int y = inputYoloItem.Y; y < endPointOfY; y++)
+                    for (int y = iDetectedObject.Rectangle.Y; y < endPointOfY; y++)
                     {
-                        textBoxAsColorArray[counterX, counterY] = inputImageAsColorArray[x, y];
+                        textBoxAsColorArray[counterX, counterY] = iImageAsColorArray[x, y];
                         counterY++;
                     }
                     counterX++;
@@ -310,12 +310,12 @@ class Work
 
                 return result;
             }
-            public static Color[,] FillTextboxesInMainImage(Color[,] inputMainImage, List<byte[,]> inputTextBoxesAsByteArrays, List<MyYoloItem> inputTextboxesAsYoloItems, Color fillColorValue)
+            public static Color[,] FillTextboxesInMainImage(Color[,] inputMainImage, List<byte[,]> inputTextBoxesAsByteArrays, List<DetectedObject> inputTextboxesAsYoloItems, Color fillColorValue)
             {
                 for (int i = 0; i < inputTextBoxesAsByteArrays.Count; i++)
                 {
-                    int width = inputTextboxesAsYoloItems[i].Width;
-                    int height = inputTextboxesAsYoloItems[i].Height;
+                    int width = inputTextboxesAsYoloItems[i].Rectangle.Width;
+                    int height = inputTextboxesAsYoloItems[i].Rectangle.Height;
 
                     for (int x = 0; x < width; x++)
                     {
@@ -323,7 +323,7 @@ class Work
                         {
                             if (inputTextBoxesAsByteArrays[i][x, y] == 1)
                             {
-                                inputMainImage[x + inputTextboxesAsYoloItems[i].X, y + inputTextboxesAsYoloItems[i].Y] = fillColorValue;
+                                inputMainImage[x + inputTextboxesAsYoloItems[i].Rectangle.X, y + inputTextboxesAsYoloItems[i].Rectangle.Y] = fillColorValue;
                             }
                         }
                     }

@@ -104,9 +104,8 @@ public class Settings
 
         AddSetting<int>(3, "ProcessingBufferSize", @"Amount of backups of your work in 'RdmMangaCleaner\Processing'");
 
-        AddSetting<string>("YoloRdmMangaCleanerConfigDefault001.cfg", "YoloConfig", "Used by default YoloConfig");
-        AddSetting<string>("YoloRdmMangaCleanerNamesDefault001.names", "YoloNames", "Used by default YoloNames");
-        AddSetting<string>("YoloRdmMangaCleanerWeightsDefault001.weights", "YoloWeights", "Used by default YoloWeights");
+        AddSetting<string>("redsManga001.json", "YoloConfig", "Used by default YoloConfig");
+        AddSetting<string>("redsManga001.onnx", "YoloWeights", "Used by default YoloWeights");
 
         AddSetting<byte>(245, "DefaultFillTargetColorBaW", "Color(Grayscale) used as target for filing (text background), 255=white, 0=black"); //TODO max byte value is 255 add check
         AddSetting<byte>(10, "DefaultMaxDeviationFromBaW", "Deviation from DefaultFillTargetColorBaW if DFTCBaW is 200 and deviation is 10 all color from 190 to 210 will be filled");
@@ -192,7 +191,6 @@ namespace RedsSettings
 
         public int ProcessingBufferSize { get; internal set; }
 
-        public string YoloNames { get; internal set; }
         public string YoloWeights { get; internal set; }
         public string YoloConfig { get; internal set; }
 

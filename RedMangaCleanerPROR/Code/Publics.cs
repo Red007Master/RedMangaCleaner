@@ -16,7 +16,7 @@ class P
 
     public static StartArguments StartArguments { get; set; }
     public static Config Config { get; set; } = new Config();
-    public static MyYoloConfiguration CurrentYoloConfiguration { get; set; } = new MyYoloConfiguration();
+    public static YoloConfiguration CurrentYoloConfiguration { get; set; } = new YoloConfiguration();
 
 
     public static CleaningProjectInfo CleaningProjectInfo { get; set; }
@@ -79,7 +79,6 @@ public class PathCoreClass
     public string Config { get; set; }
 
     public string YoloConfig { get; set; }
-    public string YoloNames { get; set; }
     public string YoloWeight { get; set; }
 }
 public class CleaningProjectPathCoreClass

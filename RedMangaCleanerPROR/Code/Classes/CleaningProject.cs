@@ -188,13 +188,13 @@ namespace RedsCleaningProjects
         {
             public string ImageFilePath { get; set; }
             public bool IsBlackAndWhite { get; set; }
-            public List<MyYoloItem> MyYoloItemsList { get; set; }
+            public List<DetectedObject> DetectedObjects { get; set; }
 
-            public ImageData(string imagePath, bool isBlackAndWhite, List<MyYoloItem> yoloItemsList)
+            public ImageData(string imagePath, bool isBlackAndWhite, List<DetectedObject> detectedObjects)
             {
                 ImageFilePath = imagePath;
                 IsBlackAndWhite = isBlackAndWhite;
-                MyYoloItemsList = yoloItemsList;
+                DetectedObjects = detectedObjects;
             }
         }
 
@@ -222,10 +222,10 @@ namespace RedsCleaningProjects
                 Width = image.Width;
                 Height = image.Height;
 
-                for (int i = 0; i < imageData.MyYoloItemsList.Count; i++)
+                for (int i = 0; i < imageData.DetectedObjects.Count; i++)
                 {
-                    TextBoxes.Add(new TextBoxInfo(imageData.MyYoloItemsList[i]));
-                    FillPointsObjectDetection.Add(new FillPoint(imageData.MyYoloItemsList[i]));
+                    TextBoxes.Add(new TextBoxInfo(imageData.DetectedObjects[i]));
+                    FillPointsObjectDetection.Add(new FillPoint(imageData.DetectedObjects[i]));
                 }
             }
             public RedImageCore()
@@ -367,7 +367,7 @@ namespace RedsCleaningProjects
 
         public class TextBoxInfo
         {
-            public MyYoloItem MyYoloItem { get; set; }
+            public DetectedObject DetectedObject { get; set; }
 
             private byte[,] FilledPixelsAsByteArray { get; set; }
 
@@ -385,18 +385,18 @@ namespace RedsCleaningProjects
                 FilledPixelsAsByteArray = inputArray;
             }
 
-            public TextBoxInfo(MyYoloItem myYoloItem)
+            public TextBoxInfo(DetectedObject detectedObject)
             {
-                SetFromMyYoloItem(myYoloItem);
+                SetFromMyYoloItem(detectedObject);
             }
 
-            public void SetFromMyYoloItem(MyYoloItem myYoloItem)
+            public void SetFromMyYoloItem(DetectedObject detectedObject)
             {
-                MyYoloItem = myYoloItem;
-                X = myYoloItem.X;
-                Y = myYoloItem.Y;
-                Height = myYoloItem.Height;
-                Width = myYoloItem.Width;
+                DetectedObject = detectedObject;
+                X = detectedObject.Rectangle.X;
+                Y = detectedObject.Rectangle.Y;
+                Height = detectedObject.Rectangle.Height;
+                Width = detectedObject.Rectangle.Width;
             }
         }
     }

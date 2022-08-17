@@ -44,7 +44,8 @@ class Initalization
             dewSetInputArgs.OutputBlackAndWhiteImages = true;
             dewSetInputArgs.ConductObjectDetectionOnBlackAndWhiteVariants = true;
             dewSetInputArgs.ConductTextBoxFillingOnBlackAndWhiteVariants = true;
-            dewSetInputArgs.InputPath = @"D:\Other\Translate\I Was Caught up in a Hero Summoning, but That World Is at Peace\I Was Caught up in a Hero Summoning, but That World Is at Peace Chapter 9\MangaOUT1";
+            dewSetInputArgs.InputPath = 
+            @"E:\Other\Translate\I Was Caught up in a Hero Summoning, but That World Is at Peace\I Was Caught up in a Hero Summoning, but That World Is at Peace Chapter 6\MangaOUT1";
             dewSetInputArgs.CleaningProjectFolderName = @"CleaningProject_ID-[0]";
 
             string dewSetInputArgsString = JsonConvert.SerializeObject(dewSetInputArgs);
@@ -75,7 +76,7 @@ class Initalization
     private static void PathDirsInit()
     {
         string currentPath = Environment.CurrentDirectory;
-        currentPath = @"D:\RdmMangaCleaner\Data\Packages\ObjectDetection";
+        currentPath = @"D:\Development\RedsSoft\RdmMangaCleaner"; //DEV
 
         P.PathDirs.SetFromExecutionPath(currentPath, P.PathNames);
         Dir.CreateAllDirsInObject(P.PathDirs);
@@ -83,15 +84,12 @@ class Initalization
     private static void YoloConfigInit()
     {
         P.PathNames.YoloConfig = P.Settings.SettingsList.YoloConfig;
-        P.PathNames.YoloNames = P.Settings.SettingsList.YoloNames;
         P.PathNames.YoloWeight = P.Settings.SettingsList.YoloWeights;
 
         P.PathDirs.YoloConfig = P.PathDirs.YoloData + @"\" + P.PathNames.YoloConfig;
-        P.PathDirs.YoloNames = P.PathDirs.YoloData + @"\" + P.PathNames.YoloNames;
         P.PathDirs.YoloWeight = P.PathDirs.YoloData + @"\" + P.PathNames.YoloWeight;
-
-        P.CurrentYoloConfiguration.ConfigFile = P.PathDirs.YoloConfig;
-        P.CurrentYoloConfiguration.NamesFile = P.PathDirs.YoloNames;
-        P.CurrentYoloConfiguration.WeightsFile = P.PathDirs.YoloWeight;
+        
+        P.CurrentYoloConfiguration.WeightsPath = P.PathDirs.YoloWeight;
+        P.CurrentYoloConfiguration.ModelConfigPath = P.PathDirs.YoloConfig;
     }
 }

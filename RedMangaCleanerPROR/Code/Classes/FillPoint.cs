@@ -15,9 +15,9 @@ public class FillPoint
         FillStatusBeforeApply = inputArray;
     }
 
-    public FillPoint(MyYoloItem myYoloItem)
+    public FillPoint(DetectedObject detectedObject)
     {
-        Point = new Point(myYoloItem.Width / 2, myYoloItem.Height / 2);
+        Point = new Point(detectedObject.Rectangle.Width / 2, detectedObject.Rectangle.Height / 2);
         FillParam = FillParam.GetDefault();
     }
 }

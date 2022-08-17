@@ -1,6 +1,6 @@
 ﻿public class TextBoxInfo
 {
-    public MyYoloItem MyYoloItem { get; set; }
+    public DetectedObject DetectedObject { get; set; }
 
     private byte[,] FilledPixelsAsByteArray { get; set; }
 
@@ -18,17 +18,17 @@
         FilledPixelsAsByteArray = inputArray;
     }
 
-    public TextBoxInfo(MyYoloItem myYoloItem)
+    public TextBoxInfo(DetectedObject detectedObject)
     {
-        SetFromMyYoloItem(myYoloItem);
+        SetFromMyYoloItem(detectedObject);
     }
 
-    public void SetFromMyYoloItem(MyYoloItem myYoloItem)
+    public void SetFromMyYoloItem(DetectedObject detectedObject)
     {
-        MyYoloItem = myYoloItem;
-        X = myYoloItem.X;
-        Y = myYoloItem.Y;
-        Height = myYoloItem.Height;
-        Width = myYoloItem.Width;
+        DetectedObject = detectedObject;
+        X = DetectedObject.Rectangle.X;
+        Y = DetectedObject.Rectangle.Y;
+        Height = DetectedObject.Rectangle.Height;
+        Width = DetectedObject.Rectangle.Width;
     }
 }

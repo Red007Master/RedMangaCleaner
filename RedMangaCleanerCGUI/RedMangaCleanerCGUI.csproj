@@ -54,8 +54,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
@@ -80,27 +80,6 @@
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\WPFToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\..\YoloObjectDetectionWeightsTesterWPF\packages\Extended.Wpf.Toolkit.4.1.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Zavolokas.GdiExtensions, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zavolokas.GdiExtensions.2.0.0.5\lib\netstandard2.0\Zavolokas.GdiExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Zavolokas.ImageProcessing.PatchMatch, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zavolokas.ImageProcessing.PatchMatch.2.0.0.3\lib\netstandard2.0\Zavolokas.ImageProcessing.PatchMatch.dll</HintPath>
-    </Reference>
-    <Reference Include="Zavolokas.Math, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zavolokas.Math.1.0.1.24\lib\netstandard2.0\Zavolokas.Math.dll</HintPath>
-    </Reference>
-    <Reference Include="Zavolokas.Structures, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zavolokas.Structures.2.0.0.13\lib\netstandard2.0\Zavolokas.Structures.dll</HintPath>
-    </Reference>
-    <Reference Include="Zavolokas.Structures.Gdi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zavolokas.Structures.Gdi.2.0.0.13\lib\netstandard2.0\Zavolokas.Structures.Gdi.dll</HintPath>
-    </Reference>
-    <Reference Include="Zavolokas.Utils, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zavolokas.Utils.2.0.0.7\lib\netstandard2.0\Zavolokas.Utils.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="WPFDesign\Code\Xaml\Other\App.xaml">
@@ -112,6 +91,9 @@
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Classes\Config.cs">
       <Link>Code\Classes\Config.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\DetectedObject.cs">
+      <Link>Code\Classes\DetectedObject.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Classes\DirectBitmap.cs">
       <Link>Code\Classes\DirectBitmap.cs</Link>
@@ -133,6 +115,9 @@
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Classes\ProjectProcessingStatus.cs">
       <Link>Code\Classes\ProjectProcessingStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\YoloConfiguration.cs">
+      <Link>Code\Classes\YoloConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Publics.cs">
       <Link>Code\Publics.cs</Link>
@@ -173,21 +158,6 @@
     <Compile Include="Code\Classes\ImagesProcessingProgressInfo.cs" />
     <Compile Include="Code\Classes\PRORLauncher.cs" />
     <Compile Include="Code\Tools\InitializationPersonalized.cs" />
-    <Compile Include="Code\Tools\Inpainter\ColorResolvers\ColorResolver.cs" />
-    <Compile Include="Code\Tools\Inpainter\ColorResolvers\MeanShiftColorResolver.cs" />
-    <Compile Include="Code\Tools\Inpainter\ColorResolvers\SimpleColorResolver.cs" />
-    <Compile Include="Code\Tools\Inpainter\ImageNotProvidedException.cs" />
-    <Compile Include="Code\Tools\Inpainter\InpaintAreaIsNotSetException.cs" />
-    <Compile Include="Code\Tools\Inpainter\Inpainter.cs" />
-    <Compile Include="Code\Tools\Inpainter\InpainterSettings.cs" />
-    <Compile Include="Code\Tools\Inpainter\InpaintingResult.cs" />
-    <Compile Include="Code\Tools\Inpainter\InpaintIterationFinishedEventArgs.cs" />
-    <Compile Include="Code\Tools\Inpainter\InpaintMapBuilder.cs" />
-    <Compile Include="Code\Tools\Inpainter\Pyramid.cs" />
-    <Compile Include="Code\Tools\Inpainter\PyramidBuilder.cs" />
-    <Compile Include="Code\Tools\Inpainter\PyramidLevelsDetector.cs" />
-    <Compile Include="Code\Classes\MyYoloConfigurationED.cs" />
-    <Compile Include="Code\Classes\MyYoloItemED.cs" />
     <Compile Include="Code\Pseudo.cs" />
     <Compile Include="Code\PV.cs" />
     <Compile Include="Code\Tools\Web.cs" />
@@ -417,6 +387,11 @@
   <ItemGroup>
     <Resource Include="TODO.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\Development\ObjectDetection\yolov5-net-SaveLoadModels\src\Yolov5Net.Scorer\Yolov5Net.Scorer.csproj">
+      <Project>{1745955e-636f-46af-945e-4825426e97cd}</Project>
+      <Name>Yolov5Net.Scorer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
