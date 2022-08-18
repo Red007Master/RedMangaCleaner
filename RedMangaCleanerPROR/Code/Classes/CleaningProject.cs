@@ -32,7 +32,7 @@ namespace RedsCleaningProjects
         {
             public CleaningProjectInfo CleaningProjectInfo { get; set; }
 
-            public List<ImageData> ImageDatas { get; set; }
+            public List<BasicImageData> BasicImageDatas { get; set; }
             public List<RedImageCore> RedImageCores { get; set; }
             public List<RedImageFull> RedImageFulls { get; set; }
 
@@ -183,49 +183,57 @@ namespace RedsCleaningProjects
 
     namespace RedImages
     {
-        public class ImageData
+        public class BasicImageData
         {
             public string ImageFilePath { get; set; }
+
+            public int Width { get; set; }
+            public int Height { get; set; }
+
             public bool IsBlackAndWhite { get; set; }
+
             public List<DetectedObject> DetectedObjects { get; set; }
 
-            public ImageData(string imagePath, bool isBlackAndWhite, List<DetectedObject> detectedObjects)
+            public BasicImageData(string imagePath, int width, int height, bool isBlackAndWhite, List<DetectedObject> detectedObjects)
             {
                 ImageFilePath = imagePath;
+                Width = width;
+                Height = height;
                 IsBlackAndWhite = isBlackAndWhite;
                 DetectedObjects = detectedObjects;
             }
+
+            public BasicImageData() { }
         }
 
-        public class RedImageCore : IComparable
+        public class RedImageCore : BasicImageData, IComparable
         {
             public bool ImageIsBlackAndWhite { get; set; }
             public bool ImageProcessingModeAsBlackAndWhite { get; set; }
 
             public string ImageFileName { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
 
-            public List<FillPoint> FillPointsUserInput { get; set; } = new List<FillPoint>();
-            public List<FillPoint> FillPointsObjectDetection { get; set; } = new List<FillPoint>();
-            public List<FillPoint> FillPointsProgramOther { get; set; } = new List<FillPoint>();
+            //public List<FillPoint> FillPointsUserInput { get; set; } = new List<FillPoint>();
+            //public List<FillPoint> FillPointsObjectDetection { get; set; } = new List<FillPoint>();
+            //public List<FillPoint> FillPointsProgramOther { get; set; } = new List<FillPoint>();
 
             public List<TextBoxInfo> TextBoxes { get; set; } = new List<TextBoxInfo>();
 
-            public RedImageCore(ImageData imageData)
+            public RedImageCore(BasicImageData basicImageData)
             {
-                Bitmap image = new Bitmap(imageData.ImageFilePath);
+                TypeConverter.ChildParentSetTo<BasicImageData, RedImageCore> (basicImageData, this);
 
-                ImageIsBlackAndWhite = imageData.IsBlackAndWhite;
-                ImageFileName = Path.GetFileName(imageData.ImageFilePath);
+                Bitmap image = new Bitmap(ImageFilePath);
+                ImageFileName = Path.GetFileName(ImageFilePath);
                 Width = image.Width;
                 Height = image.Height;
 
-                for (int i = 0; i < imageData.DetectedObjects.Count; i++)
+                for (int i = 0; i < DetectedObjects.Count; i++)
                 {
-                    TextBoxes.Add(new TextBoxInfo(imageData.DetectedObjects[i]));
-                    FillPointsObjectDetection.Add(new FillPoint(imageData.DetectedObjects[i]));
+                    TextBoxes.Add(new TextBoxInfo(DetectedObjects[i]));
                 }
+
+                image.Dispose();
             }
             public RedImageCore()
             {
@@ -248,6 +256,9 @@ namespace RedsCleaningProjects
         }
         public class RedImageFull : RedImageCore, IDisposable
         {
+            public DirectBitmap DisplayDirectBitmap { get; set; }
+            public bool RectDrawStatus { get; set; }
+
             public DirectBitmap BaWImageAsDirectBitmap { get; set; }
             public DirectBitmap RGBImageAsDirectBitmap { get; set; }
             public Color[,] ImageAsColorArray { get; set; }
@@ -260,21 +271,11 @@ namespace RedsCleaningProjects
                 CompileImageAsDirectBitmap();
                 CompileImageAsByteArray();
                 CompileImageAsColorArray();
-                //FillAllTextBoxes();
 
-                for (int i = 0; i < TextBoxes.Count; i++)
-                {
-                    RectangleDrawOptions rectOptions = new RectangleDrawOptions();
-                    rectOptions.Color = Color.Red;
-                    rectOptions.Thickness = 10;
-                    rectOptions.DrawPositioningOptions = DrawPositioningOptions.ByWidthAndHeightThrueXandY;
+                DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
+                DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
 
-                    rectOptions.FirstPoint = new RedsPoint(TextBoxes[i].X, TextBoxes[i].Y);
-                    rectOptions.Width = TextBoxes[i].Width;
-                    rectOptions.Height = TextBoxes[i].Height;
-
-                    Drawing.DrawRectangleOnDirectBitmap(BaWImageAsDirectBitmap, rectOptions);
-                }
+                DrawRectangles();
             }
 
             public void CompileImageAsDirectBitmap()
@@ -291,57 +292,55 @@ namespace RedsCleaningProjects
                 if (ImageIsBlackAndWhite)
                 {
                     //TODO?
+                    ImageAsColorArray = Images.RGB.BitmapToColorArray(BaWImageAsDirectBitmap.Bitmap);
                 }
                 else
                 {
                     ImageAsColorArray = Images.RGB.BitmapToColorArray(BaWImageAsDirectBitmap.Bitmap);
                 }
             }
-            //public void FillAllTextBoxes()
-            //{
-            //    Inpainter inpainter = new Inpainter();
 
-            //    Bitmap mask = new Bitmap(Width, Height);
-            //    Graphics graphics = Graphics.FromImage(mask);
-
-            //    foreach (var item in TextBoxes)
-            //    {
-            //        int x = item.X;
-            //        int y = item.Y;
-            //        int hight = item.Height;
-            //        int width = item.Width;
-
-            //        System.Drawing.Rectangle rect = new System.Drawing.Rectangle(x, y, width, hight);
-
-            //        SolidBrush brush = new SolidBrush(Color.Red);
-            //        graphics.FillRectangle(brush, rect);
-            //    };
-
-            //    Color[,] col = Images.RGB.BitmapToColorArray(RGBImageAsDirectBitmap.Bitmap);
-            //    Bitmap bmp = Images.RGB.ColorArrayToDirectBitmap(col).Bitmap;
-
-            //    InpaintSettings inpaintSettings = new InpaintSettings();
-            //    inpaintSettings.MaxInpaintIterations = 50;
-            //    var result = inpainter.Inpaint(BitmapToArgb(bmp), BitmapToArgb(mask), inpaintSettings);
-            //    Bitmap resAsBitmap = result.FromArgbToBitmap();
-
-            //    for (int x = 0; x < Width; x++)
-            //    {
-            //        for (int y = 0; y < Height; y++)
-            //        {
-            //            RGBImageAsDirectBitmap.SetPixel(x, y, resAsBitmap.GetPixel(x, y));
-            //        }
-            //    }
-            //}
-
-            public static Point Center(Rectangle rect)
+            public void DrawUndrawRectangles()
             {
-                return new System.Drawing.Point(rect.Left + rect.Width / 2, rect.Top + rect.Height / 2);
+                if (RectDrawStatus)
+                {
+                    UndrawRectangles();
+                }
+                else
+                {
+                    DrawRectangles();
+                }
             }
 
-            public RedImageFull()
+            public void DrawRectangles()
             {
+                for (int i = 0; i < TextBoxes.Count; i++)
+                {
+                    RectangleDrawOptions rectOptions = new RectangleDrawOptions();
+                    rectOptions.Color = Color.Red;
+                    rectOptions.Thickness = 5;
 
+                    rectOptions.Rectangle = TextBoxes[i].DetectedObject.Rectangle;
+
+                    Drawing.DrawRectangleOnDirectBitmap(DisplayDirectBitmap, rectOptions);
+                }
+                RectDrawStatus = true;
+            }
+
+            public void UndrawRectangles()
+            {
+                for (int i = 0; i < TextBoxes.Count; i++)
+                {
+                    RectangleDrawOptions rectOptions = new RectangleDrawOptions();
+                    rectOptions.Color = Color.Red;
+                    rectOptions.Thickness = 5;
+
+                    rectOptions.Rectangle = TextBoxes[i].DetectedObject.Rectangle;
+
+                    Drawing.UnDrawRectangleOnDirectBitmap(DisplayDirectBitmap, rectOptions, ImageAsColorArray);
+                }
+
+                RectDrawStatus = false;
             }
 
             public void Dispose()
@@ -368,34 +367,16 @@ namespace RedsCleaningProjects
         {
             public DetectedObject DetectedObject { get; set; }
 
-            private byte[,] FilledPixelsAsByteArray { get; set; }
-
-            public int X { get; set; }
-            public int Y { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
-
-            public byte[,] GetFilledPixelsAsByteArray()
-            {
-                return FilledPixelsAsByteArray;
-            }
-            public void SetFilledPixelsAsByteArray(byte[,] inputArray)
-            {
-                FilledPixelsAsByteArray = inputArray;
-            }
+            public byte[,] FilledPixelsAsByteArray { get; set; }
 
             public TextBoxInfo(DetectedObject detectedObject)
             {
-                SetFromMyYoloItem(detectedObject);
+                SetFromDetectedObject(detectedObject);
             }
 
-            public void SetFromMyYoloItem(DetectedObject detectedObject)
+            public void SetFromDetectedObject(DetectedObject detectedObject)
             {
                 DetectedObject = detectedObject;
-                X = detectedObject.Rectangle.X;
-                Y = detectedObject.Rectangle.Y;
-                Height = detectedObject.Rectangle.Height;
-                Width = detectedObject.Rectangle.Width;
             }
         }
     }

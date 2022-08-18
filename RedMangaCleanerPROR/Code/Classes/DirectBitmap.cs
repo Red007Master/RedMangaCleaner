@@ -13,15 +13,6 @@ public class DirectBitmap : IDisposable
 
     protected GCHandle BitsHandle { get; private set; }
 
-    public DirectBitmap(int width, int height)
-    {
-        Width = width;
-        Height = height;
-        Bits = new Int32[width * height];
-        BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-        Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
-    }
-
     public void SetPixel(int x, int y, Color colour)
     {
         int index = x + (y * Width);
@@ -37,6 +28,26 @@ public class DirectBitmap : IDisposable
         Color result = Color.FromArgb(col);
 
         return result;
+    }
+
+    public DirectBitmap(int width, int height)
+    {
+        Width = width;
+        Height = height;
+        Bits = new Int32[width * height];
+        BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
+        Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+    }
+
+    public DirectBitmap(DirectBitmap directBitmap) : this(directBitmap.Width, directBitmap.Height)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                SetPixel(x, y, directBitmap.GetPixel(x, y));
+            }
+        }
     }
 
     public void Dispose()

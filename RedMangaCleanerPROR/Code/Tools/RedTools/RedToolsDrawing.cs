@@ -7,52 +7,56 @@ namespace RedsTools
     {
         public static class Drawing
         {
-            public static void DrawRectangleOnDirectBitmap(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions)
-            {
-                if (iRectangleDrawOptions.DrawPositioningOptions == DrawPositioningOptions.ByTwoPoints)
-                {
-                    DrawRecByTwoPoints(iDirectBitmap, iRectangleDrawOptions);
-                }
-                else if (iRectangleDrawOptions.DrawPositioningOptions == DrawPositioningOptions.ByCenterAndSize)
-                {
-                    DrawRecByCenterAndSize(iDirectBitmap, iRectangleDrawOptions);
-                }
-                else if (iRectangleDrawOptions.DrawPositioningOptions == DrawPositioningOptions.ByWidthAndHeightThrueXandY)
-                {
-                    DrawRecByWidthAndHeightThrueXandY(iDirectBitmap, iRectangleDrawOptions);
-                }
-            }
-
-            private static void DrawRecByTwoPoints(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions)
-            {
-                throw new NotImplementedException();
-            }
-            private static void DrawRecByCenterAndSize(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions)
-            {
-                throw new NotImplementedException();
-            }
-            private static void DrawRecByWidthAndHeightThrueXandY(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions)
+            public static void UnDrawRectangleOnDirectBitmap(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions, Color[,] iImageAsColorArray)
             {
                 int imageWidth = iDirectBitmap.Width;
                 int imageHeight = iDirectBitmap.Height;
                 int borderThickness = iRectangleDrawOptions.Thickness;
 
-                bool isWidthInBounds = iRectangleDrawOptions.FirstPoint.X + iRectangleDrawOptions.Width + borderThickness < imageWidth;
-                bool isHeightInBounds = iRectangleDrawOptions.FirstPoint.Y + iRectangleDrawOptions.Height + borderThickness < imageHeight;
+                bool isWidthInBounds = iRectangleDrawOptions.Rectangle.X + iRectangleDrawOptions.Rectangle.Width + borderThickness < imageWidth;
+                bool isHeightInBounds = iRectangleDrawOptions.Rectangle.Y + iRectangleDrawOptions.Rectangle.Height + borderThickness < imageHeight;
 
-                for (int i = 0; i < iRectangleDrawOptions.Width; i++)
+                for (int i = 0; i < iRectangleDrawOptions.Rectangle.Width; i++)
                 {
-                    RedsPoint point1 = new RedsPoint(iRectangleDrawOptions.FirstPoint.X + i, iRectangleDrawOptions.FirstPoint.Y);
-                    RedsPoint point2 = new RedsPoint(iRectangleDrawOptions.FirstPoint.X + i, iRectangleDrawOptions.FirstPoint.Y + iRectangleDrawOptions.Height - 1);
+                    RedsPoint point1 = new RedsPoint(iRectangleDrawOptions.Rectangle.X + i, iRectangleDrawOptions.Rectangle.Y);
+                    RedsPoint point2 = new RedsPoint(iRectangleDrawOptions.Rectangle.X + i, iRectangleDrawOptions.Rectangle.Y + iRectangleDrawOptions.Rectangle.Height - 1);
+
+                    UnsetPixels(point1, iDirectBitmap, iImageAsColorArray, borderThickness, Orientation.Vertical);
+                    UnsetPixels(point2, iDirectBitmap, iImageAsColorArray, borderThickness, Orientation.Vertical);
+                }
+
+                for (int i = 0; i < iRectangleDrawOptions.Rectangle.Height; i++)
+                {
+                    RedsPoint point1 = new RedsPoint(iRectangleDrawOptions.Rectangle.X, iRectangleDrawOptions.Rectangle.Y + i);
+                    RedsPoint point2 = new RedsPoint(iRectangleDrawOptions.Rectangle.X + iRectangleDrawOptions.Rectangle.Width - 1, iRectangleDrawOptions.Rectangle.Y + i);
+
+                    UnsetPixels(point1, iDirectBitmap, iImageAsColorArray, borderThickness, Orientation.Horizontal);
+                    UnsetPixels(point2, iDirectBitmap, iImageAsColorArray, borderThickness, Orientation.Horizontal);
+                }
+            }
+
+            public static void DrawRectangleOnDirectBitmap(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions)
+            {
+                int imageWidth = iDirectBitmap.Width;
+                int imageHeight = iDirectBitmap.Height;
+                int borderThickness = iRectangleDrawOptions.Thickness;
+
+                bool isWidthInBounds = iRectangleDrawOptions.Rectangle.X + iRectangleDrawOptions.Rectangle.Width + borderThickness < imageWidth;
+                bool isHeightInBounds = iRectangleDrawOptions.Rectangle.Y + iRectangleDrawOptions.Rectangle.Height + borderThickness < imageHeight;
+
+                for (int i = 0; i < iRectangleDrawOptions.Rectangle.Width; i++)
+                {
+                    RedsPoint point1 = new RedsPoint(iRectangleDrawOptions.Rectangle.X + i, iRectangleDrawOptions.Rectangle.Y);
+                    RedsPoint point2 = new RedsPoint(iRectangleDrawOptions.Rectangle.X + i, iRectangleDrawOptions.Rectangle.Y + iRectangleDrawOptions.Rectangle.Height - 1);
 
                     SetPixels(point1, iDirectBitmap, iRectangleDrawOptions.Color, borderThickness, Orientation.Vertical);
                     SetPixels(point2, iDirectBitmap, iRectangleDrawOptions.Color, borderThickness, Orientation.Vertical);
                 }
 
-                for (int i = 0; i < iRectangleDrawOptions.Height; i++)
+                for (int i = 0; i < iRectangleDrawOptions.Rectangle.Height; i++)
                 {
-                    RedsPoint point1 = new RedsPoint(iRectangleDrawOptions.FirstPoint.X, iRectangleDrawOptions.FirstPoint.Y + i);
-                    RedsPoint point2 = new RedsPoint(iRectangleDrawOptions.FirstPoint.X + iRectangleDrawOptions.Width - 1, iRectangleDrawOptions.FirstPoint.Y + i);
+                    RedsPoint point1 = new RedsPoint(iRectangleDrawOptions.Rectangle.X, iRectangleDrawOptions.Rectangle.Y + i);
+                    RedsPoint point2 = new RedsPoint(iRectangleDrawOptions.Rectangle.X + iRectangleDrawOptions.Rectangle.Width - 1, iRectangleDrawOptions.Rectangle.Y + i);
 
                     SetPixels(point1, iDirectBitmap, iRectangleDrawOptions.Color, borderThickness, Orientation.Horizontal);
                     SetPixels(point2, iDirectBitmap, iRectangleDrawOptions.Color, borderThickness, Orientation.Horizontal);
@@ -144,14 +148,7 @@ namespace RedsTools
 
         public class RectangleDrawOptions
         {
-            public DrawPositioningOptions DrawPositioningOptions { get; set; }
-
-            public RedsPoint FirstPoint { get; set; }
-            public RedsPoint LastBottomPoint { get; set; }
-            public RedsPoint CenterPoint { get; set; }
-
-            public int Width { get; set; }
-            public int Height { get; set; }
+            public Rectangle Rectangle { get; set; }
 
             public Color Color { get; set; }
             public int Thickness { get; set; }
@@ -167,13 +164,6 @@ namespace RedsTools
                 X = x;
                 Y = y;
             }
-        }
-
-        public enum DrawPositioningOptions
-        {
-            ByTwoPoints = 0,
-            ByCenterAndSize = 1,
-            ByWidthAndHeightThrueXandY = 2,
         }
     }
 }

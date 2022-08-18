@@ -29,8 +29,6 @@ namespace RedMangaCleanerCGUI.Code.Xaml.Windows
             {
                 Thread.Sleep(100);
             }
-
-            //Work.MainVoid();
         }
     }
 }

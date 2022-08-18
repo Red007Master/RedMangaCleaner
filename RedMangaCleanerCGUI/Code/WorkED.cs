@@ -15,25 +15,26 @@ class Work
     {
         RedImageFulls = new List<RedImageFull>();
         List<RedImageCore> redImageCores = new List<RedImageCore>();
-        List<ImageData> ImageDatas = new List<ImageData>();
+        List<BasicImageData> BasicImageDatas = new List<BasicImageData>();
 
         using (TimeLogger tl = new TimeLogger($"ImageData: File.ReadAllText = [{P.CleaningProjectDirs.ObjectsData}] and JsonConvert.DeserializeObject", LogLevel.Information, P.Logger, 1))
         {
             string serialized = File.ReadAllText(P.CleaningProjectDirs.ObjectsData);
-            ImageDatas = JsonConvert.DeserializeObject<List<ImageData>>(serialized);
+            BasicImageDatas = JsonConvert.DeserializeObject<List<BasicImageData>>(serialized);
         }
 
         using (TimeLogger tl = new TimeLogger("RedImageCore: Formating.GetRedImageCoreFromImgDataObjList", LogLevel.Information, P.Logger, 1))
         {
-            for (int i = 0; i < ImageDatas.Count; i++)
+            for (int i = 0; i < BasicImageDatas.Count; i++)
             {
-                redImageCores.Add(new RedImageCore(ImageDatas[i]));
+                redImageCores.Add(new RedImageCore(BasicImageDatas[i]));
             }
         }
 
         using (TimeLogger tl = new TimeLogger("Formating.PrecompileRedImageFullsFromRedImageCoresMultithreading and sort", LogLevel.Information, P.Logger, 1))
         {
             RedImageFulls = Formating.PrecompileRedImageFullsFromRedImageCoresMultithreading(redImageCores);
+
             RedImageFulls.Sort();
         }
 
@@ -42,10 +43,8 @@ class Work
 
     public static class Cleaning
     {
-        public static DirectBitmap CleanRGBImage(ImageData inputImageData)
+        public static DirectBitmap CleanRGBImage(List<DetectedObject> textBoxesAsDetectedObjects, Color[,] inputBaWImageAsColorArray)
         {
-            Color[,] inputBaWImageAsColorArray = Images.RGB.BitmapToColorArray(new Bitmap(inputImageData.ImageFilePath));
-            List<DetectedObject> textBoxesAsDetectedObjects = inputImageData.DetectedObjects;
             List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
 
             for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
@@ -63,22 +62,20 @@ class Work
             return result;
         }
 
-        public static DirectBitmap CleanBaWImage(ImageData inputImageData)
+        public static DirectBitmap CleanBaWImage(List<DetectedObject> textBoxesAsDetectedObjects, byte[,] inputBaWImageAsByteArray)
         {
-            byte[,] inputBaWImageAsByteArray = Images.BlackAndWhite.ByteArrayFromBitmap(new Bitmap(inputImageData.ImageFilePath));
-            List<DetectedObject> textBoxesAsMyYoloItems = inputImageData.DetectedObjects;
             List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
 
-            for (int i = 0; i < textBoxesAsMyYoloItems.Count; i++)
+            for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
             {
-                byte[,] imagePartOcupiedByMyYoloItem = BlackAndWhite.GetImagePartOccupiedByDetectedObject(inputBaWImageAsByteArray, textBoxesAsMyYoloItems[i]);
+                byte[,] imagePartOcupiedByMyYoloItem = BlackAndWhite.GetImagePartOccupiedByDetectedObject(inputBaWImageAsByteArray, textBoxesAsDetectedObjects[i]);
                 byte[,] textBoxPixels = BlackAndWhite.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250);
                 textBoxPixels = FillGapsInsideGrid(textBoxPixels);
 
                 textBoxesAsByteArrays.Add(textBoxPixels);
             }
 
-            byte[,] inputBaWImageAsByteArrayFinall = BlackAndWhite.FillTextboxesInMainImage(inputBaWImageAsByteArray, textBoxesAsByteArrays, textBoxesAsMyYoloItems, 0);
+            byte[,] inputBaWImageAsByteArrayFinall = BlackAndWhite.FillTextboxesInMainImage(inputBaWImageAsByteArray, textBoxesAsByteArrays, textBoxesAsDetectedObjects, 0);
             DirectBitmap result = Images.BlackAndWhite.ByteArrayToDirectBitmap(inputBaWImageAsByteArrayFinall);
 
             return result;

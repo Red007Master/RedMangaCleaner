@@ -13,7 +13,7 @@ class Work
 {
     internal static void MainVoid()
     {
-        List<ImageData> ImageDataList = new List<ImageData>();
+        List<BasicImageData> ImageDataList = new List<BasicImageData>();
 
 
         using (TimeLogger tl = new TimeLogger($"Copying images From=[{P.StartArguments.InputPath}] To=[{P.CleaningProjectDirs.SourceImages}]", LogLevel.Information, P.Logger, 1))
@@ -157,9 +157,9 @@ class Work
 
     public static class ObjectRecognition
     {
-        public static List<ImageData> DetectObjectsOnAllImagesInDir(string inputPath)
+        public static List<BasicImageData> DetectObjectsOnAllImagesInDir(string inputPath)
         {
-            List<ImageData> result = new List<ImageData>();
+            List<BasicImageData> result = new List<BasicImageData>();
 
             P.Logger.Log($"DetectObjectsOnAllImagesInDir: GetFiles from dir, Dir=[{inputPath}]-Try", LogLevel.Information, 1);
             string[] imagesToProcess = Directory.GetFiles(inputPath);
@@ -181,7 +181,7 @@ class Work
                 List<YoloPrediction> predictions = scorer.Predict(image);
                 P.Logger.Log($"Detect Objects on image-Success", LogLevel.Information, 2);
                 
-                result.Add(new ImageData(imagesToProcess[i], P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, DetectedObject.ConvertYPLToDetectedObjectList(predictions)));
+                result.Add(new BasicImageData(imagesToProcess[i], image.Width, image.Height, P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, DetectedObject.ConvertYPLToDetectedObjectList(predictions)));
 
                 P.ProjectProcessingStatus.Set(i);
                 P.ProjectProcessingStatus.Save();

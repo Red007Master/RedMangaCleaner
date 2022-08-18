@@ -104,10 +104,17 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.MainWindow.View
         private void SetZBorderImageTo(int imageId)
         {
             Image img = (Image)zborder.Child;
-            img.Source = Images.ImageSourceFromBitmap(Work.RedImageFulls[imageId].BaWImageAsDirectBitmap.Bitmap);
+            img.Source = Images.ImageSourceFromBitmap(Work.RedImageFulls[imageId].DisplayDirectBitmap.Bitmap);
 
             ImgIdDisplayTextBox.Text = $"{imageId}/{Work.RedImageFulls.Count - 1}";
             ImgIdInputTextBox.Text = imageId.ToString();
+        }
+
+        private void DrawUndrawButton_Click(object sender, RoutedEventArgs e)
+        {
+            Work.RedImageFulls[CurrentImageId].DrawUndrawRectangles();
+            Image img = (Image)zborder.Child;
+            img.Source = Images.ImageSourceFromBitmap(Work.RedImageFulls[CurrentImageId].DisplayDirectBitmap.Bitmap);
         }
     }
 }
