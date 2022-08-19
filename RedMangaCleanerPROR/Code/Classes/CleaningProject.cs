@@ -217,7 +217,7 @@ namespace RedsCleaningProjects
             //public List<FillPoint> FillPointsObjectDetection { get; set; } = new List<FillPoint>();
             //public List<FillPoint> FillPointsProgramOther { get; set; } = new List<FillPoint>();
 
-            public List<TextBoxInfo> TextBoxes { get; set; } = new List<TextBoxInfo>();
+            public List<EditableObject> TextBoxes { get; set; } = new List<EditableObject>();
 
             public RedImageCore(BasicImageData basicImageData)
             {
@@ -230,7 +230,7 @@ namespace RedsCleaningProjects
 
                 for (int i = 0; i < DetectedObjects.Count; i++)
                 {
-                    TextBoxes.Add(new TextBoxInfo(DetectedObjects[i]));
+                    TextBoxes.Add(new EditableObject(DetectedObjects[i]));
                 }
 
                 image.Dispose();
@@ -363,13 +363,13 @@ namespace RedsCleaningProjects
             }
         }
 
-        public class TextBoxInfo
+        public class EditableObject
         {
             public DetectedObject DetectedObject { get; set; }
 
             public byte[,] FilledPixelsAsByteArray { get; set; }
 
-            public TextBoxInfo(DetectedObject detectedObject)
+            public EditableObject(DetectedObject detectedObject)
             {
                 SetFromDetectedObject(detectedObject);
             }
