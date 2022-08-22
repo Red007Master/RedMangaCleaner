@@ -28,18 +28,18 @@ namespace RedsCleaningProjects
             public string InputPath { get; set; }
         }
 
-        internal class CleaningProject
-        {
-            public CleaningProjectInfo CleaningProjectInfo { get; set; }
+        //public class CleaningProject
+        //{
+        //    public CleaningProjectInfo CleaningProjectInfo { get; set; }
 
-            public List<BasicImageData> BasicImageDatas { get; set; }
-            public List<RedImageCore> RedImageCores { get; set; }
-            public List<RedImageFull> RedImageFulls { get; set; }
+        //    public List<BasicImageData> BasicImageDatas { get; set; }
+        //    public List<RedImageCore> RedImageCores { get; set; }
+        //    public List<RedImageFull> RedImageFulls { get; set; }
 
-            public FillParam DefFillParam { get; set; }
-        }
+        //    public FillParam DefFillParam { get; set; }
+        //}
 
-        class CleaningProjectInfo : IComparable
+        public class CleaningProjectInfo : IComparable
         {
             public int Id { get; set; }
             public bool OutputBlackAndWhiteImages { get; set; }
@@ -173,6 +173,8 @@ namespace RedsCleaningProjects
             }
         }
 
+
+
         public enum FolderOptions
         {
             CreateNewFolderById = 0,
@@ -217,7 +219,7 @@ namespace RedsCleaningProjects
             //public List<FillPoint> FillPointsObjectDetection { get; set; } = new List<FillPoint>();
             //public List<FillPoint> FillPointsProgramOther { get; set; } = new List<FillPoint>();
 
-            public List<EditableObject> TextBoxes { get; set; } = new List<EditableObject>();
+            public List<EditableObject> EditableObjects { get; set; } = new List<EditableObject>();
 
             public RedImageCore(BasicImageData basicImageData)
             {
@@ -230,7 +232,7 @@ namespace RedsCleaningProjects
 
                 for (int i = 0; i < DetectedObjects.Count; i++)
                 {
-                    TextBoxes.Add(new EditableObject(DetectedObjects[i]));
+                    EditableObjects.Add(new EditableObject(DetectedObjects[i]));
                 }
 
                 image.Dispose();
@@ -264,6 +266,8 @@ namespace RedsCleaningProjects
             public Color[,] ImageAsColorArray { get; set; }
             public byte[,] ImageAsByteArray { get; set; }
 
+            public List<TextBox> TextBoxes { get; set; } = new List<TextBox>();
+
             public RedImageFull(RedImageCore redImageCore)
             {
                 TypeConverter.ChildParentSetTo<RedImageCore, RedImageFull>(redImageCore, this);
@@ -272,10 +276,21 @@ namespace RedsCleaningProjects
                 CompileImageAsByteArray();
                 CompileImageAsColorArray();
 
+                for (int i = 0; i < EditableObjects.Count; i++)
+                {
+                    TextBoxes.Add(new TextBox(RGBImageAsDirectBitmap, ImageAsColorArray, EditableObjects[i].DetectedObject));
+                }
+                
                 DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
-                DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
+                //DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
 
-                DrawRectangles();
+                for (int i = 0; i < TextBoxes.Count; i++)
+                {
+                    TextBoxes[i].CalculateTextBoxPixelsThatMustBeCleaned();
+                    TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                }
+
+                //DrawRectangles();
             }
 
             public void CompileImageAsDirectBitmap()
@@ -310,42 +325,54 @@ namespace RedsCleaningProjects
                 {
                     DrawRectangles();
                 }
-            }
-
+            } //kill
+            
             public void DrawRectangles()
             {
-                for (int i = 0; i < TextBoxes.Count; i++)
+                for (int i = 0; i < EditableObjects.Count; i++)
                 {
                     RectangleDrawOptions rectOptions = new RectangleDrawOptions();
-                    rectOptions.Color = Color.Red;
+                    rectOptions.Color = Color.Blue;
                     rectOptions.Thickness = 5;
 
-                    rectOptions.Rectangle = TextBoxes[i].DetectedObject.Rectangle;
+                    rectOptions.Rectangle = EditableObjects[i].DetectedObject.Rectangle;
 
                     Drawing.DrawRectangleOnDirectBitmap(DisplayDirectBitmap, rectOptions);
                 }
+                
+                for (int i = 0; i < TextBoxes.Count; i++)
+                {
+                    TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                }
                 RectDrawStatus = true;
-            }
+            }   //kill
 
             public void UndrawRectangles()
             {
-                for (int i = 0; i < TextBoxes.Count; i++)
+                for (int i = 0; i < EditableObjects.Count; i++)
                 {
                     RectangleDrawOptions rectOptions = new RectangleDrawOptions();
                     rectOptions.Color = Color.Red;
                     rectOptions.Thickness = 5;
 
-                    rectOptions.Rectangle = TextBoxes[i].DetectedObject.Rectangle;
+                    rectOptions.Rectangle = EditableObjects[i].DetectedObject.Rectangle;
 
                     Drawing.UnDrawRectangleOnDirectBitmap(DisplayDirectBitmap, rectOptions, ImageAsColorArray);
                 }
 
+                for (int i = 0; i < TextBoxes.Count; i++)
+                {
+                    TextBoxes[i].UnFillTextBox(ImageAsColorArray, DisplayDirectBitmap);
+                }
+
                 RectDrawStatus = false;
-            }
+            }   //kill
 
             public void Dispose()
             {
                 BaWImageAsDirectBitmap.Dispose();
+                RGBImageAsDirectBitmap.Dispose();
+                DisplayDirectBitmap.Dispose();
             }
 
             public override int CompareTo(object obj)
@@ -365,19 +392,46 @@ namespace RedsCleaningProjects
 
         public class EditableObject
         {
-            public DetectedObject DetectedObject { get; set; }
+            public DirectBitmap ParentDirectBitmap { get; set; }
+            public Color[,] ParentColorArray { get; set; }
 
-            public byte[,] FilledPixelsAsByteArray { get; set; }
+            public DetectedObject DetectedObject { get; set; }
+            public byte[,] FilledPixelsOverlay { get; set; }
+            public Rectangle WorkZoneRectangle { get; set; }
 
             public EditableObject(DetectedObject detectedObject)
             {
-                SetFromDetectedObject(detectedObject);
-            }
-
-            public void SetFromDetectedObject(DetectedObject detectedObject)
-            {
                 DetectedObject = detectedObject;
             }
+            public EditableObject(DirectBitmap parentDirectBitmap, Color[,] parentColorArray, DetectedObject detectedObject)
+            {
+                ParentDirectBitmap = parentDirectBitmap;
+                ParentColorArray = parentColorArray;
+                DetectedObject = detectedObject;
+            }
+        }
+
+        public class TextBox : EditableObject
+        {
+            public byte[,] FilledPixelsCleaning { get; set; }
+
+            public void CalculateTextBoxPixelsThatMustBeCleaned() //TODO add arguments
+            {
+                FilledPixelsCleaning = Work.Cleaning.CalculateTextBoxPixelsThatMustBeCleaned(this, ParentColorArray); //there 
+            }
+            
+            public void UnFillTextBox(Color[,] parentImage, DirectBitmap directBitmap)
+            {
+                Work.Cleaning.UnFillTextBox(this, parentImage, directBitmap);
+            }
+
+            public void ApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.FillByMask(targetDirectBitmap, FilledPixelsCleaning, Color.Gold, new Point(DetectedObject.Rectangle.X, DetectedObject.Rectangle.Y));
+            }
+
+            public TextBox(DetectedObject detectedObject) : base(detectedObject){}
+            public TextBox(DirectBitmap parentDirectBitmap, Color[,] parentColorArray, DetectedObject detectedObject) : base(parentDirectBitmap, parentColorArray, detectedObject){}
         }
     }
 }

@@ -43,169 +43,195 @@ class Work
 
     public static class Cleaning
     {
-        public static DirectBitmap CleanRGBImage(List<DetectedObject> textBoxesAsDetectedObjects, Color[,] inputBaWImageAsColorArray)
+        //public static DirectBitmap CleanRGBImage(List<DetectedObject> textBoxesAsDetectedObjects, Color[,] inputBaWImageAsColorArray)
+        //{
+        //    List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
+
+        //    for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
+        //    {
+        //        Color[,] imagePartOcupiedByMyYoloItem = RGB.GetImagePartOccupiedByDetectedObject(inputBaWImageAsColorArray, textBoxesAsDetectedObjects[i]);
+        //        byte[,] textBoxPixels = RGB.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250); //TODO1 out
+        //        textBoxPixels = FillGapsInsideGrid(textBoxPixels);
+
+        //        textBoxesAsByteArrays.Add(textBoxPixels);
+        //    }
+
+        //    Color[,] inputBaWImageAsColorArrayFinall = RGB.FillTextboxesInMainImage(inputBaWImageAsColorArray, textBoxesAsByteArrays, textBoxesAsDetectedObjects, Color.Red);
+        //    DirectBitmap result = Images.RGB.ColorArrayToDirectBitmap(inputBaWImageAsColorArrayFinall);
+
+        //    return result;
+        //}
+
+        //public static DirectBitmap CleanBaWImage(List<DetectedObject> textBoxesAsDetectedObjects, byte[,] inputBaWImageAsByteArray)
+        //{
+        //    List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
+
+        //    for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
+        //    {
+        //        byte[,] imagePartOcupiedByMyYoloItem = BlackAndWhite.GetImagePartOccupiedByDetectedObject(inputBaWImageAsByteArray, textBoxesAsDetectedObjects[i]);
+        //        byte[,] textBoxPixels = BlackAndWhite.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250);
+        //        textBoxPixels = FillGapsInsideGrid(textBoxPixels);
+
+        //        textBoxesAsByteArrays.Add(textBoxPixels);
+        //    }
+
+        //    byte[,] inputBaWImageAsByteArrayFinall = BlackAndWhite.FillTextboxesInMainImage(inputBaWImageAsByteArray, textBoxesAsByteArrays, textBoxesAsDetectedObjects, 0);
+        //    DirectBitmap result = Images.BlackAndWhite.ByteArrayToDirectBitmap(inputBaWImageAsByteArrayFinall);
+
+        //    return result;
+        //}
+
+        public static byte[,] CalculateTextBoxPixelsThatMustBeCleaned(TextBox textBox, Color[,] parentImage) //TODO add filling arguments
         {
-            List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
+            Color[,] imagePartOcupiedByMyYoloItem = RGB.GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
+            byte[,] textBoxPixels = RGB.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250); //TODO1 out
+            textBoxPixels = FillGapsInsideGrid(textBoxPixels);
 
-            for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
-            {
-                Color[,] imagePartOcupiedByMyYoloItem = RGB.GetImagePartOccupiedByDetectedObject(inputBaWImageAsColorArray, textBoxesAsDetectedObjects[i]);
-                byte[,] textBoxPixels = RGB.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250); //TODO1 out
-                textBoxPixels = FillGapsInsideGrid(textBoxPixels);
-
-                textBoxesAsByteArrays.Add(textBoxPixels);
-            }
-
-            Color[,] inputBaWImageAsColorArrayFinall = RGB.FillTextboxesInMainImage(inputBaWImageAsColorArray, textBoxesAsByteArrays, textBoxesAsDetectedObjects, Color.Red);
-            DirectBitmap result = Images.RGB.ColorArrayToDirectBitmap(inputBaWImageAsColorArrayFinall);
-
-            return result;
+            return textBoxPixels;
         }
 
-        public static DirectBitmap CleanBaWImage(List<DetectedObject> textBoxesAsDetectedObjects, byte[,] inputBaWImageAsByteArray)
+        internal static void UnFillTextBox(TextBox textBox, Color[,] parentImage, DirectBitmap directBitmap)
         {
-            List<byte[,]> textBoxesAsByteArrays = new List<byte[,]>();
-
-            for (int i = 0; i < textBoxesAsDetectedObjects.Count; i++)
+            for (int x = 0; x < textBox.FilledPixelsCleaning.GetLength(0); x++)
             {
-                byte[,] imagePartOcupiedByMyYoloItem = BlackAndWhite.GetImagePartOccupiedByDetectedObject(inputBaWImageAsByteArray, textBoxesAsDetectedObjects[i]);
-                byte[,] textBoxPixels = BlackAndWhite.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250);
-                textBoxPixels = FillGapsInsideGrid(textBoxPixels);
-
-                textBoxesAsByteArrays.Add(textBoxPixels);
+                for (int y = 0; y < textBox.FilledPixelsCleaning.GetLength(1); y++)
+                {
+                    if (textBox.FilledPixelsCleaning[x, y] == 1)
+                    {
+                        int x2 = x + textBox.DetectedObject.Rectangle.X;
+                        int y2 = y + textBox.DetectedObject.Rectangle.Y;
+                        directBitmap.SetPixel(x2, y2, parentImage[x2, y2]);
+                    }
+                }
             }
-
-            byte[,] inputBaWImageAsByteArrayFinall = BlackAndWhite.FillTextboxesInMainImage(inputBaWImageAsByteArray, textBoxesAsByteArrays, textBoxesAsDetectedObjects, 0);
-            DirectBitmap result = Images.BlackAndWhite.ByteArrayToDirectBitmap(inputBaWImageAsByteArrayFinall);
-
-            return result;
         }
 
-        private static class BlackAndWhite
-        {
-            public static byte[,] GetImagePartOccupiedByDetectedObject(byte[,] iImageAsByteArray, DetectedObject iDetectedObject)
-            {
-                int counterX = 0, counterY = 0;
-                //byte[,] textBoxAsByteArray = new Bitmap(inputYoloItem.Width, inputYoloItem.Height);
-                byte[,] textBoxAsByteArray = new byte[iDetectedObject.Rectangle.Width, iDetectedObject.Rectangle.Height];
+        //private static class BlackAndWhite finish RGB and after that make thsi class (BaW) TODO
+        //{
+        //    public static byte[,] GetImagePartOccupiedByDetectedObject(byte[,] iImageAsByteArray, DetectedObject iDetectedObject)
+        //    {
+        //        int counterX = 0, counterY = 0;
+        //        //byte[,] textBoxAsByteArray = new Bitmap(inputYoloItem.Width, inputYoloItem.Height);
+        //        byte[,] textBoxAsByteArray = new byte[iDetectedObject.Rectangle.Width, iDetectedObject.Rectangle.Height];
 
-                int endPointOfX = iDetectedObject.Rectangle.X + iDetectedObject.Rectangle.Width;
-                if (endPointOfX > iImageAsByteArray.GetLength(0))
-                    endPointOfX = iImageAsByteArray.GetLength(0);
+        //        int endPointOfX = iDetectedObject.Rectangle.X + iDetectedObject.Rectangle.Width;
+        //        if (endPointOfX > iImageAsByteArray.GetLength(0))
+        //            endPointOfX = iImageAsByteArray.GetLength(0);
 
-                int endPointOfY = iDetectedObject.Rectangle.Y + iDetectedObject.Rectangle.Height;
-                if (endPointOfY > iImageAsByteArray.GetLength(1))
-                    endPointOfY = iImageAsByteArray.GetLength(1);
+        //        int endPointOfY = iDetectedObject.Rectangle.Y + iDetectedObject.Rectangle.Height;
+        //        if (endPointOfY > iImageAsByteArray.GetLength(1))
+        //            endPointOfY = iImageAsByteArray.GetLength(1);
 
-                for (int x = iDetectedObject.Rectangle.X; x < endPointOfX; x++)
-                {
-                    for (int y = iDetectedObject.Rectangle.Y; y < endPointOfY; y++)
-                    {
-                        textBoxAsByteArray[counterX, counterY] = iImageAsByteArray[x, y];
-                        //image.SetPixel(counterX, counterY, inputImageAsByteArray[x, y]);
-                        counterY++;
-                    }
-                    counterX++;
-                    counterY = 0;
-                }
+        //        for (int x = iDetectedObject.Rectangle.X; x < endPointOfX; x++)
+        //        {
+        //            for (int y = iDetectedObject.Rectangle.Y; y < endPointOfY; y++)
+        //            {
+        //                textBoxAsByteArray[counterX, counterY] = iImageAsByteArray[x, y];
+        //                //image.SetPixel(counterX, counterY, inputImageAsByteArray[x, y]);
+        //                counterY++;
+        //            }
+        //            counterX++;
+        //            counterY = 0;
+        //        }
 
-                return textBoxAsByteArray;
-            }
-            public static byte[,] GetTextBoxPixels(byte[,] inputImageAsByteArray, int inputGrayScaleLimit)
-            {
-                Queue<Point> bufferQueue = new Queue<Point>();
-                int width = inputImageAsByteArray.GetLength(0);
-                int height = inputImageAsByteArray.GetLength(1);
-                byte[,] result = new byte[width, height];
-                int counter = 0;
+        //        return textBoxAsByteArray;
+        //    }
+        //    public static byte[,] GetTextBoxPixels(byte[,] inputImageAsByteArray, int inputGrayScaleLimit)
+        //    {
+        //        Queue<Point> bufferQueue = new Queue<Point>();
+        //        int width = inputImageAsByteArray.GetLength(0);
+        //        int height = inputImageAsByteArray.GetLength(1);
+        //        byte[,] result = new byte[width, height];
+        //        int counter = 0;
 
-                int pgm = inputGrayScaleLimit; //pixelGrayScaleLimit
-                pgm = 245; //dev
-                int increaseOn = 10;
+        //        int pgm = inputGrayScaleLimit; //pixelGrayScaleLimit
+        //        pgm = 245; //dev
+        //        int increaseOn = 10;
 
-                Point center = new Point(width / 2, height / 2);
-                bufferQueue.Enqueue(center);
+        //        Point center = new Point(width / 2, height / 2);
+        //        bufferQueue.Enqueue(center);
 
-                for (int i = 0; i < increaseOn; i++)
-                {
-                    bufferQueue.Enqueue(new Point(center.X + i, center.Y));
-                    bufferQueue.Enqueue(new Point(center.X, center.Y + i));
-                    bufferQueue.Enqueue(new Point(center.X - i, center.Y));
-                    bufferQueue.Enqueue(new Point(center.X, center.Y - i));
-                }
+        //        for (int i = 0; i < increaseOn; i++)
+        //        {
+        //            bufferQueue.Enqueue(new Point(center.X + i, center.Y));
+        //            bufferQueue.Enqueue(new Point(center.X, center.Y + i));
+        //            bufferQueue.Enqueue(new Point(center.X - i, center.Y));
+        //            bufferQueue.Enqueue(new Point(center.X, center.Y - i));
+        //        }
 
-                while (bufferQueue.Count > 0)
-                {
-                    counter++;
+        //        while (bufferQueue.Count > 0)
+        //        {
+        //            counter++;
 
-                    Point bufferPoint = bufferQueue.Peek();
+        //            Point bufferPoint = bufferQueue.Peek();
 
-                    if (bufferPoint.X + 1 < width && bufferPoint.X - 1 > 0 && bufferPoint.Y + 1 < height && bufferPoint.Y - 1 > 0)
-                    {
-                        if (inputImageAsByteArray[bufferPoint.X + 1, bufferPoint.Y] > pgm)
-                        {
-                            if (result[bufferPoint.X + 1, bufferPoint.Y] == 0)
-                            {
-                                result[bufferPoint.X + 1, bufferPoint.Y] = 1;
-                                bufferQueue.Enqueue(new Point(bufferPoint.X + 1, bufferPoint.Y));
-                            }
-                        }
+        //            if (bufferPoint.X + 1 < width && bufferPoint.X - 1 > 0 && bufferPoint.Y + 1 < height && bufferPoint.Y - 1 > 0)
+        //            {
+        //                if (inputImageAsByteArray[bufferPoint.X + 1, bufferPoint.Y] > pgm)
+        //                {
+        //                    if (result[bufferPoint.X + 1, bufferPoint.Y] == 0)
+        //                    {
+        //                        result[bufferPoint.X + 1, bufferPoint.Y] = 1;
+        //                        bufferQueue.Enqueue(new Point(bufferPoint.X + 1, bufferPoint.Y));
+        //                    }
+        //                }
 
-                        if (inputImageAsByteArray[bufferPoint.X - 1, bufferPoint.Y] > pgm)
-                        {
-                            if (result[bufferPoint.X - 1, bufferPoint.Y] == 0)
-                            {
-                                result[bufferPoint.X - 1, bufferPoint.Y] = 1;
-                                bufferQueue.Enqueue(new Point(bufferPoint.X - 1, bufferPoint.Y));
-                            }
-                        }
+        //                if (inputImageAsByteArray[bufferPoint.X - 1, bufferPoint.Y] > pgm)
+        //                {
+        //                    if (result[bufferPoint.X - 1, bufferPoint.Y] == 0)
+        //                    {
+        //                        result[bufferPoint.X - 1, bufferPoint.Y] = 1;
+        //                        bufferQueue.Enqueue(new Point(bufferPoint.X - 1, bufferPoint.Y));
+        //                    }
+        //                }
 
-                        if (inputImageAsByteArray[bufferPoint.X, bufferPoint.Y + 1] > pgm)
-                        {
-                            if (result[bufferPoint.X, bufferPoint.Y + 1] == 0)
-                            {
-                                result[bufferPoint.X, bufferPoint.Y + 1] = 1;
-                                bufferQueue.Enqueue(new Point(bufferPoint.X, bufferPoint.Y + 1));
-                            }
-                        }
+        //                if (inputImageAsByteArray[bufferPoint.X, bufferPoint.Y + 1] > pgm)
+        //                {
+        //                    if (result[bufferPoint.X, bufferPoint.Y + 1] == 0)
+        //                    {
+        //                        result[bufferPoint.X, bufferPoint.Y + 1] = 1;
+        //                        bufferQueue.Enqueue(new Point(bufferPoint.X, bufferPoint.Y + 1));
+        //                    }
+        //                }
 
-                        if (inputImageAsByteArray[bufferPoint.X, bufferPoint.Y - 1] > pgm)
-                        {
-                            if (result[bufferPoint.X, bufferPoint.Y - 1] == 0)
-                            {
-                                result[bufferPoint.X, bufferPoint.Y - 1] = 1;
-                                bufferQueue.Enqueue(new Point(bufferPoint.X, bufferPoint.Y - 1));
-                            }
-                        }
-                    }
+        //                if (inputImageAsByteArray[bufferPoint.X, bufferPoint.Y - 1] > pgm)
+        //                {
+        //                    if (result[bufferPoint.X, bufferPoint.Y - 1] == 0)
+        //                    {
+        //                        result[bufferPoint.X, bufferPoint.Y - 1] = 1;
+        //                        bufferQueue.Enqueue(new Point(bufferPoint.X, bufferPoint.Y - 1));
+        //                    }
+        //                }
+        //            }
 
-                    bufferQueue.Dequeue();
-                }
+        //            bufferQueue.Dequeue();
+        //        }
 
-                return result;
-            }
-            public static byte[,] FillTextboxesInMainImage(byte[,] inputMainImage, List<byte[,]> inputTextBoxesAsByteArray, List<DetectedObject> inputTextboxesAsDetectedObject, byte fillColorValue)
-            {
-                for (int i = 0; i < inputTextBoxesAsByteArray.Count; i++)
-                {
-                    int width = inputTextboxesAsDetectedObject[i].Rectangle.Width;
-                    int height = inputTextboxesAsDetectedObject[i].Rectangle.Height;
+        //        return result;
+        //    }
+        //    public static byte[,] FillTextboxesInMainImage(byte[,] inputMainImage, List<byte[,]> inputTextBoxesAsByteArray, List<DetectedObject> inputTextboxesAsDetectedObject, byte fillColorValue)
+        //    {
+        //        for (int i = 0; i < inputTextBoxesAsByteArray.Count; i++)
+        //        {
+        //            int width = inputTextboxesAsDetectedObject[i].Rectangle.Width;
+        //            int height = inputTextboxesAsDetectedObject[i].Rectangle.Height;
 
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
-                        {
-                            if (inputTextBoxesAsByteArray[i][x, y] == 1)
-                            {
-                                inputMainImage[x + inputTextboxesAsDetectedObject[i].Rectangle.X, y + inputTextboxesAsDetectedObject[i].Rectangle.Y] = fillColorValue;
-                            }
-                        }
-                    }
-                }
+        //            for (int x = 0; x < width; x++)
+        //            {
+        //                for (int y = 0; y < height; y++)
+        //                {
+        //                    if (inputTextBoxesAsByteArray[i][x, y] == 1)
+        //                    {
+        //                        inputMainImage[x + inputTextboxesAsDetectedObject[i].Rectangle.X, y + inputTextboxesAsDetectedObject[i].Rectangle.Y] = fillColorValue;
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                return inputMainImage;
-            }
-        }
+        //        return inputMainImage;
+        //    }
+        //}
+
         private static class RGB
         {
             public static Color[,] GetImagePartOccupiedByDetectedObject(Color[,] iImageAsColorArray, DetectedObject iDetectedObject)

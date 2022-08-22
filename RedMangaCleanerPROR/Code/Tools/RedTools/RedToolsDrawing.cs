@@ -34,6 +34,7 @@ namespace RedsTools
                     UnsetPixels(point2, iDirectBitmap, iImageAsColorArray, borderThickness, Orientation.Horizontal);
                 }
             }
+            //тоже переделат
 
             public static void DrawRectangleOnDirectBitmap(DirectBitmap iDirectBitmap, RectangleDrawOptions iRectangleDrawOptions)
             {
@@ -60,6 +61,49 @@ namespace RedsTools
 
                     SetPixels(point1, iDirectBitmap, iRectangleDrawOptions.Color, borderThickness, Orientation.Horizontal);
                     SetPixels(point2, iDirectBitmap, iRectangleDrawOptions.Color, borderThickness, Orientation.Horizontal);
+                }
+            }
+            //тоже переделат
+                
+            public static void OverlayRectangles()
+            {
+                //TODO
+            }
+
+            public static void FillByMask(DirectBitmap targetDirectBitmap, byte[,] mask, Color color, Point shift = new Point())
+            {
+                //int tWidth = targetDirectBitmap.Width;
+                //int tHeight = targetDirectBitmap.Height;
+                int mWidth = mask.GetLength(0);
+                int mHeight = mask.GetLength(1);
+
+                for (int x = 0; x < mWidth; x++)
+                {
+                    for (int y = 0; y < mHeight; y++)
+                    {
+                        if (mask[x, y] == 1)
+                        {
+                            targetDirectBitmap.SetPixel(x + shift.X, y + shift.Y, color);
+                        }
+                    }
+                }
+            }
+            public static void FillByMaskFromPalette(DirectBitmap targetDirectBitmap, byte[,] mask, Color[] colors, Point shift = new Point())
+            {
+                //int tWidth = targetDirectBitmap.Width;
+                //int tHeight = targetDirectBitmap.Height;
+                int mWidth = mask.GetLength(0);
+                int mHeight = mask.GetLength(1);
+
+                for (int x = 0; x < mWidth; x++)
+                {
+                    for (int y = 0; y < mHeight; y++)
+                    {
+                        if (mask[x, y] != 0)
+                        {
+                            targetDirectBitmap.SetPixel(x + shift.X, y + shift.Y, colors[mask[x, y]]);
+                        }
+                    }
                 }
             }
 
