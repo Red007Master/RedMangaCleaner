@@ -66,6 +66,7 @@ public class PathCoreClass
     public string Temp { get; set; }
     public string Variables { get; set; }
     public string Languages { get; set; }
+    public string TextBoxFillingArguments { get; set; }
     public string ObjectDetection { get; set; }
     public string UserInterface { get; set; }
     public string CleaningProjects { get; set; }
@@ -122,6 +123,7 @@ public class PathNames : PathCoreClass
         CleaningProjects = "CleaningProjects";
         Variables = "Variables";
         Languages = "Languages";
+        TextBoxFillingArguments = "TextBoxFillingArguments";
     }
 }
 public class CleaningProjectNames : CleaningProjectPathCoreClass
@@ -195,6 +197,7 @@ public class PathDirs : PathCoreClass
         this.Temp = this.Data + @"\" + inputPathNames.Temp;
         this.Variables = this.Data + @"\" + inputPathNames.Variables;
         this.Languages = this.Data + @"\" + inputPathNames.Languages;
+        this.TextBoxFillingArguments = this.Data + @"\" + inputPathNames.TextBoxFillingArguments;
         this.Executables = this.Data + @"\" + inputPathNames.Executables;
 
         this.PROR = this.Executables + @"\" + inputPathNames.PROR;

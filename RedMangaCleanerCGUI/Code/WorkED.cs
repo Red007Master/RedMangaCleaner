@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
 using RedsCleaningProjects.RedImages;
+using RedsCleaningProjects.Core;
 using RedsTools.Images;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using RedsTools.Drawing;
 
 class Work
 {
@@ -81,29 +83,34 @@ class Work
         //    return result;
         //}
 
-        public static byte[,] CalculateTextBoxPixelsThatMustBeCleaned(TextBox textBox, Color[,] parentImage) //TODO add filling arguments
+        public static RedsMask CalculateTextBoxPixelsThatMustBeCleaned(TextBox textBox, Color[,] parentImage, TextBoxFillingSettings textBoxFillingSettings)
         {
             Color[,] imagePartOcupiedByMyYoloItem = RGB.GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
-            byte[,] textBoxPixels = RGB.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, 250); //TODO1 out
+            byte[,] textBoxPixels = RGB.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingSettings);
             textBoxPixels = FillGapsInsideGrid(textBoxPixels);
 
-            return textBoxPixels;
+            RedsMask result = new RedsMask(textBoxPixels);
+            result.Palette[1] = textBoxFillingSettings.FillingDisplayColor;
+
+            return result;
         }
 
-        internal static void UnFillTextBox(TextBox textBox, Color[,] parentImage, DirectBitmap directBitmap)
+        public static RedsMask CalculateInfoOverlayPixels(DetectedObject detectedObject, EditableObjectInfoOverlayConfiguration overlaySettings)
         {
-            for (int x = 0; x < textBox.FilledPixelsCleaning.GetLength(0); x++)
-            {
-                for (int y = 0; y < textBox.FilledPixelsCleaning.GetLength(1); y++)
-                {
-                    if (textBox.FilledPixelsCleaning[x, y] == 1)
-                    {
-                        int x2 = x + textBox.DetectedObject.Rectangle.X;
-                        int y2 = y + textBox.DetectedObject.Rectangle.Y;
-                        directBitmap.SetPixel(x2, y2, parentImage[x2, y2]);
-                    }
-                }
-            }
+            int width = detectedObject.Rectangle.Width;
+            int height = detectedObject.Rectangle.Height;
+
+            int maxFontSize = overlaySettings.ClassNameFontSettings.FontSize;
+            if (maxFontSize < overlaySettings.ConfidenceFontSettings.FontSize)
+                maxFontSize = overlaySettings.ConfidenceFontSettings.FontSize;
+
+            //height += maxFontSize + 5;
+
+            RedsMask result = new RedsMask(width, height);
+
+            result = Drawing.DrawRectangleOnMask(result, overlaySettings.RectangleSettings);
+
+            return result;
         }
 
         //private static class BlackAndWhite finish RGB and after that make thsi class (BaW) TODO
@@ -260,7 +267,7 @@ class Work
 
                 return textBoxAsColorArray;
             }
-            public static byte[,] GetTextBoxPixels(Color[,] inputImageAsColorArray, int inputGrayScaleLimit) //TODO1 in Kavo?
+            public static byte[,] GetTextBoxPixels(Color[,] inputImageAsColorArray, TextBoxFillingSettings textBoxFillingSettings)
             {
                 Queue<Point> bufferQueue = new Queue<Point>();
                 int width = inputImageAsColorArray.GetLength(0);
@@ -268,14 +275,18 @@ class Work
                 byte[,] result = new byte[width, height];
                 int counter = 0;
 
-                int pgm = inputGrayScaleLimit; //pixelGrayScaleLimit
-                pgm = 245; //dev
-                int increaseOn = 10;
+                int pgm = textBoxFillingSettings.PixelGrayScaleLimit;
+                int croshairLineLenght = 0;
+
+                if (true) //TODO textBoxFillingSettings.AutomaticCroshairLineLenght
+                {
+                    croshairLineLenght = textBoxFillingSettings.CroshairLineLenght; 
+                }
 
                 Point center = new Point(width / 2, height / 2);
                 bufferQueue.Enqueue(center);
 
-                for (int i = 0; i < increaseOn; i++)
+                for (int i = 0; i < croshairLineLenght; i++)
                 {
                     bufferQueue.Enqueue(new Point(center.X + i, center.Y));
                     bufferQueue.Enqueue(new Point(center.X, center.Y + i));
