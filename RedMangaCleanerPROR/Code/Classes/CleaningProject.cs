@@ -177,7 +177,7 @@ namespace RedsCleaningProjects
 
         public class RedsMask
         {
-            public Point Shift { get; set; }
+            public Point ShiftRelativelyToBitmap { get; set; } 
 
             public int Width { get; set; }
             public int Height { get; set; }
@@ -185,7 +185,7 @@ namespace RedsCleaningProjects
             public byte[,] Mask { get; set; }
             public Color[] Palette { get; set; }
 
-            public RedsMask(int width, int height, Point shift = new Point())
+            public RedsMask(int width, int height, Point shiftRelativelyToBitmap = new Point())
             {
                 Width = width;
                 Height = height;
@@ -195,9 +195,9 @@ namespace RedsCleaningProjects
                 Palette = new Color[255];
                 Palette[0] = Color.Empty;
 
-                Shift = shift;
+                ShiftRelativelyToBitmap = shiftRelativelyToBitmap;
             }
-            public RedsMask(byte[,] mask, Point shift = new Point())
+            public RedsMask(byte[,] mask, Point shiftRelativelyToBitmap = new Point())
             {
                 Width = mask.GetLength(0);
                 Height = mask.GetLength(1);
@@ -207,7 +207,7 @@ namespace RedsCleaningProjects
                 Palette = new Color[255];
                 Palette[0] = Color.Empty;
 
-                Shift = shift;
+                ShiftRelativelyToBitmap = shiftRelativelyToBitmap;
             }
         }
 
@@ -227,9 +227,9 @@ namespace RedsCleaningProjects
                 RectangleBorderThickness = 5;
 
                 AutoBorderColor = false;
-                BorderColor = Color.DarkGreen;
+                BorderColor = Color.Red;
             }
-            public RectangleSettings(Rectangle rectangle) : base()
+            public RectangleSettings(Rectangle rectangle) : this()
             {
                 Rectangle = rectangle;
             }
@@ -431,6 +431,9 @@ namespace RedsCleaningProjects
                 {
                     TextBoxes[i].CalculateTextBoxPixelsThatMustBeCleaned();
                     TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+
+                    TextBoxes[i].CalculateInfoOverlay();
+                    TextBoxes[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
                 }
 
                 //DrawRectangles();
@@ -471,41 +474,21 @@ namespace RedsCleaningProjects
             } //kill
             
             public void DrawRectangles()
-            {
-                //for (int i = 0; i < EditableObjects.Count; i++)
-                //{
-                //    RectangleDrawOptions rectOptions = new RectangleDrawOptions();
-                //    rectOptions.Color = Color.Blue;
-                //    rectOptions.Thickness = 5;
-
-                //    rectOptions.Rectangle = EditableObjects[i].DetectedObject.Rectangle;
-
-                //    Drawing.DrawRectangleOnDirectBitmap(DisplayDirectBitmap, rectOptions);
-                //}
-                
+            {                
                 for (int i = 0; i < TextBoxes.Count; i++)
                 {
                     TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                    TextBoxes[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
                 }
                 RectDrawStatus = true;
             }   //kill
 
             public void UndrawRectangles()
             {
-                //for (int i = 0; i < EditableObjects.Count; i++)
-                //{
-                //    RectangleDrawOptions rectOptions = new RectangleDrawOptions();
-                //    rectOptions.Color = Color.Red;
-                //    rectOptions.Thickness = 5;
-
-                //    rectOptions.Rectangle = EditableObjects[i].DetectedObject.Rectangle;
-
-                //    Drawing.UnDrawRectangleOnDirectBitmap(DisplayDirectBitmap, rectOptions, ImageAsColorArray);
-                //}
-
                 for (int i = 0; i < TextBoxes.Count; i++)
                 {
                     TextBoxes[i].UnApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                    TextBoxes[i].UnApplyOverlayPixelsTo(DisplayDirectBitmap);
                 }
 
                 RectDrawStatus = false;
@@ -552,6 +535,15 @@ namespace RedsCleaningProjects
                 FilledPixelsInfoOverlay = Work.Cleaning.CalculateInfoOverlayPixels(DetectedObject, editableObjectInfoOverlayConfiguration);
             }
 
+            public void ApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.FillByMask(targetDirectBitmap, FilledPixelsInfoOverlay);
+            }
+            public void UnApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsInfoOverlay, ParentColorArray);
+            }
+
             public EditableObject(DetectedObject detectedObject)
             {
                 DetectedObject = detectedObject;
@@ -580,11 +572,11 @@ namespace RedsCleaningProjects
 
             public void ApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
             {
-                Drawing.FillByMask(targetDirectBitmap, FilledPixelsCleaning, new Point(DetectedObject.Rectangle.X, DetectedObject.Rectangle.Y));
+                Drawing.FillByMask(targetDirectBitmap, FilledPixelsCleaning);
             }
             public void UnApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
             {
-                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsCleaning, ParentColorArray, new Point(DetectedObject.Rectangle.X, DetectedObject.Rectangle.Y));
+                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsCleaning, ParentColorArray);
             }
 
             public TextBox(DetectedObject detectedObject) : base(detectedObject){}

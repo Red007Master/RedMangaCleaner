@@ -90,6 +90,7 @@ class Work
             textBoxPixels = FillGapsInsideGrid(textBoxPixels);
 
             RedsMask result = new RedsMask(textBoxPixels);
+            result.ShiftRelativelyToBitmap = new Point(textBox.DetectedObject.Rectangle.X, textBox.DetectedObject.Rectangle.Y);
             result.Palette[1] = textBoxFillingSettings.FillingDisplayColor;
 
             return result;
@@ -104,11 +105,22 @@ class Work
             if (maxFontSize < overlaySettings.ConfidenceFontSettings.FontSize)
                 maxFontSize = overlaySettings.ConfidenceFontSettings.FontSize;
 
-            //height += maxFontSize + 5;
+            int heightAdjustments = maxFontSize + 50;
+            height += heightAdjustments;
 
             RedsMask result = new RedsMask(width, height);
+            result.ShiftRelativelyToBitmap = new Point(detectedObject.Rectangle.X, detectedObject.Rectangle.Y - heightAdjustments);
 
-            result = Drawing.DrawRectangleOnMask(result, overlaySettings.RectangleSettings);
+            //DEV
+            for (int i = 0; i < result.Width; i++)
+            {
+                result.Mask[i, 0] = 1;
+                result.Mask[i, 1] = 1;
+                result.Mask[i, 2] = 1;
+            }
+            //DEV
+
+            result = Drawing.DrawRectangleOnMask(result, overlaySettings.RectangleSettings, new Point(0, heightAdjustments));
 
             return result;
         }
