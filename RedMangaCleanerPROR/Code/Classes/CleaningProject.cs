@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RedsCleaningProjects.RedImages;
-using RedsCleaningProjects.Core;
+using RedsCleaningProjects.EditableObjects;
 using RedsTools.Drawing;
 using RedsTools.Images;
 using RedsTools.Types;
@@ -174,10 +173,98 @@ namespace RedsCleaningProjects
             }
         }
 
+        public enum FolderOptions
+        {
+            CreateNewFolderById = 0,
+            CreateNewFolderByName = 1,
+            AutoCreateById = 2,
+        }
+    }
+
+    namespace EditableObjects
+    {
+        public class EditableObject
+        {
+            public DirectBitmap ParentDirectBitmap { get; set; }
+            public Color[,] ParentColorArray { get; set; }
+
+            public DetectedObject DetectedObject { get; set; }
+
+            public RectangleSettings RectangleSettings { get; set; }
+            public RedsMask FilledPixelsRectangleOverlay { get; set; }
+
+            public TextSettings TextSettings { get; set; }
+            public RedsMask FilledPixelsTextOverlay { get; set; }
+
+            public void CalculateRectangleAndText()
+            {
+                FilledPixelsRectangleOverlay = Work.Cleaning.CalculateRectanglePixels(DetectedObject, RectangleSettings);
+                FilledPixelsTextOverlay = Drawing.DrawTextOnMask(DetectedObject, TextSettings);
+            }
+            public void CalculateRectangleAndText(RectangleSettings rectangleSettings, TextSettings textSettings)
+            {
+                FilledPixelsRectangleOverlay = Work.Cleaning.CalculateRectanglePixels(DetectedObject, rectangleSettings);
+                FilledPixelsTextOverlay = Drawing.DrawTextOnMask(DetectedObject, textSettings);
+            }
+
+            public void ApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.FillByMask(targetDirectBitmap, FilledPixelsRectangleOverlay);
+                Drawing.FillByMask(targetDirectBitmap, FilledPixelsTextOverlay);
+            }
+            public void UnApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsRectangleOverlay, ParentColorArray);
+                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsTextOverlay, ParentColorArray);
+            }
+
+            public EditableObject(DetectedObject detectedObject)
+            {
+                DetectedObject = detectedObject;
+                RectangleSettings = new RectangleSettings(detectedObject.Rectangle);
+                TextSettings = new TextSettings();
+            }
+            public EditableObject(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : this(detectedObject)
+            {
+                ParentDirectBitmap = parentDirectBitmap;
+                ParentColorArray = parentColorArray;
+            }
+        }
+        public class TextBox : EditableObject
+        {
+            public RedsMask FilledPixelsCleaning { get; set; }
+
+            public TextBoxFillingSettings FillingSettings { get; set; } = new TextBoxFillingSettings();
+            public void CalculateTextBoxPixelsThatMustBeCleaned()
+            {
+                FilledPixelsCleaning = Work.Cleaning.CalculateTextBoxPixelsThatMustBeCleaned(this, ParentColorArray, FillingSettings);
+            }
+            public void CalculateTextBoxPixelsThatMustBeCleaned(TextBoxFillingSettings textBoxFillingSettings)
+            {
+                FilledPixelsCleaning = Work.Cleaning.CalculateTextBoxPixelsThatMustBeCleaned(this, ParentColorArray, textBoxFillingSettings);
+            }
+
+            public void ApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.FillByMask(targetDirectBitmap, FilledPixelsCleaning);
+            }
+            public void UnApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
+            {
+                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsCleaning, ParentColorArray);
+            }
+
+            public TextBox(DetectedObject detectedObject) : base(detectedObject) { }
+            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : base(detectedObject, parentDirectBitmap, parentColorArray) { }
+            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray, TextBoxFillingSettings textBoxFillingSettings)
+            : base(detectedObject, parentDirectBitmap, parentColorArray)
+            {
+                FillingSettings = textBoxFillingSettings;
+            }
+        }
 
         public class RedsMask
         {
-            public Point ShiftRelativelyToBitmap { get; set; } 
+            public Point ShiftRelativelyToBitmap { get; set; }
 
             public int Width { get; set; }
             public int Height { get; set; }
@@ -197,6 +284,7 @@ namespace RedsCleaningProjects
 
                 ShiftRelativelyToBitmap = shiftRelativelyToBitmap;
             }
+            public RedsMask(Rectangle rectangle) : this(rectangle.Width, rectangle.Height, new Point(rectangle.X, rectangle.Y)) { }
             public RedsMask(byte[,] mask, Point shiftRelativelyToBitmap = new Point())
             {
                 Width = mask.GetLength(0);
@@ -208,52 +296,6 @@ namespace RedsCleaningProjects
                 Palette[0] = Color.Empty;
 
                 ShiftRelativelyToBitmap = shiftRelativelyToBitmap;
-            }
-        }
-
-        public class RectangleSettings
-        {
-            public Rectangle Rectangle { get; set; }
-
-            public bool AutoRectangleBorderThickness { get; set; }
-            public int RectangleBorderThickness { get; set; }
-
-            public bool AutoBorderColor { get; set; }
-            public Color BorderColor { get; set; }
-
-            public RectangleSettings()
-            {
-                AutoRectangleBorderThickness = false;
-                RectangleBorderThickness = 5;
-
-                AutoBorderColor = false;
-                BorderColor = Color.Red;
-            }
-            public RectangleSettings(Rectangle rectangle) : this()
-            {
-                Rectangle = rectangle;
-            }
-        }
-
-        public class FontSettings
-        {
-            public string FontName { get; set; }
-
-            public bool AutoFontSize { get; set; }
-            public int FontSize { get; set; }
-
-            public bool AutoFontColor { get; set; }
-            public Color FontColor { get; set; }
-
-            public FontSettings()
-            {
-                FontName = "Consolas";
-
-                AutoFontColor = true;
-                FontSize = 11;
-
-                AutoFontColor = false;
-                FontColor = Color.Red;
             }
         }
 
@@ -283,46 +325,83 @@ namespace RedsCleaningProjects
                 FillingFinalColor = Color.White;
             }
         }
-        public class EditableObjectInfoOverlayConfiguration
-        {
-            public bool DrawRectangle { get; set; }
-            public RectangleSettings RectangleSettings { get; set; }
 
+        public class RectangleSettings
+        {
+            public bool Draw { get; set; }
+            public Rectangle Rectangle { get; set; }
+
+            public bool AutoRectangleBorderThickness { get; set; }
+            public int RectangleBorderThickness { get; set; }
+
+            public bool AutoBorderColor { get; set; }
+            public Color BorderColor { get; set; }
+
+            public RectangleSettings()
+            {
+                Draw = true;
+
+                AutoRectangleBorderThickness = false;
+                RectangleBorderThickness = 5;
+
+                AutoBorderColor = false;
+                BorderColor = Color.Red;
+            }
+            public RectangleSettings(Rectangle rectangle) : this()
+            {
+                Rectangle = rectangle;
+            }
+        }
+
+        public class TextSettings
+        {
             public bool DrawConfidence { get; set; }
             public FontSettings ConfidenceFontSettings { get; set; }
 
             public bool DrawClassName { get; set; }
             public FontSettings ClassNameFontSettings { get; set; }
 
-            public EditableObjectInfoOverlayConfiguration()
-            {
-                DrawRectangle = true;
-                RectangleSettings = new RectangleSettings();
+            public bool DrawBackground { get; set; }
+            public Color BackgroundColor { get; set; }
 
+            public TextSettings()
+            {
                 DrawConfidence = true;
                 ConfidenceFontSettings = new FontSettings();
 
                 DrawClassName = true;
                 ClassNameFontSettings = new FontSettings();
-            }
-            public EditableObjectInfoOverlayConfiguration(Rectangle rectangle)
-            {
-                DrawRectangle = true;
-                RectangleSettings = new RectangleSettings(rectangle);
 
-                DrawConfidence = true;
-                ConfidenceFontSettings = new FontSettings();
-
-                DrawClassName = true;
-                ClassNameFontSettings = new FontSettings();
+                DrawBackground = true;
+                BackgroundColor = Color.DarkRed;
             }
         }
-
-        public enum FolderOptions
+        public class FontSettings
         {
-            CreateNewFolderById = 0,
-            CreateNewFolderByName = 1,
-            AutoCreateById = 2,
+            public Font Font { get { return new Font(FontName, FontSize, GraphicsUnit.Pixel); } set { } }
+
+            public bool Draw { get; set; }
+
+            public string FontName { get; set; }
+
+            public bool AutoFontSize { get; set; }
+            public int FontSize { get; set; }
+
+            public bool AutoFontColor { get; set; }
+            public Color FontColor { get; set; }
+
+            public FontSettings()
+            {
+                Draw = true;
+
+                FontName = "Consolas";
+
+                AutoFontColor = true;
+                FontSize = 30;
+
+                AutoFontColor = false;
+                FontColor = Color.White;
+            }
         }
     }
 
@@ -366,7 +445,7 @@ namespace RedsCleaningProjects
 
             public RedImageCore(BasicImageData basicImageData)
             {
-                TypeConverter.ChildParentSetTo<BasicImageData, RedImageCore> (basicImageData, this);
+                TypeConverter.ChildParentSetTo<BasicImageData, RedImageCore>(basicImageData, this);
 
                 Bitmap image = new Bitmap(ImageFilePath);
                 ImageFileName = Path.GetFileName(ImageFilePath);
@@ -411,33 +490,7 @@ namespace RedsCleaningProjects
 
             public List<TextBox> TextBoxes { get; set; } = new List<TextBox>();
 
-            public RedImageFull(RedImageCore redImageCore)
-            {
-                TypeConverter.ChildParentSetTo<RedImageCore, RedImageFull>(redImageCore, this);
 
-                CompileImageAsDirectBitmap();
-                CompileImageAsByteArray();
-                CompileImageAsColorArray();
-
-                for (int i = 0; i < EditableObjects.Count; i++)
-                {
-                    TextBoxes.Add(new TextBox(EditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
-                }
-                
-                DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
-                //DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
-
-                for (int i = 0; i < TextBoxes.Count; i++)
-                {
-                    TextBoxes[i].CalculateTextBoxPixelsThatMustBeCleaned();
-                    TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
-
-                    TextBoxes[i].CalculateInfoOverlay();
-                    TextBoxes[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
-                }
-
-                //DrawRectangles();
-            }
 
             public void CompileImageAsDirectBitmap()
             {
@@ -472,9 +525,9 @@ namespace RedsCleaningProjects
                     DrawRectangles();
                 }
             } //kill
-            
+
             public void DrawRectangles()
-            {                
+            {
                 for (int i = 0; i < TextBoxes.Count; i++)
                 {
                     TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
@@ -514,77 +567,33 @@ namespace RedsCleaningProjects
                     return 0;
                 }
             }
-        }
 
-        public class EditableObject
-        {
-            public DirectBitmap ParentDirectBitmap { get; set; }
-            public Color[,] ParentColorArray { get; set; }
+            public RedImageFull(RedImageCore redImageCore)
+            {
+                TypeConverter.ChildParentSetTo<RedImageCore, RedImageFull>(redImageCore, this);
 
-            public DetectedObject DetectedObject { get; set; }
-            public RedsMask FilledPixelsInfoOverlay { get; set; }
+                CompileImageAsDirectBitmap();
+                CompileImageAsByteArray();
+                CompileImageAsColorArray();
 
+                for (int i = 0; i < EditableObjects.Count; i++)
+                {
+                    TextBoxes.Add(new TextBox(EditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
+                }
 
-            public EditableObjectInfoOverlayConfiguration OverlaySettings { get; set; }
-            public void CalculateInfoOverlay()
-            {
-                FilledPixelsInfoOverlay = Work.Cleaning.CalculateInfoOverlayPixels(DetectedObject, OverlaySettings);
-            }
-            public void CalculateInfoOverlay(EditableObjectInfoOverlayConfiguration editableObjectInfoOverlayConfiguration)
-            {
-                FilledPixelsInfoOverlay = Work.Cleaning.CalculateInfoOverlayPixels(DetectedObject, editableObjectInfoOverlayConfiguration);
-            }
+                DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
+                //DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
 
-            public void ApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                Drawing.FillByMask(targetDirectBitmap, FilledPixelsInfoOverlay);
-            }
-            public void UnApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsInfoOverlay, ParentColorArray);
-            }
+                for (int i = 0; i < TextBoxes.Count; i++)
+                {
+                    TextBoxes[i].CalculateTextBoxPixelsThatMustBeCleaned();
+                    TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
 
-            public EditableObject(DetectedObject detectedObject)
-            {
-                DetectedObject = detectedObject;
-                OverlaySettings = new EditableObjectInfoOverlayConfiguration(detectedObject.Rectangle);
-            }
-            public EditableObject(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : this(detectedObject)
-            {
-                ParentDirectBitmap = parentDirectBitmap;
-                ParentColorArray = parentColorArray;
-            }
-        }
+                    TextBoxes[i].CalculateRectangleAndText();
+                    TextBoxes[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
+                }
 
-        public class TextBox : EditableObject
-        {
-            public RedsMask FilledPixelsCleaning { get; set; }
-
-            public TextBoxFillingSettings FillingSettings { get; set; } = new TextBoxFillingSettings();
-            public void CalculateTextBoxPixelsThatMustBeCleaned()
-            {
-                FilledPixelsCleaning = Work.Cleaning.CalculateTextBoxPixelsThatMustBeCleaned(this, ParentColorArray, FillingSettings);
-            }
-            public void CalculateTextBoxPixelsThatMustBeCleaned(TextBoxFillingSettings textBoxFillingSettings)
-            {
-                FilledPixelsCleaning = Work.Cleaning.CalculateTextBoxPixelsThatMustBeCleaned(this, ParentColorArray, textBoxFillingSettings);
-            }
-
-            public void ApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                Drawing.FillByMask(targetDirectBitmap, FilledPixelsCleaning);
-            }
-            public void UnApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                Drawing.UnFillByMask(targetDirectBitmap, FilledPixelsCleaning, ParentColorArray);
-            }
-
-            public TextBox(DetectedObject detectedObject) : base(detectedObject){}
-            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : base(detectedObject, parentDirectBitmap, parentColorArray){}
-            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray, TextBoxFillingSettings textBoxFillingSettings)
-            : base(detectedObject, parentDirectBitmap, parentColorArray)
-            {
-                FillingSettings = textBoxFillingSettings;
+                //DrawRectangles();
             }
         }
     }

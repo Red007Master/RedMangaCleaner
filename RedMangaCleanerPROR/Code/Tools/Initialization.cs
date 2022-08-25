@@ -44,7 +44,7 @@ class Initalization
             devSetInputArgs.OutputBlackAndWhiteImages = true;
             devSetInputArgs.ConductObjectDetectionOnBlackAndWhiteVariants = true;
             devSetInputArgs.ConductTextBoxFillingOnBlackAndWhiteVariants = true;
-            devSetInputArgs.InputPath = 
+            devSetInputArgs.InputPath =
             @"E:\Other\Translate\I Was Caught up in a Hero Summoning, but That World Is at Peace\I Was Caught up in a Hero Summoning, but That World Is at Peace Chapter 6\MangaOUT1";
             devSetInputArgs.CleaningProjectFolderName = @"CleaningProject_ID-[0]";
 
@@ -88,7 +88,7 @@ class Initalization
 
         P.PathDirs.YoloConfig = P.PathDirs.YoloData + @"\" + P.PathNames.YoloConfig;
         P.PathDirs.YoloWeight = P.PathDirs.YoloData + @"\" + P.PathNames.YoloWeight;
-        
+
         P.CurrentYoloConfiguration.WeightsPath = P.PathDirs.YoloWeight;
         P.CurrentYoloConfiguration.ModelConfigPath = P.PathDirs.YoloConfig;
     }

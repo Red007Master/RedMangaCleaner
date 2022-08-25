@@ -1,13 +1,12 @@
-﻿using System.Drawing;
-using Yolov5Net.Scorer;
-using Yolov5Net.Scorer.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RedsCleaningProjects.RedImages;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading;
+using Yolov5Net.Scorer;
+using Yolov5Net.Scorer.Models;
 
 class Work
 {
@@ -180,13 +179,13 @@ class Work
                 P.Logger.Log($"DetectObjectsOnAllImagesInDir: Detect Objects on image=[{imagesToProcess[i]}]-Try", LogLevel.Information, 1);
                 List<YoloPrediction> predictions = scorer.Predict(image);
                 P.Logger.Log($"Detect Objects on image-Success", LogLevel.Information, 2);
-                
+
                 result.Add(new BasicImageData(imagesToProcess[i], image.Width, image.Height, P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, DetectedObject.ConvertYPLToDetectedObjectList(predictions)));
 
                 P.ProjectProcessingStatus.Set(i);
                 P.ProjectProcessingStatus.Save();
             }
-            
+
             image.Dispose();
             scorer.Dispose();
             GC.Collect();

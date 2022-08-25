@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Yolov5Net.Scorer;
-using Yolov5Net.Scorer.Models;
 
 public class DetectedObject
 {

@@ -13,7 +13,7 @@ namespace RedsTools
         {
             //converts TInput to TOutput(with values) (converts only common properties other ignored) and return it
             public static TOutput ChildParent<TInput, TOutput>(TInput input)
-             {
+            {
                 string[] inputProps = typeof(TInput).GetProperties().Select(x => x.Name).ToArray();
                 string[] outputProps = typeof(TOutput).GetProperties().Select(x => x.Name).ToArray();
 

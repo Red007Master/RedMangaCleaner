@@ -59,7 +59,7 @@ namespace RedsTools.Utility.WPF.LanguageManager
             else
             {
                 P.Logger.Log($"Language don't found try to set to DEFAULT", LogLevel.Warning, 2);
-                
+
                 int index = Languages.FindIndex(x => x.FullName == Language.GetDebug().FullName);
                 if (index >= 0)
                 {

@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
+using RedsCleaningProjects.EditableObjects;
 using RedsCleaningProjects.RedImages;
-using RedsCleaningProjects.Core;
-using RedsTools.Images;
+using RedsTools.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
-using RedsTools.Drawing;
 
 class Work
 {
@@ -96,31 +95,14 @@ class Work
             return result;
         }
 
-        public static RedsMask CalculateInfoOverlayPixels(DetectedObject detectedObject, EditableObjectInfoOverlayConfiguration overlaySettings)
+        public static RedsMask CalculateRectanglePixels(DetectedObject detectedObject, RectangleSettings rectangleSettings)
         {
-            int width = detectedObject.Rectangle.Width;
-            int height = detectedObject.Rectangle.Height;
+            int width = rectangleSettings.Rectangle.Width;
+            int height = rectangleSettings.Rectangle.Height;
 
-            int maxFontSize = overlaySettings.ClassNameFontSettings.FontSize;
-            if (maxFontSize < overlaySettings.ConfidenceFontSettings.FontSize)
-                maxFontSize = overlaySettings.ConfidenceFontSettings.FontSize;
+            RedsMask result = new RedsMask(detectedObject.Rectangle);
 
-            int heightAdjustments = maxFontSize + 50;
-            height += heightAdjustments;
-
-            RedsMask result = new RedsMask(width, height);
-            result.ShiftRelativelyToBitmap = new Point(detectedObject.Rectangle.X, detectedObject.Rectangle.Y - heightAdjustments);
-
-            //DEV
-            for (int i = 0; i < result.Width; i++)
-            {
-                result.Mask[i, 0] = 1;
-                result.Mask[i, 1] = 1;
-                result.Mask[i, 2] = 1;
-            }
-            //DEV
-
-            result = Drawing.DrawRectangleOnMask(result, overlaySettings.RectangleSettings, new Point(0, heightAdjustments));
+            result = Drawing.DrawRectangleOnMask(result, rectangleSettings);
 
             return result;
         }
@@ -292,7 +274,7 @@ class Work
 
                 if (true) //TODO textBoxFillingSettings.AutomaticCroshairLineLenght
                 {
-                    croshairLineLenght = textBoxFillingSettings.CroshairLineLenght; 
+                    croshairLineLenght = textBoxFillingSettings.CroshairLineLenght;
                 }
 
                 Point center = new Point(width / 2, height / 2);
