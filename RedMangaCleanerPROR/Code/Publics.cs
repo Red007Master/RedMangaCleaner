@@ -1,4 +1,4 @@
-﻿using RedsCleaningProjects.Core;
+﻿using RedsCleaningProject.Core;
 using RedsTools.Utility.WPF.LanguageManager;
 using System;
 using System.Windows.Forms;

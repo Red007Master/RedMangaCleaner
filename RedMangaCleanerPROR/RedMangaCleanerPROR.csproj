@@ -73,18 +73,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Classes\CleaningProject.cs" />
-    <Compile Include="Code\Classes\Config.cs" />
-    <Compile Include="Code\Classes\DetectedObject.cs" />
-    <Compile Include="Code\Classes\DirectBitmap.cs" />
-    <Compile Include="Code\Classes\FillParam.cs" />
-    <Compile Include="Code\Classes\FillPoint.cs" />
-    <Compile Include="Code\Classes\Link.cs" />
-    <Compile Include="Code\Classes\LocalizedList.cs" />
-    <Compile Include="Code\Classes\LocalizedString.cs" />
-    <Compile Include="Code\Classes\ProjectProcessingStatus.cs" />
-    <Compile Include="Code\Classes\TextBoxInfo.cs" />
-    <Compile Include="Code\Classes\YoloConfiguration.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\CleaningProject.cs" />
+    <Compile Include="Code\Structures\Config.cs" />
+    <Compile Include="Code\Structures\DetectedObject.cs" />
+    <Compile Include="Code\Structures\DirectBitmap.cs" />
+    <Compile Include="Code\Structures\FillParam.cs" />
+    <Compile Include="Code\Structures\FillPoint.cs" />
+    <Compile Include="Code\Structures\Link.cs" />
+    <Compile Include="Code\Structures\LocalizedList.cs" />
+    <Compile Include="Code\Structures\LocalizedString.cs" />
+    <Compile Include="Code\Structures\ProjectProcessingStatus.cs" />
+    <Compile Include="Code\Structures\TextBoxInfo.cs" />
+    <Compile Include="Code\Structures\YoloConfiguration.cs" />
     <Compile Include="Code\Program.cs" />
     <Compile Include="Code\Publics.cs" />
     <Compile Include="Code\Tools\Dir.cs" />
@@ -92,7 +92,6 @@
     <Compile Include="Code\Tools\InitializationPersonalized.cs" />
     <Compile Include="Code\Tools\LanguageManager.cs" />
     <Compile Include="Code\Tools\Logger.cs" />
-    <Compile Include="Code\Tools\RedTools\RedToolsDrawing.cs" />
     <Compile Include="Code\Tools\RedTools\RedToolsFiles.cs" />
     <Compile Include="Code\Tools\RedTools\RedToolsImages.cs" />
     <Compile Include="Code\Tools\RedTools\RedToolsStrings.cs" />

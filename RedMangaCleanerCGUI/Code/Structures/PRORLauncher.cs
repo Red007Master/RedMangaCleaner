@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RedsCleaningProjects.Core;
+using RedsCleaningProject.Core;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;

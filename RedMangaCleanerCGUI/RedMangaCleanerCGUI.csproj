@@ -86,41 +86,41 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\CleaningProject.cs">
-      <Link>Code\Classes\CleaningProject.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\Config.cs">
-      <Link>Code\Classes\Config.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\DetectedObject.cs">
-      <Link>Code\Classes\DetectedObject.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\DirectBitmap.cs">
-      <Link>Code\Classes\DirectBitmap.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\FillParam.cs">
-      <Link>Code\Classes\FillParam.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\FillPoint.cs">
-      <Link>Code\Classes\FillPoint.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\Link.cs">
-      <Link>Code\Classes\Link.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\LocalizedList.cs">
-      <Link>Code\Classes\LocalizedList.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\LocalizedString.cs">
-      <Link>Code\Classes\LocalizedString.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\ProjectProcessingStatus.cs">
-      <Link>Code\Classes\ProjectProcessingStatus.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Classes\YoloConfiguration.cs">
-      <Link>Code\Classes\YoloConfiguration.cs</Link>
-    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Publics.cs">
       <Link>Code\Publics.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\Config.cs">
+      <Link>Code\Structures\Config.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\DetectedObject.cs">
+      <Link>Code\Structures\DetectedObject.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\DirectBitmap.cs">
+      <Link>Code\Structures\DirectBitmap.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\FillParam.cs">
+      <Link>Code\Structures\FillParam.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\FillPoint.cs">
+      <Link>Code\Structures\FillPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\Link.cs">
+      <Link>Code\Structures\Link.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\LocalizedList.cs">
+      <Link>Code\Structures\LocalizedList.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\LocalizedString.cs">
+      <Link>Code\Structures\LocalizedString.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\ProjectProcessingStatus.cs">
+      <Link>Code\Structures\ProjectProcessingStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\CleaningProject.cs">
+      <Link>Code\Structures\RedsCleaningProject\CleaningProject.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\YoloConfiguration.cs">
+      <Link>Code\Structures\YoloConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Dir.cs">
       <Link>Code\Tools\Dir.cs</Link>
@@ -133,9 +133,6 @@
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Logger.cs">
       <Link>Code\Tools\Logger.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsDrawing.cs">
-      <Link>Code\Tools\RedTools\RedToolsDrawing.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Tools\RedTools\RedToolsFiles.cs">
       <Link>Code\Tools\RedTools\RedToolsFiles.cs</Link>
@@ -155,8 +152,8 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Tools\Settings.cs">
       <Link>Code\Tools\Settings.cs</Link>
     </Compile>
-    <Compile Include="Code\Classes\ImagesProcessingProgressInfo.cs" />
-    <Compile Include="Code\Classes\PRORLauncher.cs" />
+    <Compile Include="Code\Structures\ImagesProcessingProgressInfo.cs" />
+    <Compile Include="Code\Structures\PRORLauncher.cs" />
     <Compile Include="Code\Tools\InitializationPersonalized.cs" />
     <Compile Include="Code\Pseudo.cs" />
     <Compile Include="Code\PV.cs" />
@@ -164,8 +161,8 @@
     <Compile Include="Code\Tools\SecurityController.cs" />
     <Compile Include="Code\Tools\WPFGate.cs" />
     <Compile Include="Code\WorkED.cs" />
-    <Compile Include="Code\Classes\ObservableObject.cs" />
-    <Compile Include="Code\Classes\RelayCommand.cs" />
+    <Compile Include="Code\Structures\ObservableObject.cs" />
+    <Compile Include="Code\Structures\RelayCommand.cs" />
     <Compile Include="WPFDesign\Code\Xaml\Controls\ZoomBorder.cs" />
     <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\ImageEditorViewModel.cs" />
     <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\MainViewModel.cs" />

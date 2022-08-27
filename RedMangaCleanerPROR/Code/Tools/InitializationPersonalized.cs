@@ -1,4 +1,4 @@
-﻿using RedsCleaningProjects.Core;
+﻿using RedsCleaningProject.Core;
 using System;
 
 public static class InitializationPersonalized //PROR

@@ -1,5 +1,5 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using RedsCleaningProjects.Core;
+using RedsCleaningProject.Core;
 using System.Windows;
 using System.Windows.Controls;
 
