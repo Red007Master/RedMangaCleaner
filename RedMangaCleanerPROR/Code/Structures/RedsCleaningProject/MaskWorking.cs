@@ -1,5 +1,6 @@
 ﻿using RedsCleaningProject.EditableObjects;
 using RedsCleaningProject.Settings;
+using RedsCleaningProject.MangaCleaning;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,13 +12,13 @@ namespace RedsCleaningProject
 {
     namespace MaskWorking
     {
-        public internal class MaskWork
+        public class MaskWork
         {
             public static RedsMask DrawTextBoxFillingOnMask(TextBox textBox, Color[,] parentImage, TextBoxFillingSettings textBoxFillingSettings)
             {
-                Color[,] imagePartOcupiedByMyYoloItem = GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
-                byte[,] textBoxPixels = GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingSettings);
-                textBoxPixels = FillGapsInsideGrid(textBoxPixels);
+                Color[,] imagePartOcupiedByMyYoloItem = Genral.GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
+                byte[,] textBoxPixels = TextBoxes.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingSettings);
+                textBoxPixels = Genral.FillGapsInsideGrid(textBoxPixels);
 
                 RedsMask result = new RedsMask(textBoxPixels);
                 result.ShiftRelativelyToBitmap = new Point(textBox.DetectedObject.Rectangle.X, textBox.DetectedObject.Rectangle.Y);

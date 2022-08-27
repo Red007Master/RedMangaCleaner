@@ -89,31 +89,31 @@ namespace RedsCleaningProject
 
             public void CalculateRectangleMask()
             {
-                RectangleMask = Drawing.DrawRectangleOnMask(DetectedObject, RectangleSettings);
+                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, RectangleSettings);
             }
             public void CalculateRectangleMask(RectangleSettings rectangleSettings)
             {
-                RectangleMask = Drawing.DrawRectangleOnMask(DetectedObject, rectangleSettings);
+                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, rectangleSettings);
             }
 
             public void CalculateTextMask()
             {
-                TextMask = MaskWorking.DrawTextOnMask(DetectedObject, TextSettings);
+                TextMask = MaskWork.DrawTextOnMask(DetectedObject, TextSettings);
             }
             public void CalculateTextMask(TextSettings textSettings)
             {
-                TextMask = Drawing.DrawTextOnMask(DetectedObject, textSettings);
+                TextMask = MaskWork.DrawTextOnMask(DetectedObject, textSettings);
             }
 
             public void ApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
             {
-                Drawing.FillByMask(targetDirectBitmap, RectangleMask);
-                Drawing.FillByMask(targetDirectBitmap, TextMask);
+                MaskWork.FillByMask(targetDirectBitmap, RectangleMask);
+                MaskWork.FillByMask(targetDirectBitmap, TextMask);
             }
             public void UnApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
             {
-                Drawing.UnFillByMask(targetDirectBitmap, RectangleMask, ParentColorArray);
-                Drawing.UnFillByMask(targetDirectBitmap, TextMask, ParentColorArray);
+                MaskWork.UnFillByMask(targetDirectBitmap, RectangleMask, ParentColorArray);
+                MaskWork.UnFillByMask(targetDirectBitmap, TextMask, ParentColorArray);
             }
 
             public EditableObject(DetectedObject detectedObject)
@@ -136,20 +136,20 @@ namespace RedsCleaningProject
 
             public void CalculateTextBoxFillingMask()
             {
-                FillingMask = Drawing.DrawTextBoxFillingOnMask(this, ParentColorArray, FillingSettings);
+                FillingMask = MaskWork.DrawTextBoxFillingOnMask(this, ParentColorArray, FillingSettings);
             }
             public void CalculateTextBoxFillingMask(TextBoxFillingSettings textBoxFillingSettings)
             {
-                FillingMask = Drawing.DrawTextBoxFillingOnMask(this, ParentColorArray, textBoxFillingSettings);
+                FillingMask = MaskWork.DrawTextBoxFillingOnMask(this, ParentColorArray, textBoxFillingSettings);
             }
 
             public void ApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
             {
-                Drawing.FillByMask(targetDirectBitmap, FillingMask);
+                MaskWork.FillByMask(targetDirectBitmap, FillingMask);
             }
             public void UnApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
             {
-                Drawing.UnFillByMask(targetDirectBitmap, FillingMask, ParentColorArray);
+                MaskWork.UnFillByMask(targetDirectBitmap, FillingMask, ParentColorArray);
             }
 
             public TextBox(DetectedObject detectedObject) : base(detectedObject) { }

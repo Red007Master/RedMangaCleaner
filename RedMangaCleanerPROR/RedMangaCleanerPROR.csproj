@@ -83,6 +83,11 @@
     <Compile Include="Code\Structures\LocalizedList.cs" />
     <Compile Include="Code\Structures\LocalizedString.cs" />
     <Compile Include="Code\Structures\ProjectProcessingStatus.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\EditableObjects.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\MangaCleaning.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\MaskWorking.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\RedImages.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\Settings.cs" />
     <Compile Include="Code\Structures\TextBoxInfo.cs" />
     <Compile Include="Code\Structures\YoloConfiguration.cs" />
     <Compile Include="Code\Program.cs" />
