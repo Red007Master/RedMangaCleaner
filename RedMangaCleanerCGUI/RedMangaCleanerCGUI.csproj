@@ -119,6 +119,21 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\CleaningProject.cs">
       <Link>Code\Structures\RedsCleaningProject\CleaningProject.cs</Link>
     </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\EditableObjects.cs">
+      <Link>Code\Structures\RedsCleaningProject\EditableObjects.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MangaCleaning.cs">
+      <Link>Code\Structures\RedsCleaningProject\MangaCleaning.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MaskWorking.cs">
+      <Link>Code\Structures\RedsCleaningProject\MaskWorking.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\RedImages.cs">
+      <Link>Code\Structures\RedsCleaningProject\RedImages.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\Settings.cs">
+      <Link>Code\Structures\RedsCleaningProject\Settings.cs</Link>
+    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\YoloConfiguration.cs">
       <Link>Code\Structures\YoloConfiguration.cs</Link>
     </Compile>
