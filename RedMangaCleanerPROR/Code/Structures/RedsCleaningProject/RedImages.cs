@@ -1,14 +1,10 @@
-﻿using RedsCleaningProject.EditableObjects;
-using RedsCleaningProject.MaskWorking;
+﻿using RedsCleaningProject.MasksAndEditableObjects;
 using RedsTools.Images;
 using RedsTools.Types;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedsCleaningProject
 {
@@ -21,7 +17,7 @@ namespace RedsCleaningProject
             public int Width { get; set; }
             public int Height { get; set; }
 
-            public bool IsBlackAndWhite { get; set; }
+            public bool ImageIsBlackAndWhite { get; set; }
 
             public List<DetectedObject> DetectedObjects { get; set; }
 
@@ -30,7 +26,7 @@ namespace RedsCleaningProject
                 ImageFilePath = imagePath;
                 Width = width;
                 Height = height;
-                IsBlackAndWhite = isBlackAndWhite;
+                ImageIsBlackAndWhite = isBlackAndWhite;
                 DetectedObjects = detectedObjects;
             }
 
@@ -39,29 +35,28 @@ namespace RedsCleaningProject
 
         public class RedImageCore : BasicImageData, IComparable
         {
-            public bool ImageIsBlackAndWhite { get; set; }
-            public bool ImageProcessingModeAsBlackAndWhite { get; set; }
-
             public string ImageFileName { get; set; }
+
+            public bool ImageProcessingModeAsBlackAndWhite { get; set; }
 
             //public List<FillPoint> FillPointsUserInput { get; set; } = new List<FillPoint>();
             //public List<FillPoint> FillPointsObjectDetection { get; set; } = new List<FillPoint>();
             //public List<FillPoint> FillPointsProgramOther { get; set; } = new List<FillPoint>();
 
-            public List<EditableObject> EditableObjects { get; set; } = new List<EditableObject>();
+            public List<EditableObject> BaseEditableObjects { get; set; } = new List<EditableObject>();
 
             public RedImageCore(BasicImageData basicImageData)
             {
                 TypeConverter.ChildParentSetTo<BasicImageData, RedImageCore>(basicImageData, this);
 
-                Bitmap image = new Bitmap(ImageFilePath);
                 ImageFileName = Path.GetFileName(ImageFilePath);
+                Bitmap image = new Bitmap(ImageFilePath);
                 Width = image.Width;
                 Height = image.Height;
 
                 for (int i = 0; i < DetectedObjects.Count; i++)
                 {
-                    EditableObjects.Add(new EditableObject(DetectedObjects[i]));
+                    BaseEditableObjects.Add(new EditableObject(DetectedObjects[i]));
                 }
 
                 image.Dispose();
@@ -95,9 +90,7 @@ namespace RedsCleaningProject
             public Color[,] ImageAsColorArray { get; set; }
             public byte[,] ImageAsByteArray { get; set; }
 
-            public List<TextBox> TextBoxes { get; set; } = new List<TextBox>();
-
-
+            public List<EditableObject> EditableObjects { get; set; } = new List<EditableObject>();
 
             public void CompileImageAsDirectBitmap()
             {
@@ -135,20 +128,24 @@ namespace RedsCleaningProject
 
             public void DrawRectangles()
             {
-                for (int i = 0; i < TextBoxes.Count; i++)
+                for (int i = 0; i < EditableObjects.Count; i++)
                 {
-                    TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
-                    TextBoxes[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
+                    TextBox textBox = (TextBox)EditableObjects[i];
+
+                    textBox.ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                    EditableObjects[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
                 }
                 RectDrawStatus = true;
             }   //kill
 
             public void UndrawRectangles()
             {
-                for (int i = 0; i < TextBoxes.Count; i++)
+                for (int i = 0; i < EditableObjects.Count; i++)
                 {
-                    TextBoxes[i].UnApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
-                    TextBoxes[i].UnApplyOverlayPixelsTo(DisplayDirectBitmap);
+                    TextBox textBox = (TextBox)EditableObjects[i];
+
+                    textBox.UnApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                    EditableObjects[i].UnApplyOverlayPixelsTo(DisplayDirectBitmap);
                 }
 
                 RectDrawStatus = false;
@@ -183,26 +180,25 @@ namespace RedsCleaningProject
                 CompileImageAsByteArray();
                 CompileImageAsColorArray();
 
-                for (int i = 0; i < EditableObjects.Count; i++)
+                for (int i = 0; i < BaseEditableObjects.Count; i++)
                 {
-                    TextBoxes.Add(new TextBox(EditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
+                    EditableObjects.Add(new TextBox(BaseEditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
                 }
 
                 DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
                 //DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
 
-                for (int i = 0; i < TextBoxes.Count; i++)
+                for (int i = 0; i < EditableObjects.Count; i++)
                 {
+                    TextBox textBox = (TextBox)EditableObjects[i];
 
-                    TextBoxes[i].CalculateTextBoxFillingMask();
-                    TextBoxes[i].ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                    textBox.CalculateTextBoxFillingMask();
+                    textBox.ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
 
-                    TextBoxes[i].CalculateTextMask();
-                    TextBoxes[i].CalculateRectangleMask();
-                    TextBoxes[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
+                    EditableObjects[i].CalculateTextMask();
+                    EditableObjects[i].CalculateRectangleMask();
+                    EditableObjects[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
                 }
-
-                //DrawRectangles();
             }
         }
     }

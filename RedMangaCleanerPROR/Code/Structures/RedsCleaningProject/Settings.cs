@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace RedsCleaningProject
 {
@@ -110,7 +105,7 @@ namespace RedsCleaningProject
                 FontSize = 30;
 
                 AutoFontColor = false;
-                FontColor = Color.White;
+                FontColor = Color.Blue;
             }
         }
     }

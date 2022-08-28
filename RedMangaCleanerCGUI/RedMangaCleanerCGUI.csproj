@@ -119,11 +119,11 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\CleaningProject.cs">
       <Link>Code\Structures\RedsCleaningProject\CleaningProject.cs</Link>
     </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\EditableObjects.cs">
-      <Link>Code\Structures\RedsCleaningProject\EditableObjects.cs</Link>
-    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MangaCleaning.cs">
       <Link>Code\Structures\RedsCleaningProject\MangaCleaning.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs">
+      <Link>Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MaskWorking.cs">
       <Link>Code\Structures\RedsCleaningProject\MaskWorking.cs</Link>

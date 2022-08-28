@@ -1,18 +1,16 @@
-﻿using RedsCleaningProject.Settings;
-using RedsCleaningProject.MaskWorking;
+﻿using RedsCleaningProject.MaskWorking;
+using RedsCleaningProject.Settings;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RedsCleaningProject
 {
-    namespace EditableObjects
+    namespace MasksAndEditableObjects
     {
         public class RedsMask
         {
+            public bool IsDrawed { get; set; }
+
             public Point ShiftRelativelyToBitmap { get; set; }
 
             public int Width { get; set; }
@@ -76,6 +74,8 @@ namespace RedsCleaningProject
 
         public class EditableObject
         {
+            public ObjectType ObjectType { get; set; }
+
             public DirectBitmap ParentDirectBitmap { get; set; }
             public Color[,] ParentColorArray { get; set; }
 
@@ -121,6 +121,8 @@ namespace RedsCleaningProject
                 DetectedObject = detectedObject;
                 RectangleSettings = new RectangleSettings(detectedObject.Rectangle);
                 TextSettings = new TextSettings();
+
+                ObjectType = (ObjectType)detectedObject.Id;
             }
             public EditableObject(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : this(detectedObject)
             {
@@ -159,6 +161,13 @@ namespace RedsCleaningProject
             {
                 FillingSettings = textBoxFillingSettings;
             }
+        }
+
+        public enum ObjectType 
+        {
+            TextBox = 0,
+            TextWithoutBox = 1,
+            Sound = 2
         }
     }
 }

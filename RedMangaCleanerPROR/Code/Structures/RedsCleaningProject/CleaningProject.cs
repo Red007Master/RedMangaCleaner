@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RedsTools.Images;
-using RedsTools.Types;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 

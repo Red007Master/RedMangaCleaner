@@ -83,7 +83,7 @@
     <Compile Include="Code\Structures\LocalizedList.cs" />
     <Compile Include="Code\Structures\LocalizedString.cs" />
     <Compile Include="Code\Structures\ProjectProcessingStatus.cs" />
-    <Compile Include="Code\Structures\RedsCleaningProject\EditableObjects.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\MangaCleaning.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\MaskWorking.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\RedImages.cs" />
