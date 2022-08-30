@@ -1,4 +1,6 @@
-﻿using RedsCleaningProject.MaskWorking;
+﻿using RedsCleaningProject.MangaCleaning;
+using RedsCleaningProject.MasksAndEditableObjects;
+using RedsCleaningProject.MaskWorking;
 using RedsCleaningProject.Settings;
 using System;
 using System.Drawing;
@@ -10,6 +12,9 @@ namespace RedsCleaningProject
         public class RedsMask
         {
             public bool IsDrawed { get; set; }
+
+            public DirectBitmap DisplayDirectBitmap { get; set; }
+            public Color[,] ParentColorArray { get; set; }
 
             public Point ShiftRelativelyToBitmap { get; set; }
 
@@ -55,6 +60,24 @@ namespace RedsCleaningProject
                 return Convert.ToByte(result);
             }
 
+            public void ApplyMask()
+            {
+                MaskWork.FillByMask(DisplayDirectBitmap, this);
+            }
+            public void ApplyMask(DirectBitmap targetDirectBitmap)
+            {
+                MaskWork.FillByMask(targetDirectBitmap, this);
+            }
+
+            public void UnApplyMask()
+            {
+                MaskWork.UnFillByMask(DisplayDirectBitmap, this, ParentColorArray);
+            }
+            public void UnApplyMask(DirectBitmap targetDirectBitmap)
+            {
+                MaskWork.UnFillByMask(targetDirectBitmap, this, ParentColorArray);
+            }
+
             public RedsMask(int width, int height, Point shiftRelativelyToBitmap = new Point())
             {
                 Width = width;
@@ -77,6 +100,7 @@ namespace RedsCleaningProject
             public ObjectType ObjectType { get; set; }
 
             public DirectBitmap ParentDirectBitmap { get; set; }
+
             public Color[,] ParentColorArray { get; set; }
 
             public DetectedObject DetectedObject { get; set; }
@@ -91,26 +115,13 @@ namespace RedsCleaningProject
             {
                 RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, RectangleSettings);
             }
-            public void CalculateRectangleMask(RectangleSettings rectangleSettings)
-            {
-                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, rectangleSettings);
-            }
 
             public void CalculateTextMask()
             {
                 TextMask = MaskWork.DrawTextOnMask(DetectedObject, TextSettings);
             }
-            public void CalculateTextMask(TextSettings textSettings)
-            {
-                TextMask = MaskWork.DrawTextOnMask(DetectedObject, textSettings);
-            }
 
-            public void ApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                MaskWork.FillByMask(targetDirectBitmap, RectangleMask);
-                MaskWork.FillByMask(targetDirectBitmap, TextMask);
-            }
-            public void UnApplyOverlayPixelsTo(DirectBitmap targetDirectBitmap)
+            public void UnApplyOverlayPixels(DirectBitmap targetDirectBitmap)
             {
                 MaskWork.UnFillByMask(targetDirectBitmap, RectangleMask, ParentColorArray);
                 MaskWork.UnFillByMask(targetDirectBitmap, TextMask, ParentColorArray);
@@ -138,24 +149,12 @@ namespace RedsCleaningProject
 
             public void CalculateTextBoxFillingMask()
             {
-                FillingMask = MaskWork.DrawTextBoxFillingOnMask(this, ParentColorArray, FillingSettings);
-            }
-            public void CalculateTextBoxFillingMask(TextBoxFillingSettings textBoxFillingSettings)
-            {
-                FillingMask = MaskWork.DrawTextBoxFillingOnMask(this, ParentColorArray, textBoxFillingSettings);
-            }
-
-            public void ApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                MaskWork.FillByMask(targetDirectBitmap, FillingMask);
-            }
-            public void UnApplyFiledTextBoxPixelsTo(DirectBitmap targetDirectBitmap)
-            {
-                MaskWork.UnFillByMask(targetDirectBitmap, FillingMask, ParentColorArray);
+                FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, FillingSettings);
             }
 
             public TextBox(DetectedObject detectedObject) : base(detectedObject) { }
-            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : base(detectedObject, parentDirectBitmap, parentColorArray) { }
+            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray)
+            : base(detectedObject, parentDirectBitmap, parentColorArray) { }
             public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray, TextBoxFillingSettings textBoxFillingSettings)
             : base(detectedObject, parentDirectBitmap, parentColorArray)
             {
@@ -168,6 +167,163 @@ namespace RedsCleaningProject
             TextBox = 0,
             TextWithoutBox = 1,
             Sound = 2
+        }
+    }
+
+    namespace MaskWorking
+    {
+        public class MaskWork
+        {
+            public static RedsMask DrawRectangleOnMask(DetectedObject detectedObject, RectangleSettings rectangleSettings, Point shift = new Point())
+            {
+                RedsMask result = new RedsMask(detectedObject.Rectangle);
+
+                for (int i = 0; i < rectangleSettings.Rectangle.Width; i++)
+                {
+                    for (int j = 0; j < rectangleSettings.RectangleBorderThickness; j++)
+                    {
+                        result.Mask[i, j + shift.Y] = 1;
+                    }
+
+                    for (int j = rectangleSettings.RectangleBorderThickness; j > 0; j--)
+                    {
+                        result.Mask[i, rectangleSettings.Rectangle.Height - j + shift.Y] = 1;
+                    }
+                }
+
+                for (int i = shift.Y; i < rectangleSettings.Rectangle.Height + shift.Y; i++)
+                {
+                    for (int j = 0; j < rectangleSettings.RectangleBorderThickness; j++)
+                    {
+                        result.Mask[j, i] = 1;
+                    }
+
+                    for (int j = rectangleSettings.RectangleBorderThickness; j > 0; j--)
+                    {
+                        result.Mask[rectangleSettings.Rectangle.Width - j, i] = 1;
+                    }
+                }
+
+                result.Palette[1] = rectangleSettings.BorderColor.DisplayColor;
+
+                return result;
+            }
+
+            public static RedsMask DrawFillingOnMask(TextBox textBox, Color[,] parentImage, TextBoxFillingSettings textBoxFillingSettings)
+            {
+                Color[,] imagePartOcupiedByMyYoloItem = Genral.GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
+                byte[,] textBoxPixels = TextBoxes.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingSettings);
+                textBoxPixels = Genral.FillGapsInsideGrid(textBoxPixels);
+
+                RedsMask result = new RedsMask(textBoxPixels);
+                result.ShiftRelativelyToBitmap = new Point(textBox.DetectedObject.Rectangle.X, textBox.DetectedObject.Rectangle.Y);
+                result.Palette[1] = textBoxFillingSettings.FillingColor.DisplayColor;
+
+                return result;
+            }
+            public static RedsMask DrawTextOnMask(DetectedObject detectedObject, TextSettings textSettings)
+            {
+                int maxFontSize = textSettings.ClassNameFontSettings.FontSize;
+                if (maxFontSize < textSettings.ConfidenceFontSettings.FontSize)
+                    maxFontSize = textSettings.ConfidenceFontSettings.FontSize;
+
+                string type = detectedObject.Type;
+                string confidence = Convert.ToString(Math.Round(detectedObject.Confidence, 2));
+
+                int typeWidth = System.Windows.Forms.TextRenderer.MeasureText(type, textSettings.ClassNameFontSettings.Font).Width;
+                int confWidth = System.Windows.Forms.TextRenderer.MeasureText(confidence, textSettings.ConfidenceFontSettings.Font).Width;
+
+                int totalWidth = 0;
+
+                if (textSettings.ClassNameFontSettings.Draw)
+                    totalWidth += typeWidth;
+
+                if (textSettings.ConfidenceFontSettings.Draw)
+                    totalWidth += confWidth;
+
+                int width = totalWidth;
+                int height = maxFontSize + 6;
+
+                RedsMask result = new RedsMask(width, height);
+                result.ShiftRelativelyToBitmap = new Point(detectedObject.Rectangle.X, detectedObject.Rectangle.Y - maxFontSize - 6);
+
+                Bitmap tempBitmap = new Bitmap(result.Width, result.Height);
+                Graphics graphics = Graphics.FromImage(tempBitmap);
+
+                graphics.Clear(textSettings.BackgroundColor.DisplayColor);
+
+                int shift = 0;
+
+                if (textSettings.ClassNameFontSettings.Draw)
+                {
+                    graphics.DrawString(type, textSettings.ClassNameFontSettings.Font, new SolidBrush(textSettings.ClassNameFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
+                    shift += typeWidth + 5;
+                }
+
+                if (textSettings.ConfidenceFontSettings.Draw)
+                {
+                    graphics.DrawString(confidence, textSettings.ConfidenceFontSettings.Font, new SolidBrush(textSettings.ConfidenceFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
+                    shift += typeWidth + 5;
+                }
+
+                for (int x = 0; x < result.Width; x++)
+                {
+                    for (int y = 0; y < result.Height; y++)
+                    {
+                        result.Mask[x, y] = result.GetOrSetAndGetColorId(tempBitmap.GetPixel(x, y));
+                    }
+                }
+
+                graphics.Dispose();
+                tempBitmap.Dispose();
+
+                return result;
+            }
+
+            public static void FillByMask(DirectBitmap targetDirectBitmap, RedsMask mask)
+            {
+                for (int x = 0; x < mask.Width; x++)
+                {
+                    for (int y = 0; y < mask.Height; y++)
+                    {
+                        if (mask.Mask[x, y] != 0)
+                        {
+                            int targetX = x + mask.ShiftRelativelyToBitmap.X;
+                            int targetY = y + mask.ShiftRelativelyToBitmap.Y;
+
+                            bool coordinatesIsInBounds = targetDirectBitmap.Width > targetX && targetDirectBitmap.Height > targetY && targetX >= 0 && targetY >= 0;
+
+                            if (coordinatesIsInBounds)
+                                targetDirectBitmap.SetPixel(targetX, targetY, mask.Palette[mask.Mask[x, y]]);
+                        }
+                    }
+                }
+
+                mask.IsDrawed = true;
+            }
+            public static void UnFillByMask(DirectBitmap targetDirectBitmap, RedsMask mask, Color[,] sourceImage)
+            {
+                for (int x = 0; x < mask.Width; x++)
+                {
+                    for (int y = 0; y < mask.Height; y++)
+                    {
+                        if (mask.Mask[x, y] != 0)
+                        {
+                            int targetX = x + mask.ShiftRelativelyToBitmap.X;
+                            int targetY = y + mask.ShiftRelativelyToBitmap.Y;
+
+                            bool coordinatesIsInBounds = targetDirectBitmap.Width > targetX && targetDirectBitmap.Height > targetY && targetX >= 0 && targetY >= 0;
+
+                            if (coordinatesIsInBounds)
+                            {
+                                targetDirectBitmap.SetPixel(targetX, targetY, sourceImage[targetX, targetY]);
+                            }
+                        }
+                    }
+                }
+
+                mask.IsDrawed = false;
+            }
         }
     }
 }

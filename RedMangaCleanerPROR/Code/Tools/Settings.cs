@@ -93,14 +93,12 @@ public class Settings
 
     private void GetDefaultSettingsList()
     {
-        AddSetting<bool>(true, "UseAlturosYoloObjectRecognition", "Use Object Recog For Detecting textboxes");
+        AddSetting<bool>(true, "UseYoloV5ObjectRecognition", "Use Object Recog For Detecting textboxes");
         AddSetting<bool>(true, "OutputBlackAndWhiteImages", "Output BaW images as result, use 'true' if you work on BaW images");
         AddSetting<bool>(true, "ConductObjectDetectionOnBlackAndWhiteVariants", @"'true' if you use it on BaW images or have model trained on BaW images, if you use default model you can check mode here 'RdmMangaCleaner\Other\About.txt'");
         AddSetting<bool>(true, "ConductTextBoxFillingOnBlackAndWhiteVariants", "Conduct TextBox filling on BaW variants of images (faster)");
-        AddSetting<bool>(true, "ShowDisclaimer", "ShowDisclaimer");
 
         AddSetting<string>("English", "Language", "Language acording to Language.txt file TODO");
-        AddSetting<string>("GPU", "YoloProcessingMode", "CPU - much slower but requiere less instalation, GPU (Only NVIDIA) dramasticly increase perfomance but require long and 'hard' instlation Guide=TODO");
 
         AddSetting<int>(3, "ProcessingBufferSize", @"Amount of backups of your work in 'RdmMangaCleaner\Processing'");
 
@@ -108,7 +106,6 @@ public class Settings
         AddSetting<string>("redsManga001.onnx", "YoloWeights", "Used by default YoloWeights");
 
         AddSetting<byte>(245, "DefaultFillTargetColorBaW", "Color(Grayscale) used as target for filing (text background), 255=white, 0=black"); //TODO max byte value is 255 add check
-        AddSetting<byte>(10, "DefaultMaxDeviationFromBaW", "Deviation from DefaultFillTargetColorBaW if DFTCBaW is 200 and deviation is 10 all color from 190 to 210 will be filled");
 
         AddSetting<int>(2, "PrecompileRedImageFullsThreadsCount", "Count of threads used to PrecompileRedImageFulls (getting byte[,]s and bitmaps in CGUI)");
         AddSetting<int>(5, "ImagesToBlackAndWhiteThreadsCount", "Count of threads used to Convert images to BaW"); //TODO add perf info
@@ -180,14 +177,12 @@ namespace RedsSettings
 {
     public class SettingsList
     {
-        public bool UseAlturosYoloObjectRecognition { get; internal set; }
+        public bool UseYoloV5ObjectRecognition { get; internal set; }
         public bool OutputBlackAndWhiteImages { get; internal set; }
         public bool ConductObjectDetectionOnBlackAndWhiteVariants { get; internal set; }
         public bool ConductTextBoxFillingOnBlackAndWhiteVariants { get; internal set; }
-        public bool ShowDisclaimer { get; internal set; }
 
         public string Language { get; internal set; }
-        public string YoloProcessingMode { get; internal set; }
 
         public int ProcessingBufferSize { get; internal set; }
 
@@ -195,7 +190,6 @@ namespace RedsSettings
         public string YoloConfig { get; internal set; }
 
         public byte DefaultFillTargetColorBaW { get; internal set; }
-        public byte DefaultMaxDeviationFromBaW { get; internal set; }
 
         public int PrecompileRedImageFullsThreadsCount { get; internal set; }
         public int ImagesToBlackAndWhiteThreadsCount { get; internal set; }

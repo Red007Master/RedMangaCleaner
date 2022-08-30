@@ -1,4 +1,5 @@
 ﻿using RedsCleaningProject.MasksAndEditableObjects;
+using RedsCleaningProject.MaskWorking;
 using RedsTools.Images;
 using RedsTools.Types;
 using System;
@@ -17,7 +18,7 @@ namespace RedsCleaningProject
             public int Width { get; set; }
             public int Height { get; set; }
 
-            public bool ImageIsBlackAndWhite { get; set; }
+            public bool ProcessAsBaW { get; set; }
 
             public List<DetectedObject> DetectedObjects { get; set; }
 
@@ -26,7 +27,7 @@ namespace RedsCleaningProject
                 ImageFilePath = imagePath;
                 Width = width;
                 Height = height;
-                ImageIsBlackAndWhite = isBlackAndWhite;
+                ProcessAsBaW = isBlackAndWhite;
                 DetectedObjects = detectedObjects;
             }
 
@@ -85,10 +86,11 @@ namespace RedsCleaningProject
             public DirectBitmap DisplayDirectBitmap { get; set; }
             public bool RectDrawStatus { get; set; }
 
-            public DirectBitmap BaWImageAsDirectBitmap { get; set; }
-            public DirectBitmap RGBImageAsDirectBitmap { get; set; }
-            public Color[,] ImageAsColorArray { get; set; }
             public byte[,] ImageAsByteArray { get; set; }
+            public DirectBitmap BaWImageAsDirectBitmap { get; set; }
+
+            public Color[,] ImageAsColorArray { get; set; }
+            public DirectBitmap RGBImageAsDirectBitmap { get; set; }
 
             public List<EditableObject> EditableObjects { get; set; } = new List<EditableObject>();
 
@@ -103,7 +105,7 @@ namespace RedsCleaningProject
             }
             public void CompileImageAsColorArray()
             {
-                if (ImageIsBlackAndWhite)
+                if (ProcessAsBaW)
                 {
                     //TODO?
                     ImageAsColorArray = Images.RGB.BitmapToColorArray(BaWImageAsDirectBitmap.Bitmap);
@@ -113,43 +115,6 @@ namespace RedsCleaningProject
                     ImageAsColorArray = Images.RGB.BitmapToColorArray(BaWImageAsDirectBitmap.Bitmap);
                 }
             }
-
-            public void DrawUndrawRectangles()
-            {
-                if (RectDrawStatus)
-                {
-                    UndrawRectangles();
-                }
-                else
-                {
-                    DrawRectangles();
-                }
-            } //kill
-
-            public void DrawRectangles()
-            {
-                for (int i = 0; i < EditableObjects.Count; i++)
-                {
-                    TextBox textBox = (TextBox)EditableObjects[i];
-
-                    textBox.ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
-                    EditableObjects[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
-                }
-                RectDrawStatus = true;
-            }   //kill
-
-            public void UndrawRectangles()
-            {
-                for (int i = 0; i < EditableObjects.Count; i++)
-                {
-                    TextBox textBox = (TextBox)EditableObjects[i];
-
-                    textBox.UnApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
-                    EditableObjects[i].UnApplyOverlayPixelsTo(DisplayDirectBitmap);
-                }
-
-                RectDrawStatus = false;
-            }   //kill
 
             public void Dispose()
             {
@@ -180,24 +145,32 @@ namespace RedsCleaningProject
                 CompileImageAsByteArray();
                 CompileImageAsColorArray();
 
+                DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
+
                 for (int i = 0; i < BaseEditableObjects.Count; i++)
                 {
-                    EditableObjects.Add(new TextBox(BaseEditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
+                    if (BaseEditableObjects[i].ObjectType == ObjectType.TextBox)
+                    {
+                        EditableObjects.Add(new TextBox(BaseEditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
+                    }
                 }
-
-                DisplayDirectBitmap = new DirectBitmap(BaWImageAsDirectBitmap);
-                //DisplayDirectBitmap = Work.Cleaning.CleanRGBImage(DetectedObjects, ImageAsColorArray);
 
                 for (int i = 0; i < EditableObjects.Count; i++)
                 {
-                    TextBox textBox = (TextBox)EditableObjects[i];
+                    EditableObjects[i].RectangleMask = MaskWork.DrawRectangleOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].RectangleSettings);
+                    EditableObjects[i].TextMask = MaskWork.DrawTextOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].TextSettings);
 
-                    textBox.CalculateTextBoxFillingMask();
-                    textBox.ApplyFiledTextBoxPixelsTo(DisplayDirectBitmap);
+                    if (EditableObjects[i] is TextBox)
+                    {
+                        TextBox textBox = (TextBox)EditableObjects[i];
 
-                    EditableObjects[i].CalculateTextMask();
-                    EditableObjects[i].CalculateRectangleMask();
-                    EditableObjects[i].ApplyOverlayPixelsTo(DisplayDirectBitmap);
+                        textBox.FillingMask = MaskWork.DrawFillingOnMask(textBox, ImageAsColorArray, textBox.FillingSettings);
+
+                        MaskWork.FillByMask(DisplayDirectBitmap, textBox.FillingMask);
+                    }
+
+                    MaskWork.FillByMask(DisplayDirectBitmap, EditableObjects[i].RectangleMask);
+                    MaskWork.FillByMask(DisplayDirectBitmap, EditableObjects[i].TextMask);
                 }
             }
         }

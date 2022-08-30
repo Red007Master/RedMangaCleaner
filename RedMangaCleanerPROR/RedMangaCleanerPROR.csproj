@@ -77,15 +77,12 @@
     <Compile Include="Code\Structures\Config.cs" />
     <Compile Include="Code\Structures\DetectedObject.cs" />
     <Compile Include="Code\Structures\DirectBitmap.cs" />
-    <Compile Include="Code\Structures\FillParam.cs" />
-    <Compile Include="Code\Structures\FillPoint.cs" />
     <Compile Include="Code\Structures\Link.cs" />
     <Compile Include="Code\Structures\LocalizedList.cs" />
     <Compile Include="Code\Structures\LocalizedString.cs" />
     <Compile Include="Code\Structures\ProjectProcessingStatus.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\MangaCleaning.cs" />
-    <Compile Include="Code\Structures\RedsCleaningProject\MaskWorking.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\RedImages.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\Settings.cs" />
     <Compile Include="Code\Structures\TextBoxInfo.cs" />

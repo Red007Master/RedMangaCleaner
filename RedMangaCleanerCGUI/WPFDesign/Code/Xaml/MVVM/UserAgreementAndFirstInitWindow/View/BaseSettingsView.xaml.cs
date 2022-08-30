@@ -50,16 +50,16 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.UserAgreementAndFirstInit
 
         public void SaveSettingsFromUI()
         {
-            P.Settings.SettingsList.UseAlturosYoloObjectRecognition = (bool)PV.UserControl.BaseSettingsView.UseAlturosYoloObjectRecognitionCheckBox.IsChecked;
+            P.Settings.SettingsList.UseYoloV5ObjectRecognition = (bool)PV.UserControl.BaseSettingsView.UseAlturosYoloObjectRecognitionCheckBox.IsChecked;
 
-            if (PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex == 0)
-            {
-                P.Settings.SettingsList.YoloProcessingMode = "CPU";
-            }
-            else if (PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex == 1)
-            {
-                P.Settings.SettingsList.YoloProcessingMode = "GPU";
-            }
+            //if (PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex == 0)
+            //{
+            //    P.Settings.SettingsList.YoloProcessingMode = "CPU";
+            //}
+            //else if (PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex == 1)
+            //{
+            //    P.Settings.SettingsList.YoloProcessingMode = "GPU";
+            //}
 
             P.Settings.SettingsList.ProcessingBufferSize = Convert.ToInt32(PV.UserControl.BaseSettingsView.ProcessingBufferSizeTextBox.Text);
             P.Settings.SettingsList.PrecompileRedImageFullsThreadsCount = Convert.ToInt32(PV.UserControl.BaseSettingsView.PrecompileRedImageFullsThreadsCountTextBox.Text);
@@ -69,16 +69,16 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.UserAgreementAndFirstInit
         }
         public void LoadSettingsToUI()
         {
-            PV.UserControl.BaseSettingsView.UseAlturosYoloObjectRecognitionCheckBox.IsChecked = P.Settings.SettingsList.UseAlturosYoloObjectRecognition;
+            PV.UserControl.BaseSettingsView.UseAlturosYoloObjectRecognitionCheckBox.IsChecked = P.Settings.SettingsList.UseYoloV5ObjectRecognition;
 
-            if (P.Settings.SettingsList.YoloProcessingMode.ToLower() == "cpu")
-            {
-                PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex = 0;
-            }
-            else if (P.Settings.SettingsList.YoloProcessingMode.ToLower() == "gpu")
-            {
-                PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex = 1;
-            }
+            //if (P.Settings.SettingsList.YoloProcessingMode.ToLower() == "cpu")
+            //{
+            //    PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex = 0;
+            //}
+            //else if (P.Settings.SettingsList.YoloProcessingMode.ToLower() == "gpu")
+            //{
+            //    PV.UserControl.BaseSettingsView.YoloProcessingModeComboBox.SelectedIndex = 1;
+            //}
 
             PV.UserControl.BaseSettingsView.ProcessingBufferSizeTextBox.Text = P.Settings.SettingsList.ProcessingBufferSize.ToString();
             PV.UserControl.BaseSettingsView.PrecompileRedImageFullsThreadsCountTextBox.Text = P.Settings.SettingsList.PrecompileRedImageFullsThreadsCount.ToString();

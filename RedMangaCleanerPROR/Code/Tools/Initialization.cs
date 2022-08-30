@@ -16,7 +16,7 @@ class Initalization
         StartArgumentsInit();
 
         P.Logger = new Logger(P.PathDirs.Log, new LogSettings(LogLevel.Debug));
-        P.Settings = new Settings(P.PathDirs.Settings);
+        P.Settings = new Settings(P.PathDirs.MainSettings);
         P.ProjectProcessingStatus = new ProjectProcessingStatus(P.PathDirs.ProjectProcessingStatus);
         P.CleaningProjectsGlobalInfo = new CleaningProjectsGlobalInfo(P.PathDirs.CleaningProjectsGlobalInfo);
 

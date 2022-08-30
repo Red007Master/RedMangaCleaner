@@ -16,7 +16,8 @@
         <local:ZoomBorder x:Name="zborder"
                           Background="Gray"
                           ClipToBounds="True">
-            <Image Source="D:\RedMaster's   File\#Photoshop#\Materials\Materials\Images\PNG\Gauss_rifle_(Fallout_4).png" />
+            <Image Source="D:\RedMaster's   File\#Photoshop#\Materials\Materials\Images\PNG\Gauss_rifle_(Fallout_4).png"
+                   Mouse.MouseDown="Image_MouseDown"/>
         </local:ZoomBorder>
 
         <StackPanel Grid.Column="1" Margin="5,0,0,0">
@@ -55,11 +56,6 @@
                          Foreground="White"
                          IsHitTestVisible="False"
                          Text="XX/XX" />
-            </Grid>
-            <Grid>
-                <Button Content="Draw-Undraw"
-                        x:Name="DrawUndraw"
-                        Click="DrawUndrawButton_Click" />
             </Grid>
         </StackPanel>
     </Grid>

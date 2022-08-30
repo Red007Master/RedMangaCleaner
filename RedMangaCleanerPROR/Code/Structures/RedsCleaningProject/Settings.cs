@@ -4,108 +4,122 @@ namespace RedsCleaningProject
 {
     namespace Settings
     {
-        public class RectangleSettings
+        public class CoreSettings
         {
             public bool Draw { get; set; }
+            public bool IsDrawed { get; set; }
+
+
+
+            public CoreSettings()
+            {
+                Draw = true;
+                IsDrawed = false;
+            }
+        }
+
+        public class RectangleSettings : CoreSettings
+        {
             public Rectangle Rectangle { get; set; }
 
             public bool AutoRectangleBorderThickness { get; set; }
             public int RectangleBorderThickness { get; set; }
 
             public bool AutoBorderColor { get; set; }
-            public Color BorderColor { get; set; }
+            public ColorConfig BorderColor { get; set; }
 
-            public RectangleSettings()
+            public RectangleSettings() : base()
             {
-                Draw = true;
-
                 AutoRectangleBorderThickness = false;
                 RectangleBorderThickness = 5;
 
                 AutoBorderColor = false;
-                BorderColor = Color.Red;
+                BorderColor = new ColorConfig(false, Color.Red, Color.Red);
             }
             public RectangleSettings(Rectangle rectangle) : this()
             {
                 Rectangle = rectangle;
             }
         }
-
-        public class TextBoxFillingSettings
+        public class TextSettings : CoreSettings
         {
-            public bool FillAsBlackAndWhite { get; set; }
+            public bool DrawConfidence { get; set; }
+            public FontConfig ConfidenceFontSettings { get; set; }
 
+            public bool DrawClassName { get; set; }
+            public FontConfig ClassNameFontSettings { get; set; }
+
+            public ColorConfig BackgroundColor { get; set; }
+
+            public TextSettings()
+            {
+                DrawConfidence = true;
+                ConfidenceFontSettings = new FontConfig();
+
+                DrawClassName = true;
+                ClassNameFontSettings = new FontConfig();
+
+                BackgroundColor = new ColorConfig(false, Color.DarkRed, Color.DarkRed);
+            }
+        }
+        public class TextBoxFillingSettings : CoreSettings
+        {
             public byte PixelGrayScaleLimit { get; set; }
 
             public bool AutomaticCroshairLineLenght { get; set; }
             public int CroshairLineLenght { get; set; }
 
-            public Color FillingDisplayColor { get; set; }
-            public Color FillingFinalColor { get; set; }
+            public ColorConfig FillingColor { get; set; }
 
-
-            public TextBoxFillingSettings()
+            public TextBoxFillingSettings() : base()
             {
-                FillAsBlackAndWhite = true;
-
                 PixelGrayScaleLimit = 245;
 
                 AutomaticCroshairLineLenght = false;
                 CroshairLineLenght = 10;
 
-                FillingDisplayColor = Color.DarkGreen;
-                FillingFinalColor = Color.White;
+                FillingColor = new ColorConfig(true, Color.Green, Color.Green);
             }
         }
 
-        public class TextSettings
+
+        public class FontConfig
         {
-            public bool DrawConfidence { get; set; }
-            public FontSettings ConfidenceFontSettings { get; set; }
-
-            public bool DrawClassName { get; set; }
-            public FontSettings ClassNameFontSettings { get; set; }
-
-            public bool DrawBackground { get; set; }
-            public Color BackgroundColor { get; set; }
-
-            public TextSettings()
-            {
-                DrawConfidence = true;
-                ConfidenceFontSettings = new FontSettings();
-
-                DrawClassName = true;
-                ClassNameFontSettings = new FontSettings();
-
-                DrawBackground = true;
-                BackgroundColor = Color.DarkRed;
-            }
-        }
-        public class FontSettings
-        {
-            public Font Font { get { return new Font(FontName, FontSize, GraphicsUnit.Pixel); } set { } }
-
             public bool Draw { get; set; }
+
+            public Font Font { get { return new Font(FontName, FontSize, GraphicsUnit.Pixel); }}
 
             public string FontName { get; set; }
 
             public bool AutoFontSize { get; set; }
             public int FontSize { get; set; }
 
-            public bool AutoFontColor { get; set; }
-            public Color FontColor { get; set; }
+            public ColorConfig FontColor { get; set; }
 
-            public FontSettings()
+            public FontConfig()
             {
                 Draw = true;
 
                 FontName = "Consolas";
 
-                AutoFontColor = true;
                 FontSize = 30;
 
-                AutoFontColor = false;
-                FontColor = Color.Blue;
+                FontColor = new ColorConfig(false, Color.White, Color.White);
+            }
+        }
+        public class ColorConfig
+        {
+            public bool UseAutoColor { get; set; }
+
+            public Color DisplayColor { get; set; }
+            public Color FinalColor { get; set; }
+
+            public ColorConfig(bool useAutoColor, Color displayColor, Color finalColor)
+            {
+                UseAutoColor = useAutoColor;
+
+                DisplayColor = displayColor;
+                FinalColor = finalColor;
             }
         }
     }

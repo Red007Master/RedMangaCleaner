@@ -98,12 +98,6 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\DirectBitmap.cs">
       <Link>Code\Structures\DirectBitmap.cs</Link>
     </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\FillParam.cs">
-      <Link>Code\Structures\FillParam.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\FillPoint.cs">
-      <Link>Code\Structures\FillPoint.cs</Link>
-    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\Link.cs">
       <Link>Code\Structures\Link.cs</Link>
     </Compile>
@@ -124,9 +118,6 @@
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs">
       <Link>Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MaskWorking.cs">
-      <Link>Code\Structures\RedsCleaningProject\MaskWorking.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\RedImages.cs">
       <Link>Code\Structures\RedsCleaningProject\RedImages.cs</Link>
