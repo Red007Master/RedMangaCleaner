@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -74,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Structures\RedsCleaningProject\CleaningProject.cs" />
-    <Compile Include="Code\Structures\Config.cs" />
+    <Compile Include="Code\Structures\GeneralUIConfig.cs" />
     <Compile Include="Code\Structures\DetectedObject.cs" />
     <Compile Include="Code\Structures\DirectBitmap.cs" />
     <Compile Include="Code\Structures\Link.cs" />
@@ -84,7 +85,7 @@
     <Compile Include="Code\Structures\RedsCleaningProject\MasksAndEditableObjects.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\MangaCleaning.cs" />
     <Compile Include="Code\Structures\RedsCleaningProject\RedImages.cs" />
-    <Compile Include="Code\Structures\RedsCleaningProject\Settings.cs" />
+    <Compile Include="Code\Structures\RedsCleaningProject\DrawingConfigs.cs" />
     <Compile Include="Code\Structures\TextBoxInfo.cs" />
     <Compile Include="Code\Structures\YoloConfiguration.cs" />
     <Compile Include="Code\Program.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

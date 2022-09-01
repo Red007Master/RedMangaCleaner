@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -89,14 +90,14 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Publics.cs">
       <Link>Code\Publics.cs</Link>
     </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\Config.cs">
-      <Link>Code\Structures\Config.cs</Link>
-    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\DetectedObject.cs">
       <Link>Code\Structures\DetectedObject.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\DirectBitmap.cs">
       <Link>Code\Structures\DirectBitmap.cs</Link>
+    </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\GeneralUIConfig.cs">
+      <Link>Code\Structures\GeneralUIConfig.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\Link.cs">
       <Link>Code\Structures\Link.cs</Link>
@@ -113,6 +114,9 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\CleaningProject.cs">
       <Link>Code\Structures\RedsCleaningProject\CleaningProject.cs</Link>
     </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\DrawingConfigs.cs">
+      <Link>Code\Structures\RedsCleaningProject\DrawingConfigs.cs</Link>
+    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MangaCleaning.cs">
       <Link>Code\Structures\RedsCleaningProject\MangaCleaning.cs</Link>
     </Compile>
@@ -121,9 +125,6 @@
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\RedImages.cs">
       <Link>Code\Structures\RedsCleaningProject\RedImages.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\Settings.cs">
-      <Link>Code\Structures\RedsCleaningProject\Settings.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\YoloConfiguration.cs">
       <Link>Code\Structures\YoloConfiguration.cs</Link>

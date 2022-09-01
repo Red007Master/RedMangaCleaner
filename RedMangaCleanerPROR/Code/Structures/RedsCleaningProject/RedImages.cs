@@ -157,14 +157,14 @@ namespace RedsCleaningProject
 
                 for (int i = 0; i < EditableObjects.Count; i++)
                 {
-                    EditableObjects[i].RectangleMask = MaskWork.DrawRectangleOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].RectangleSettings);
-                    EditableObjects[i].TextMask = MaskWork.DrawTextOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].TextSettings);
+                    EditableObjects[i].RectangleMask = MaskWork.DrawRectangleOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].RectangleConfig);
+                    EditableObjects[i].TextMask = MaskWork.DrawTextOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].TextConfig);
 
                     if (EditableObjects[i] is TextBox)
                     {
                         TextBox textBox = (TextBox)EditableObjects[i];
 
-                        textBox.FillingMask = MaskWork.DrawFillingOnMask(textBox, ImageAsColorArray, textBox.FillingSettings);
+                        textBox.FillingMask = MaskWork.DrawFillingOnMask(textBox, ImageAsColorArray, textBox.FillingConfig);
 
                         MaskWork.FillByMask(DisplayDirectBitmap, textBox.FillingMask);
                     }

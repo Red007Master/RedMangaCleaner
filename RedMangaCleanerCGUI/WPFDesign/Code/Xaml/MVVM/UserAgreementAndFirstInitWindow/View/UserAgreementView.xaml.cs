@@ -22,7 +22,7 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.UserAgreementAndFirstInit
 
         private void UserAgreementBtn_Click(object sender, RoutedEventArgs e)
         {
-            P.Config.UserAgreementIsAccepted = true;
+            P.GeneralUIConfig.UserAgreementIsAccepted = true;
             //RedTools.ConfigM.Save();
             PV.Window.UserAgreementAndFirstInit.UserAgreement_Localize_Content.Visibility = Visibility.Hidden;
         }

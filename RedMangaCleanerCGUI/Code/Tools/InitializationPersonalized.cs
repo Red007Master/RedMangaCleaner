@@ -11,23 +11,23 @@ public static class InitializationPersonalized //CGUI
 
     public static void MainInit()
     {
-        ConfigInit();
+        GeneralUIConfigInit();
         LocalizeGUIInit();
     }
 
-    private static void ConfigInit()
+    private static void GeneralUIConfigInit()
     {
-        if (File.Exists(P.PathDirs.Config))
+        if (File.Exists(P.PathDirs.GeneralUIConfig))
         {
-            string serialized = File.ReadAllText(P.PathDirs.Config);
-            Config config = JsonConvert.DeserializeObject<Config>(serialized);
-            P.Config = config;
+            string serialized = File.ReadAllText(P.PathDirs.GeneralUIConfig);
+            GeneralUIConfig generalUIConfig = JsonConvert.DeserializeObject<GeneralUIConfig>(serialized);
+            P.GeneralUIConfig = generalUIConfig;
         }
         else
         {
-            P.Config.SetDefault();
-            string serialized = JsonConvert.SerializeObject(P.Config);
-            File.WriteAllText(P.PathDirs.Config, serialized);
+            P.GeneralUIConfig.SetDefault();
+            string serialized = JsonConvert.SerializeObject(P.GeneralUIConfig);
+            File.WriteAllText(P.PathDirs.GeneralUIConfig, serialized);
         }
     }
     private static void LocalizeGUIInit()

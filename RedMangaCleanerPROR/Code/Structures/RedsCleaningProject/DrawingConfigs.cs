@@ -2,23 +2,23 @@
 
 namespace RedsCleaningProject
 {
-    namespace Settings
+    namespace DrawingConfigs
     {
-        public class CoreSettings
+        public class CoreConfig
         {
             public bool Draw { get; set; }
             public bool IsDrawed { get; set; }
 
 
 
-            public CoreSettings()
+            public CoreConfig()
             {
                 Draw = true;
                 IsDrawed = false;
             }
         }
 
-        public class RectangleSettings : CoreSettings
+        public class RectangleConfig : CoreConfig
         {
             public Rectangle Rectangle { get; set; }
 
@@ -28,7 +28,7 @@ namespace RedsCleaningProject
             public bool AutoBorderColor { get; set; }
             public ColorConfig BorderColor { get; set; }
 
-            public RectangleSettings() : base()
+            public RectangleConfig() : base()
             {
                 AutoRectangleBorderThickness = false;
                 RectangleBorderThickness = 5;
@@ -36,12 +36,12 @@ namespace RedsCleaningProject
                 AutoBorderColor = false;
                 BorderColor = new ColorConfig(false, Color.Red, Color.Red);
             }
-            public RectangleSettings(Rectangle rectangle) : this()
+            public RectangleConfig(Rectangle rectangle) : this()
             {
                 Rectangle = rectangle;
             }
         }
-        public class TextSettings : CoreSettings
+        public class TextConfig : CoreConfig
         {
             public bool DrawConfidence { get; set; }
             public FontConfig ConfidenceFontSettings { get; set; }
@@ -51,7 +51,7 @@ namespace RedsCleaningProject
 
             public ColorConfig BackgroundColor { get; set; }
 
-            public TextSettings()
+            public TextConfig()
             {
                 DrawConfidence = true;
                 ConfidenceFontSettings = new FontConfig();
@@ -62,7 +62,7 @@ namespace RedsCleaningProject
                 BackgroundColor = new ColorConfig(false, Color.DarkRed, Color.DarkRed);
             }
         }
-        public class TextBoxFillingSettings : CoreSettings
+        public class TextBoxFillingConfig : CoreConfig
         {
             public byte PixelGrayScaleLimit { get; set; }
 
@@ -71,7 +71,7 @@ namespace RedsCleaningProject
 
             public ColorConfig FillingColor { get; set; }
 
-            public TextBoxFillingSettings() : base()
+            public TextBoxFillingConfig() : base()
             {
                 PixelGrayScaleLimit = 245;
 
@@ -87,7 +87,7 @@ namespace RedsCleaningProject
         {
             public bool Draw { get; set; }
 
-            public Font Font { get { return new Font(FontName, FontSize, GraphicsUnit.Pixel); }}
+            public Font Font { get { return new Font(FontName, FontSize, GraphicsUnit.Pixel); } }
 
             public string FontName { get; set; }
 

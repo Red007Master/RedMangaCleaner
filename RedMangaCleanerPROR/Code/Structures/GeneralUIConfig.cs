@@ -1,4 +1,4 @@
-﻿public class Config
+﻿public class GeneralUIConfig
 {
     public bool Debug { get; set; }
     public bool IsFirstStart { get; set; }

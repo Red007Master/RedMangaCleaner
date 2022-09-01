@@ -12,12 +12,12 @@ namespace RedMangaCleanerCGUI.Code.Xaml.Windows
             WPFGate.SetLoadingTextBox("Initalization");
             Initalization.Start();
 
-            if (/*!*/P.Config.UserAgreementIsAccepted) //DEV
+            if (/*!*/P.GeneralUIConfig.UserAgreementIsAccepted) //DEV
             {
                 P.Logger.Log("UA don't accepted, opening UserAgreementAndFirstInitWindow", LogLevel.Information, 1);
                 WPFGate.AsUserAgreementDontAccepted();
 
-                while (!P.Config.UserAgreementIsAccepted) //TODO replace this dogshit
+                while (!P.GeneralUIConfig.UserAgreementIsAccepted) //TODO replace this dogshit
                 {
                     Thread.Sleep(100);
                 }

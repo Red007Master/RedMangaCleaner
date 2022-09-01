@@ -105,8 +105,6 @@ public class Settings
         AddSetting<string>("redsManga001.json", "YoloConfig", "Used by default YoloConfig");
         AddSetting<string>("redsManga001.onnx", "YoloWeights", "Used by default YoloWeights");
 
-        AddSetting<byte>(245, "DefaultFillTargetColorBaW", "Color(Grayscale) used as target for filing (text background), 255=white, 0=black"); //TODO max byte value is 255 add check
-
         AddSetting<int>(2, "PrecompileRedImageFullsThreadsCount", "Count of threads used to PrecompileRedImageFulls (getting byte[,]s and bitmaps in CGUI)");
         AddSetting<int>(5, "ImagesToBlackAndWhiteThreadsCount", "Count of threads used to Convert images to BaW"); //TODO add perf info
     } //Dev set
@@ -188,8 +186,6 @@ namespace RedsSettings
 
         public string YoloWeights { get; internal set; }
         public string YoloConfig { get; internal set; }
-
-        public byte DefaultFillTargetColorBaW { get; internal set; }
 
         public int PrecompileRedImageFullsThreadsCount { get; internal set; }
         public int ImagesToBlackAndWhiteThreadsCount { get; internal set; }

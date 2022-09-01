@@ -1,7 +1,7 @@
-﻿using RedsCleaningProject.MangaCleaning;
+﻿using RedsCleaningProject.DrawingConfigs;
+using RedsCleaningProject.MangaCleaning;
 using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.MaskWorking;
-using RedsCleaningProject.Settings;
 using System;
 using System.Drawing;
 
@@ -105,20 +105,20 @@ namespace RedsCleaningProject
 
             public DetectedObject DetectedObject { get; set; }
 
-            public RectangleSettings RectangleSettings { get; set; }
+            public RectangleConfig RectangleConfig { get; set; }
             public RedsMask RectangleMask { get; set; }
 
-            public TextSettings TextSettings { get; set; }
+            public TextConfig TextConfig { get; set; }
             public RedsMask TextMask { get; set; }
 
             public void CalculateRectangleMask()
             {
-                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, RectangleSettings);
+                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, RectangleConfig);
             }
 
             public void CalculateTextMask()
             {
-                TextMask = MaskWork.DrawTextOnMask(DetectedObject, TextSettings);
+                TextMask = MaskWork.DrawTextOnMask(DetectedObject, TextConfig);
             }
 
             public void UnApplyOverlayPixels(DirectBitmap targetDirectBitmap)
@@ -130,8 +130,8 @@ namespace RedsCleaningProject
             public EditableObject(DetectedObject detectedObject)
             {
                 DetectedObject = detectedObject;
-                RectangleSettings = new RectangleSettings(detectedObject.Rectangle);
-                TextSettings = new TextSettings();
+                RectangleConfig = new RectangleConfig(detectedObject.Rectangle);
+                TextConfig = new TextConfig();
 
                 ObjectType = (ObjectType)detectedObject.Id;
             }
@@ -145,24 +145,24 @@ namespace RedsCleaningProject
         {
             public RedsMask FillingMask { get; set; }
 
-            public TextBoxFillingSettings FillingSettings { get; set; } = new TextBoxFillingSettings();
+            public TextBoxFillingConfig FillingConfig { get; set; } = new TextBoxFillingConfig();
 
             public void CalculateTextBoxFillingMask()
             {
-                FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, FillingSettings);
+                FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, FillingConfig);
             }
 
             public TextBox(DetectedObject detectedObject) : base(detectedObject) { }
             public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray)
             : base(detectedObject, parentDirectBitmap, parentColorArray) { }
-            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray, TextBoxFillingSettings textBoxFillingSettings)
+            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray, TextBoxFillingConfig textBoxFillingConfig)
             : base(detectedObject, parentDirectBitmap, parentColorArray)
             {
-                FillingSettings = textBoxFillingSettings;
+                FillingConfig = textBoxFillingConfig;
             }
         }
 
-        public enum ObjectType 
+        public enum ObjectType
         {
             TextBox = 0,
             TextWithoutBox = 1,
@@ -174,71 +174,71 @@ namespace RedsCleaningProject
     {
         public class MaskWork
         {
-            public static RedsMask DrawRectangleOnMask(DetectedObject detectedObject, RectangleSettings rectangleSettings, Point shift = new Point())
+            public static RedsMask DrawRectangleOnMask(DetectedObject detectedObject, RectangleConfig rectangleConfig, Point shift = new Point())
             {
                 RedsMask result = new RedsMask(detectedObject.Rectangle);
 
-                for (int i = 0; i < rectangleSettings.Rectangle.Width; i++)
+                for (int i = 0; i < rectangleConfig.Rectangle.Width; i++)
                 {
-                    for (int j = 0; j < rectangleSettings.RectangleBorderThickness; j++)
+                    for (int j = 0; j < rectangleConfig.RectangleBorderThickness; j++)
                     {
                         result.Mask[i, j + shift.Y] = 1;
                     }
 
-                    for (int j = rectangleSettings.RectangleBorderThickness; j > 0; j--)
+                    for (int j = rectangleConfig.RectangleBorderThickness; j > 0; j--)
                     {
-                        result.Mask[i, rectangleSettings.Rectangle.Height - j + shift.Y] = 1;
+                        result.Mask[i, rectangleConfig.Rectangle.Height - j + shift.Y] = 1;
                     }
                 }
 
-                for (int i = shift.Y; i < rectangleSettings.Rectangle.Height + shift.Y; i++)
+                for (int i = shift.Y; i < rectangleConfig.Rectangle.Height + shift.Y; i++)
                 {
-                    for (int j = 0; j < rectangleSettings.RectangleBorderThickness; j++)
+                    for (int j = 0; j < rectangleConfig.RectangleBorderThickness; j++)
                     {
                         result.Mask[j, i] = 1;
                     }
 
-                    for (int j = rectangleSettings.RectangleBorderThickness; j > 0; j--)
+                    for (int j = rectangleConfig.RectangleBorderThickness; j > 0; j--)
                     {
-                        result.Mask[rectangleSettings.Rectangle.Width - j, i] = 1;
+                        result.Mask[rectangleConfig.Rectangle.Width - j, i] = 1;
                     }
                 }
 
-                result.Palette[1] = rectangleSettings.BorderColor.DisplayColor;
+                result.Palette[1] = rectangleConfig.BorderColor.DisplayColor;
 
                 return result;
             }
 
-            public static RedsMask DrawFillingOnMask(TextBox textBox, Color[,] parentImage, TextBoxFillingSettings textBoxFillingSettings)
+            public static RedsMask DrawFillingOnMask(TextBox textBox, Color[,] parentImage, TextBoxFillingConfig textBoxFillingConfig)
             {
                 Color[,] imagePartOcupiedByMyYoloItem = Genral.GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
-                byte[,] textBoxPixels = TextBoxes.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingSettings);
+                byte[,] textBoxPixels = TextBoxes.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingConfig);
                 textBoxPixels = Genral.FillGapsInsideGrid(textBoxPixels);
 
                 RedsMask result = new RedsMask(textBoxPixels);
                 result.ShiftRelativelyToBitmap = new Point(textBox.DetectedObject.Rectangle.X, textBox.DetectedObject.Rectangle.Y);
-                result.Palette[1] = textBoxFillingSettings.FillingColor.DisplayColor;
+                result.Palette[1] = textBoxFillingConfig.FillingColor.DisplayColor;
 
                 return result;
             }
-            public static RedsMask DrawTextOnMask(DetectedObject detectedObject, TextSettings textSettings)
+            public static RedsMask DrawTextOnMask(DetectedObject detectedObject, TextConfig textConfig)
             {
-                int maxFontSize = textSettings.ClassNameFontSettings.FontSize;
-                if (maxFontSize < textSettings.ConfidenceFontSettings.FontSize)
-                    maxFontSize = textSettings.ConfidenceFontSettings.FontSize;
+                int maxFontSize = textConfig.ClassNameFontSettings.FontSize;
+                if (maxFontSize < textConfig.ConfidenceFontSettings.FontSize)
+                    maxFontSize = textConfig.ConfidenceFontSettings.FontSize;
 
                 string type = detectedObject.Type;
                 string confidence = Convert.ToString(Math.Round(detectedObject.Confidence, 2));
 
-                int typeWidth = System.Windows.Forms.TextRenderer.MeasureText(type, textSettings.ClassNameFontSettings.Font).Width;
-                int confWidth = System.Windows.Forms.TextRenderer.MeasureText(confidence, textSettings.ConfidenceFontSettings.Font).Width;
+                int typeWidth = System.Windows.Forms.TextRenderer.MeasureText(type, textConfig.ClassNameFontSettings.Font).Width;
+                int confWidth = System.Windows.Forms.TextRenderer.MeasureText(confidence, textConfig.ConfidenceFontSettings.Font).Width;
 
                 int totalWidth = 0;
 
-                if (textSettings.ClassNameFontSettings.Draw)
+                if (textConfig.ClassNameFontSettings.Draw)
                     totalWidth += typeWidth;
 
-                if (textSettings.ConfidenceFontSettings.Draw)
+                if (textConfig.ConfidenceFontSettings.Draw)
                     totalWidth += confWidth;
 
                 int width = totalWidth;
@@ -250,19 +250,19 @@ namespace RedsCleaningProject
                 Bitmap tempBitmap = new Bitmap(result.Width, result.Height);
                 Graphics graphics = Graphics.FromImage(tempBitmap);
 
-                graphics.Clear(textSettings.BackgroundColor.DisplayColor);
+                graphics.Clear(textConfig.BackgroundColor.DisplayColor);
 
                 int shift = 0;
 
-                if (textSettings.ClassNameFontSettings.Draw)
+                if (textConfig.ClassNameFontSettings.Draw)
                 {
-                    graphics.DrawString(type, textSettings.ClassNameFontSettings.Font, new SolidBrush(textSettings.ClassNameFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
+                    graphics.DrawString(type, textConfig.ClassNameFontSettings.Font, new SolidBrush(textConfig.ClassNameFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
                     shift += typeWidth + 5;
                 }
 
-                if (textSettings.ConfidenceFontSettings.Draw)
+                if (textConfig.ConfidenceFontSettings.Draw)
                 {
-                    graphics.DrawString(confidence, textSettings.ConfidenceFontSettings.Font, new SolidBrush(textSettings.ConfidenceFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
+                    graphics.DrawString(confidence, textConfig.ConfidenceFontSettings.Font, new SolidBrush(textConfig.ConfidenceFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
                     shift += typeWidth + 5;
                 }
 

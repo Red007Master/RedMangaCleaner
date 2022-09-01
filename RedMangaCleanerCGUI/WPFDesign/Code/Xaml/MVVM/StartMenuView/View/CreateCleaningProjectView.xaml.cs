@@ -154,23 +154,23 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View
             PV.UserControl.StartManuView.SetViewToImageProcessingStatus();
         }
 
-        private void InfoBtn_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Button senderAsButton = (Button)sender;
-            string text = InfoButtonTextByName(senderAsButton.Name);
-            MessageBox.Show(text);
-        }
-        private string InfoButtonTextByName(string inputName)
-        {
-            //string result = "";
-            //string name = inputName.Replace("Btn", "").Replace("BSBTN", "");
-            //var property = typeof(ControlsText).GetProperty(name);
+        //private void InfoBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        //{
+        //    Button senderAsButton = (Button)sender;
+        //    string text = InfoButtonTextByName(senderAsButton.Name);
+        //    MessageBox.Show(text);
+        //}
+        //private string InfoButtonTextByName(string inputName)
+        //{
+        //    //string result = "";
+        //    //string name = inputName.Replace("Btn", "").Replace("BSBTN", "");
+        //    //var property = typeof(ControlsText).GetProperty(name);
 
-            //result = (string)property.GetValue(LanguageManager.Local.Control);
+        //    //result = (string)property.GetValue(LanguageManager.Local.Control);
 
-            //return result;
+        //    //return result;
 
-            return "";
-        }
+        //    return "";
+        //}
     }
 }

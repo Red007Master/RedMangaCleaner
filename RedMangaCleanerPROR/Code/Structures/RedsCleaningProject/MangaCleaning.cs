@@ -1,4 +1,4 @@
-﻿using RedsCleaningProject.Settings;
+﻿using RedsCleaningProject.DrawingConfigs;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -118,7 +118,7 @@ namespace RedsCleaningProject
 
         public static class TextBoxes
         {
-            public static byte[,] GetTextBoxPixels(Color[,] inputImageAsColorArray, TextBoxFillingSettings textBoxFillingSettings)
+            public static byte[,] GetTextBoxPixels(Color[,] inputImageAsColorArray, TextBoxFillingConfig textBoxFillingConfig)
             {
                 Queue<Point> bufferQueue = new Queue<Point>();
                 int width = inputImageAsColorArray.GetLength(0);
@@ -126,18 +126,18 @@ namespace RedsCleaningProject
                 byte[,] result = new byte[width, height];
                 int counter = 0;
 
-                int pgm = textBoxFillingSettings.PixelGrayScaleLimit;
+                int pgm = textBoxFillingConfig.PixelGrayScaleLimit;
                 int croshairLineLenght = 0;
 
                 if (true)
                 {
-                    croshairLineLenght = textBoxFillingSettings.CroshairLineLenght;
+                    croshairLineLenght = textBoxFillingConfig.CroshairLineLenght;
                 } //TODO textBoxFillingSettings.AutomaticCroshairLineLenght
 
                 Point center = new Point(width / 2, height / 2);
                 bufferQueue.Enqueue(center);
 
-                for (int i = 0; i < textBoxFillingSettings.CroshairLineLenght; i++)
+                for (int i = 0; i < textBoxFillingConfig.CroshairLineLenght; i++)
                 {
                     bufferQueue.Enqueue(new Point(center.X + i, center.Y));
                     bufferQueue.Enqueue(new Point(center.X, center.Y + i));

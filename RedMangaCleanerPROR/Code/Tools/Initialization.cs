@@ -2,6 +2,7 @@
 using RedsCleaningProject.Core;
 using System;
 using System.IO;
+using System.Net;
 
 class Initalization
 {
@@ -23,9 +24,12 @@ class Initalization
         P.ProjectProcessingStatus.Status = Status.IsBooting;
         P.ProjectProcessingStatus.Save();
 
+        FileValidation();
+
         YoloConfigInit();
         InitializationPersonalized.MainInit();
     }
+
 
     private static void StartArgumentsInit()
     {
@@ -81,6 +85,27 @@ class Initalization
         P.PathDirs.SetFromExecutionPath(currentPath, P.PathNames);
         Dir.CreateAllDirsInObject(P.PathDirs);
     }
+
+    private static void FileValidation()
+    {
+        ReadmeValidation();
+    }
+    private static void ReadmeValidation()
+    {
+        if (!File.Exists(P.PathDirs.Readme))
+        {
+            //https://raw.githubusercontent.com/Red007Master/RedMangaCleaner/master/README.md
+        }
+
+        //string webData = "";
+        //using (WebClient webClient = new WebClient())
+        //{
+        //    webData = webClient.DownloadString("https://raw.githubusercontent.com/Red007Master/RedMangaCleaner/master/README.md");
+        //}
+
+        //Console.Write(webData);
+    }
+
     private static void YoloConfigInit()
     {
         P.PathNames.YoloConfig = P.Settings.SettingsList.YoloConfig;
