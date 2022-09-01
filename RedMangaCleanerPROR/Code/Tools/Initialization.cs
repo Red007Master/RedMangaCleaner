@@ -124,7 +124,8 @@ class Initalization
             {
                 rewrite = true;
 
-                newReadmeContent = "So... Network unavabile so we can't get last redme from [https://raw.githubusercontent.com/Red007Master/RedMangaCleaner/master/README.md]";
+                newReadmeContent = "So... Network unavabile so we can't get last readme from [https://github.com/Red007Master/RedMangaCleaner/tree/master/Files/Readme]\n" +
+                                   "TODO there placeholder readme";
             }
         }
 
