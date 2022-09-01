@@ -92,11 +92,6 @@ class Initalization
     }
     private static void ReadmeValidation()
     {
-        if (!File.Exists(P.PathDirs.Readme))
-        {
-            //https://raw.githubusercontent.com/Red007Master/RedMangaCleaner/master/README.md
-        }
-
         //string webData = "";
         //using (WebClient webClient = new WebClient())
         //{
@@ -104,6 +99,37 @@ class Initalization
         //}
 
         //Console.Write(webData);
+
+        //if (!File.Exists(P.PathDirs.Readme))
+        //{
+        //    //https://raw.githubusercontent.com/Red007Master/RedMangaCleaner/master/README.md
+        //}
+
+        bool rewrite = false;
+        string oldReadmeContent = "";
+        string newReadmeContent = "";
+
+        if (File.Exists(P.PathDirs.Readme))
+        {
+            oldReadmeContent = File.ReadAllText(P.PathDirs.Readme);
+        }
+
+        try
+        {
+
+        }
+        catch (Exception)
+        {
+            if (!File.Exists(P.PathDirs.Readme))
+            {
+                rewrite = true;
+
+                newReadmeContent = "So... Network unavabile so we can't get last redme from [https://raw.githubusercontent.com/Red007Master/RedMangaCleaner/master/README.md]";
+            }
+        }
+
+        if (rewrite)
+            File.WriteAllText(P.PathDirs.Readme, newReadmeContent);
     }
 
     private static void YoloConfigInit()
