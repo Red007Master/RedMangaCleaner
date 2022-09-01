@@ -1,6 +1,6 @@
 # WIP
 
-Automatic object detection (currently Alturos.Yolo(4) but reworking to YOLOv5)
+Automatic object detection with YOLOv5.
 
 Simple way to clean manga text bubbles (and ather stuff based on object detection model) (with UI based on WPF)
 
