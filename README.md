@@ -4,9 +4,9 @@ Automatic object detection (currently Alturos.Yolo(4) but reworking to YOLOv5)
 
 Simple way to clean manga text bubbles (and ather stuff based on object detection model) (with UI based on WPF)
 
-![1](Images/1.png)
-![2](Images/2.png)
-![3](Images/3.png)
+![1](Files/Images/1.png)
+![2](Files/Images/2.png)
+![3](Files/Images/3.png)
 
 Features:
 
