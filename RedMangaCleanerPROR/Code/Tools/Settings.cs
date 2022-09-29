@@ -102,8 +102,9 @@ public class Settings
 
         AddSetting<int>(3, "ProcessingBufferSize", @"Amount of backups of your work in 'RdmMangaCleaner\Processing'");
 
-        AddSetting<string>("redsManga001.json", "YoloConfig", "Used by default YoloConfig");
-        AddSetting<string>("redsManga001.onnx", "YoloWeights", "Used by default YoloWeights");
+        AddSetting<string>("redsManga001.json", "ModelConfig", "Used by default, ModelConfig");
+        AddSetting<string>("redsManga001.onnx", "YoloWeights", "Used by default, YoloWeights");
+
 
         AddSetting<int>(2, "PrecompileRedImageFullsThreadsCount", "Count of threads used to PrecompileRedImageFulls (getting byte[,]s and bitmaps in CGUI)");
         AddSetting<int>(5, "ImagesToBlackAndWhiteThreadsCount", "Count of threads used to Convert images to BaW"); //TODO add perf info
@@ -185,7 +186,7 @@ namespace RedsSettings
         public int ProcessingBufferSize { get; internal set; }
 
         public string YoloWeights { get; internal set; }
-        public string YoloConfig { get; internal set; }
+        public string ModelConfig { get; internal set; }
 
         public int PrecompileRedImageFullsThreadsCount { get; internal set; }
         public int ImagesToBlackAndWhiteThreadsCount { get; internal set; }

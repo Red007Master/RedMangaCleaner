@@ -22,17 +22,6 @@ namespace RedsCleaningProject
             public string InputPath { get; set; }
         }
 
-        //public class CleaningProject
-        //{
-        //    public CleaningProjectInfo CleaningProjectInfo { get; set; }
-
-        //    public List<BasicImageData> BasicImageDatas { get; set; }
-        //    public List<RedImageCore> RedImageCores { get; set; }
-        //    public List<RedImageFull> RedImageFulls { get; set; }
-
-        //    public FillParam DefFillParam { get; set; }
-        //}
-
         public class CleaningProjectInfo : IComparable
         {
             public int Id { get; set; }

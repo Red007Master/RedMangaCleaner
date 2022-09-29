@@ -70,7 +70,7 @@ internal class TimeLogger : IDisposable
     public void Dispose()
     {
         Stopwatch.Start();
-        Logger.Log($"[{Sender}] completed in [{Stopwatch.ElapsedMilliseconds}]ms", LogLevel, DepthLevel);
+        Logger.Log($"[{Sender}] completed in [{Stopwatch.ElapsedMilliseconds}]ms", LogLevel, DepthLevel + 1);
     }
 }
 

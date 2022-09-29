@@ -48,6 +48,10 @@ class P
     {
         public static string VersionName { get; set; }
         public static int VersionId { get; set; }
+
+        public static string ProjectLocation { get; set; }
+        public static string GithubCoreUrl { get; set; }
+        public static string GuthubRawCoreUrl { get; set; }
     }
 }
 
@@ -83,9 +87,6 @@ public class PathCoreClass
     public string StartArguments { get; set; }
     public string LastRetrievedWebData { get; set; }
     public string GeneralUIConfig { get; set; }
-
-    public string YoloConfig { get; set; }
-    public string YoloWeight { get; set; }
 }
 public class CleaningProjectPathCoreClass
 {
