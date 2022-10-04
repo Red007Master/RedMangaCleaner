@@ -1,0 +1,84 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RedMangaCleanerCGUI.WPFDesign.Code.Xaml.CustomControls">
+    <Style TargetType="local:EditableObjectSelector">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:EditableObjectSelector">
+                    <Grid Background="#33000000">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40px"/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <ComboBox Grid.Column="0"
+                                  Grid.Row="0"
+                                  Grid.ColumnSpan="4"
+                                  Margin="5">
+                            <ComboBoxItem Content="Type ID" />
+                            <ComboBoxItem Content="TextBox 001" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                            <ComboBoxItem Content="SUS" />
+                        </ComboBox>
+
+                        <StackPanel Grid.Column="0"
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="4">
+
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+                            <local:TextWithCheckBox />
+
+                        </StackPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

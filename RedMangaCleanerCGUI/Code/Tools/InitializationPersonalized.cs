@@ -20,8 +20,7 @@ public static class InitializationPersonalized //CGUI
         if (File.Exists(P.PathDirs.GeneralUIConfig))
         {
             string serialized = File.ReadAllText(P.PathDirs.GeneralUIConfig);
-            GeneralUIConfig generalUIConfig = JsonConvert.DeserializeObject<GeneralUIConfig>(serialized);
-            P.GeneralUIConfig = generalUIConfig;
+            P.GeneralUIConfig = JsonConvert.DeserializeObject<GeneralUIConfig>(serialized);
         }
         else
         {

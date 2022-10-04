@@ -124,7 +124,7 @@ class Initalization
             using (WebClient webClient = new WebClient())
             {
                 string readmeCore = webClient.DownloadString($"{P.ConstantData.GuthubRawCoreUrl}/{P.ConstantData.ProjectLocation}/master/Files/Readme/core.txt");
-                string readmeVer  = webClient.DownloadString($"{P.ConstantData.GuthubRawCoreUrl}/{P.ConstantData.ProjectLocation}/master/Files/Readme/ver{P.ConstantData.VersionId}.txt");
+                string readmeVer = webClient.DownloadString($"{P.ConstantData.GuthubRawCoreUrl}/{P.ConstantData.ProjectLocation}/master/Files/Readme/ver{P.ConstantData.VersionId}.txt");
 
                 newReadmeContent = readmeCore + "\n" + readmeVer;
 

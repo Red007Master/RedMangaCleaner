@@ -6,8 +6,8 @@ namespace RedMangaCleanerCGUI.Code.Xaml.Windows
     {
         public static void PseudoMain()
         {
-            WPFGate.SetLoadingTextBox("NetworkCheck");
-            Web.NetworkCheck();
+            //WPFGate.SetLoadingTextBox("NetworkCheck");
+            //Web.NetworkCheck();
 
             WPFGate.SetLoadingTextBox("Initalization");
             Initalization.Start();

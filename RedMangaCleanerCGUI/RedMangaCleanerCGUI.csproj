@@ -164,13 +164,14 @@
     <Compile Include="Code\Tools\InitializationPersonalized.cs" />
     <Compile Include="Code\Pseudo.cs" />
     <Compile Include="Code\PV.cs" />
-    <Compile Include="Code\Tools\Web.cs" />
     <Compile Include="Code\Tools\SecurityController.cs" />
     <Compile Include="Code\Tools\WPFGate.cs" />
     <Compile Include="Code\WorkED.cs" />
     <Compile Include="Code\Structures\ObservableObject.cs" />
     <Compile Include="Code\Structures\RelayCommand.cs" />
-    <Compile Include="WPFDesign\Code\Xaml\Controls\ZoomBorder.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\CustomControls\EditableObjectSelector.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\CustomControls\TextWithCheckBox.cs" />
+    <Compile Include="WPFDesign\Code\Xaml\CustomControls\ZoomBorder.cs" />
     <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\ImageEditorViewModel.cs" />
     <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\MainViewModel.cs" />
     <Compile Include="WPFDesign\Code\Xaml\MVVM\MainWindow\ViewModel\StartMenuViewModel.cs" />
@@ -227,6 +228,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WPFDesign\Code\Xaml\CustomControls\EditableObjectSelectorStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\CustomControls\TextWithCheckBoxStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPFDesign\Code\Xaml\MVVM\MainWindow\View\ImageEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -307,23 +316,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\MetroDark.MSControls.Core.Implicit.xaml">
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFDesign\Code\Xaml\GlobalThemes\MetroDark\MetroDark.MSControls.Core.Implicit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\MetroDark.MSControls.Toolkit.Implicit.xaml">
+    <Page Include="WPFDesign\Code\Xaml\GlobalThemes\MetroDark\MetroDark.MSControls.Toolkit.Implicit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\Styles.Shared.xaml">
+    <Page Include="WPFDesign\Code\Xaml\GlobalThemes\MetroDark\Styles.Shared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\Styles.WPF.xaml">
+    <Page Include="WPFDesign\Code\Xaml\GlobalThemes\MetroDark\Styles.WPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFDesign\Code\Xaml\Themes\MetroDark\Theme.Colors.xaml">
+    <Page Include="WPFDesign\Code\Xaml\GlobalThemes\MetroDark\Theme.Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

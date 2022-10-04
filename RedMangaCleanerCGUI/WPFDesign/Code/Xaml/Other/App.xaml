@@ -12,8 +12,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Themes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml" />
-                <ResourceDictionary Source="/WPFDesign/Code/Xaml/Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/GlobalThemes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml" />
+                <ResourceDictionary Source="/WPFDesign/Code/Xaml/GlobalThemes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml" />
 
                 <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonAgreeStyle.xaml" />
                 <ResourceDictionary Source="/WPFDesign/Code/Xaml/Styles/RedsRadioButtonLanguageStyle.xaml" />
