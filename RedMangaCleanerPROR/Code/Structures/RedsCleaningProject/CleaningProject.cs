@@ -7,12 +7,66 @@ namespace RedsCleaningProject
 {
     namespace Core
     {
-        public class StartArguments
+        public class CleaningProjectPathCoreClass
+        {
+            public string Core { get; set; }
+
+            public string Data { get; set; }
+            public string ObjectDetectionData { get; set; }
+            public string CleaningConfig { get; set; }
+            public string PathToIdMap { get; set; }
+            public string CleaningProjectInfo { get; set; }
+            public string Images { get; set; }
+            public string BlackAndWhiteImages { get; set; }
+            public string SourceImages { get; set; }
+            public string ResultImages { get; set; }
+        }
+        public class CleaningProjectDirs : CleaningProjectPathCoreClass
+        {
+            public CleaningProjectDirs(string inputProcessingPath, CleaningProjectNames inputCleaningProjectNames)
+            {
+                this.Core = inputProcessingPath + @"\" + inputCleaningProjectNames.Core;
+
+                this.CleaningProjectInfo = this.Core + @"\" + inputCleaningProjectNames.CleaningProjectInfo;
+
+                this.Data = this.Core + @"\" + inputCleaningProjectNames.Data;
+                this.Images = this.Core + @"\" + inputCleaningProjectNames.Images;
+
+                this.ObjectDetectionData = this.Data + @"\" + inputCleaningProjectNames.ObjectDetectionData;
+                this.CleaningConfig = this.Data + @"\" + inputCleaningProjectNames.CleaningConfig;
+                this.PathToIdMap = this.Data + @"\" + inputCleaningProjectNames.PathToIdMap;
+
+                this.BlackAndWhiteImages = this.Images + @"\" + inputCleaningProjectNames.BlackAndWhiteImages;
+                this.SourceImages = this.Images + @"\" + inputCleaningProjectNames.SourceImages;
+                this.ResultImages = this.Images + @"\" + inputCleaningProjectNames.ResultImages;
+            }
+
+            public CleaningProjectDirs() { }
+        }
+        public class CleaningProjectNames : CleaningProjectPathCoreClass
+        {
+            public CleaningProjectNames(string projectFolderName)
+            {
+                Core = projectFolderName;
+
+                Data = "Data";                                         //1d
+                ObjectDetectionData = "ObjectDetectionData.json";      //12f
+                CleaningConfig = "CleaningConfig.json";                //12f
+                PathToIdMap = "PathToIdMap.json";                      //12f
+                CleaningProjectInfo = "CleaningProjectInfo.json";      //1f
+                Images = "Images";                                     //1d
+                BlackAndWhiteImages = "BlackAndWhiteImages";           //12d
+                SourceImages = "SourceImages";                         //12d 
+                ResultImages = "ResultImages";                         //12d
+            }
+        }
+
+
+        public class CleaningProjectCreationArguments
         {
             public FolderOptions FolderOptions { get; set; }
 
             public int CleaningProjectId { get; set; }
-            public string CleaningProjectFolderName { get; set; }
 
             public bool OutputBlackAndWhiteImages { get; set; }
             public bool ConductObjectDetectionOnBlackAndWhiteVariants { get; set; }
@@ -20,66 +74,116 @@ namespace RedsCleaningProject
 
             public string UserTag { get; set; }
             public string InputPath { get; set; }
-        }
 
-        public class CleaningProjectInfo : IComparable
+            public CleaningProjectCreationArguments()
+            {
+                FolderOptions = FolderOptions.AutoCreateById;
+                
+                CleaningProjectId = -1;
+
+                OutputBlackAndWhiteImages = true;
+                ConductObjectDetectionOnBlackAndWhiteVariants = true;
+                ConductTextBoxFillingOnBlackAndWhiteVariants = true;
+
+                UserTag = "EmptyDefault";
+                InputPath = "None";
+            }
+        }
+        public class CleaningProjectInfo
         {
             public int Id { get; set; }
-            public bool OutputBlackAndWhiteImages { get; set; }
-            public bool ConductObjectDetectionOnBlackAndWhiteVariants { get; set; }
-            public bool ConductTextBoxFillingOnBlackAndWhiteVariants { get; set; }
+
             public int ImageCount { get; set; }
-            public string ImageSourcePath { get; set; }
             public string UserTag { get; set; }
             public DateTime CreateTime { get; set; }
             public bool IsPRORFinished { get; set; }
 
-            public CleaningProjectInfo(StartArguments inputArguments, int id)
+            public CleaningProjectInfo()
+            {
+                CreateTime = DateTime.Now;
+                IsPRORFinished = false;
+                UserTag = "Empty_Tag";
+            }
+
+            public CleaningProjectInfo(CleaningProjectCreationArguments cleaningProjectCreationArguments, int id) : this()
             {
                 Id = id;
-                OutputBlackAndWhiteImages = inputArguments.OutputBlackAndWhiteImages;
-                ConductTextBoxFillingOnBlackAndWhiteVariants = inputArguments.ConductTextBoxFillingOnBlackAndWhiteVariants;
-                ConductObjectDetectionOnBlackAndWhiteVariants = inputArguments.ConductObjectDetectionOnBlackAndWhiteVariants;
-                ImageCount = Directory.GetFiles(inputArguments.InputPath).Length;
-                ImageSourcePath = inputArguments.InputPath;
-                UserTag = inputArguments.UserTag;
-                CreateTime = DateTime.Now;
-                IsPRORFinished = false;
+                ImageCount = Directory.GetFiles(cleaningProjectCreationArguments.InputPath).Length;
+                UserTag = cleaningProjectCreationArguments.UserTag;
             }
+        }
+        public class CleaningProjectConfig
+        {
+            public bool OutputBlackAndWhiteImages { get; set; }
+            public bool ConductObjectDetectionOnBlackAndWhiteVariants { get; set; }
+            public bool ConductTextBoxFillingOnBlackAndWhiteVariants { get; set; }
 
-            public CleaningProjectInfo(StartArguments inputArguments)
+            public CleaningProjectConfig(CleaningProjectCreationArguments cleaningProjectCreationArguments)
             {
-                Id = inputArguments.CleaningProjectId;
-                OutputBlackAndWhiteImages = inputArguments.OutputBlackAndWhiteImages;
-                ConductTextBoxFillingOnBlackAndWhiteVariants = inputArguments.ConductTextBoxFillingOnBlackAndWhiteVariants;
-                ConductObjectDetectionOnBlackAndWhiteVariants = inputArguments.ConductObjectDetectionOnBlackAndWhiteVariants;
-                ImageCount = Directory.GetFiles(inputArguments.InputPath).Length;
-                ImageSourcePath = inputArguments.InputPath;
-                UserTag = inputArguments.UserTag;
-                CreateTime = DateTime.Now;
-                IsPRORFinished = false;
+                OutputBlackAndWhiteImages = cleaningProjectCreationArguments.OutputBlackAndWhiteImages;
+                ConductTextBoxFillingOnBlackAndWhiteVariants = cleaningProjectCreationArguments.ConductTextBoxFillingOnBlackAndWhiteVariants;
+                ConductObjectDetectionOnBlackAndWhiteVariants = cleaningProjectCreationArguments.ConductObjectDetectionOnBlackAndWhiteVariants;
             }
 
-            // TODO crate newtons json contructor
-            public CleaningProjectInfo() { }
+            public CleaningProjectConfig() { }
+        }
+
+        public class CleaningProject : IComparable
+        {
+            public CleaningProjectNames CleaningProjectNames { get; set; }
+            public CleaningProjectDirs CleaningProjectDirs { get; set; }
+
+
+            public CleaningProjectInfo CleaningProjectInfo { get; set; }
+            public CleaningProjectConfig CleaningProjectConfig { get; set; }
+            public CleaningProjectCreationArguments CleaningProjectCreationArguments { get; set; }
+
+            public CleaningProject(CleaningProjectCreationArguments cleaningProjectCreationArguments, string projectsFolderPath)
+            {
+                CleaningProjectCreationArguments = cleaningProjectCreationArguments;
+
+                CleaningProjectConfig = new CleaningProjectConfig(cleaningProjectCreationArguments);
+
+                int idToUse = 0;
+                if (cleaningProjectCreationArguments.FolderOptions == FolderOptions.CreateNewFolderById)
+                {
+                    idToUse = cleaningProjectCreationArguments.CleaningProjectId;
+                }
+                else if (cleaningProjectCreationArguments.FolderOptions == FolderOptions.AutoCreateById)
+                {
+                    idToUse = P.CleaningProjectsGlobalInfo.GetAndIncrementId();
+                }
+
+                CleaningProjectInfo = new CleaningProjectInfo(cleaningProjectCreationArguments, idToUse);
+                CleaningProjectNames = new CleaningProjectNames($@"CleaningProject_ID-[{idToUse}]");
+                CleaningProjectDirs = new CleaningProjectDirs(projectsFolderPath, CleaningProjectNames);
+            }
+
+            public CleaningProject()
+            {
+
+            }
 
             public void Save(string iPath)
             {
                 string serialized = JsonConvert.SerializeObject(this, Formatting.Indented);
                 File.WriteAllText(iPath, serialized);
             }
-
+            public void UpdatePath(string projectsFolderPath)
+            {
+                CleaningProjectDirs = new CleaningProjectDirs(projectsFolderPath, CleaningProjectNames);
+            }
             public int CompareTo(object obj)
             {
-                if (obj is CleaningProjectInfo)
+                if (obj is CleaningProject)
                 {
-                    CleaningProjectInfo buffer = (CleaningProjectInfo)obj;
+                    CleaningProject buffer = (CleaningProject)obj;
 
-                    if (Id > buffer.Id)
+                    if (CleaningProjectInfo.Id > buffer.CleaningProjectInfo.Id)
                     {
                         return 1;
                     }
-                    else if (Id < buffer.Id)
+                    else if (CleaningProjectInfo.Id < buffer.CleaningProjectInfo.Id)
                     {
                         return -1;
                     }
@@ -159,8 +263,7 @@ namespace RedsCleaningProject
         public enum FolderOptions
         {
             CreateNewFolderById = 0,
-            CreateNewFolderByName = 1,
-            AutoCreateById = 2,
+            AutoCreateById = 1,
         }
     }
 }

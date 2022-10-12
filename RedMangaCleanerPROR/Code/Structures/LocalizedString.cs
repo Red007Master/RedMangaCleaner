@@ -1,11 +1,14 @@
-﻿class LocalizedString
+﻿namespace RedMangaCleanerPROR.Code.Structures
 {
-    public string Language { get; set; }
-    public string Data { get; set; }
-
-    public LocalizedString(string language, string data)
+    class LocalizedString
     {
-        Language = language;
-        Data = data;
+        public string Language { get; set; }
+        public string Data { get; set; }
+
+        public LocalizedString(string language, string data)
+        {
+            Language = language;
+            Data = data;
+        }
     }
 }

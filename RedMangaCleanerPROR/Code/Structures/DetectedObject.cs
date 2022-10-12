@@ -3,41 +3,44 @@ using System.Collections.Generic;
 using System.Drawing;
 using Yolov5Net.Scorer;
 
-public class DetectedObject
+namespace RedMangaCleanerPROR.Code.Structures
 {
-    public int Id { get; set; }
-    public string Type { get; set; }
-    public double Confidence { get; set; }
-    public Rectangle Rectangle { get; set; }
-
-    public DetectedObject()
+    public class DetectedObject
     {
-        Id = 0;
-        Type = "";
-        Confidence = 0;
-        Rectangle = new Rectangle();
-    }
+        public int Id { get; set; }
+        public string Type { get; set; }
+        public double Confidence { get; set; }
+        public Rectangle Rectangle { get; set; }
 
-    public DetectedObject(YoloPrediction yoloPrediction)
-    {
-        Id = yoloPrediction.Label.Id;
-        Type = yoloPrediction.Label.Name;
-        Confidence = yoloPrediction.Score;
+        public DetectedObject()
+        {
+            Id = 0;
+            Type = "";
+            Confidence = 0;
+            Rectangle = new Rectangle();
+        }
 
-        int x = Convert.ToInt32(yoloPrediction.Rectangle.X);
-        int y = Convert.ToInt32(yoloPrediction.Rectangle.Y);
-        int width = Convert.ToInt32(yoloPrediction.Rectangle.Width);
-        int height = Convert.ToInt32(yoloPrediction.Rectangle.Height);
-        Rectangle = new Rectangle(x, y, width, height);
-    }
+        public DetectedObject(YoloPrediction yoloPrediction)
+        {
+            Id = yoloPrediction.Label.Id;
+            Type = yoloPrediction.Label.Name;
+            Confidence = yoloPrediction.Score;
 
-    public static List<DetectedObject> ConvertYPLToDetectedObjectList(List<YoloPrediction> yoloPredictions)
-    {
-        List<DetectedObject> detectedObjectsList = new List<DetectedObject>();
+            int x = Convert.ToInt32(yoloPrediction.Rectangle.X);
+            int y = Convert.ToInt32(yoloPrediction.Rectangle.Y);
+            int width = Convert.ToInt32(yoloPrediction.Rectangle.Width);
+            int height = Convert.ToInt32(yoloPrediction.Rectangle.Height);
+            Rectangle = new Rectangle(x, y, width, height);
+        }
 
-        for (int i = 0; i < yoloPredictions.Count; i++)
-            detectedObjectsList.Add(new DetectedObject(yoloPredictions[i]));
+        public static List<DetectedObject> ConvertYPLToDetectedObjectList(List<YoloPrediction> yoloPredictions)
+        {
+            List<DetectedObject> detectedObjectsList = new List<DetectedObject>();
 
-        return detectedObjectsList;
+            for (int i = 0; i < yoloPredictions.Count; i++)
+                detectedObjectsList.Add(new DetectedObject(yoloPredictions[i]));
+
+            return detectedObjectsList;
+        }
     }
 }

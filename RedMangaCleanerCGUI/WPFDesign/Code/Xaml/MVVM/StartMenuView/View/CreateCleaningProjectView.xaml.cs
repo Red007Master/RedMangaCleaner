@@ -148,8 +148,7 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View
             P.StartArguments.FolderOptions = FolderOptions.CreateNewFolderById;
             P.StartArguments.CleaningProjectId = P.CleaningProjectsGlobalInfo.GetAndIncrementId();
 
-            P.CleaningProjectNames = new CleaningProjectNames(FolderOptions.CreateNewFolderById, P.StartArguments.CleaningProjectId);
-            P.CleaningProjectDirs.SetFromPath(P.PathDirs.CleaningProjects, P.CleaningProjectNames);
+            P.CleaningProject = new CleaningProject(P.StartArguments, P.PathDirs.CleaningProjects);
 
             PV.UserControl.StartManuView.SetViewToImageProcessingStatus();
         }

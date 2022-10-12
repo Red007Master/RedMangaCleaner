@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RedMangaCleanerPROR.Code.Structures;
 using RedsCleaningProject.RedImages;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ class Work
         List<RedImageCore> redImageCores = new List<RedImageCore>();
         List<BasicImageData> BasicImageDatas = new List<BasicImageData>();
 
-        using (TimeLogger tl = new TimeLogger($"ImageData: File.ReadAllText = [{P.CleaningProjectDirs.ObjectsData}] and JsonConvert.DeserializeObject", LogLevel.Information, P.Logger, 1))
+        using (TimeLogger tl = new TimeLogger($"ImageData: File.ReadAllText = [{P.CleaningProject.CleaningProjectDirs.ObjectDetectionData}] and JsonConvert.DeserializeObject", LogLevel.Information, P.Logger, 1))
         {
-            string serialized = File.ReadAllText(P.CleaningProjectDirs.ObjectsData);
+            string serialized = File.ReadAllText(P.CleaningProject.CleaningProjectDirs.ObjectDetectionData);
             BasicImageDatas = JsonConvert.DeserializeObject<List<BasicImageData>>(serialized);
         }
 
@@ -51,7 +52,7 @@ class Work
 
             try
             {
-                P.Logger.Log($"Precompile [{inputRedImageCore.ImageFileName}] - Try", LogLevel.Information, 1);
+                P.Logger.Log($"Precompile [{inputRedImageCore.FileName}] - Try", LogLevel.Information, 1);
             }
             catch (Exception)
             { }
@@ -67,14 +68,14 @@ class Work
             {
                 P.Floats.Threads.ThreadsEndetWithError++;
 
-                P.Logger.Log($"ERROR:Thread for [{inputRedImageCore.ImageFileName}] catch exeption ex=[{ex}]", LogLevel.Error, 2);
+                P.Logger.Log($"ERROR:Thread for [{inputRedImageCore.FileName}] catch exeption ex=[{ex}]", LogLevel.Error, 2);
             }
 
             #region TryDebLog
 
             try
             {
-                P.Logger.Log($"Precompile [{inputRedImageCore.ImageFileName}] - Success", LogLevel.Information, 3);
+                P.Logger.Log($"Precompile [{inputRedImageCore.FileName}] - Success", LogLevel.Information, 3);
             }
             catch (Exception)
             { }
@@ -108,7 +109,7 @@ class Work
             {
                 if (P.Floats.Threads.ThreadCounter > 0)
                 {
-                    P.Logger.Log($"Formating.PrecompileRedImageFullsFromRedImageCoresMultithreading: Multithreading: ThreadCounter=[{P.Floats.Threads.ThreadCounter}], Starting thread for File=[{redImageCoresToProcess.Peek().ImageFileName}]-Try", LogLevel.Information, 3);
+                    P.Logger.Log($"Formating.PrecompileRedImageFullsFromRedImageCoresMultithreading: Multithreading: ThreadCounter=[{P.Floats.Threads.ThreadCounter}], Starting thread for File=[{redImageCoresToProcess.Peek().FileName}]-Try", LogLevel.Information, 3);
 
                     Thread thread = new Thread(new ParameterizedThreadStart(Formating.PrecompileRedImageFullFromRedImageCoreThread));
                     thread.Start(redImageCoresToProcess.Peek());

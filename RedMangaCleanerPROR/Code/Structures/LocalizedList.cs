@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 
-class LocalizedList
+namespace RedMangaCleanerPROR.Code.Structures
 {
-    public string Language { get; set; }
-    public List<string> Data { get; set; }
-
-    public LocalizedList(string language, List<string> data)
+    class LocalizedList
     {
-        Language = language;
-        Data = data;
+        public string Language { get; set; }
+        public List<string> Data { get; set; }
+
+        public LocalizedList(string language, List<string> data)
+        {
+            Language = language;
+            Data = data;
+        }
     }
 }
+

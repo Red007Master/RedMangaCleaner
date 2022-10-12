@@ -14,29 +14,29 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View
     /// </summary>
     public partial class LoadCleaningProjectView : UserControl
     {
-        private List<CleaningProjectInfo> CleaningProjectInfos { get; set; } = new List<CleaningProjectInfo>();
+        private List<CleaningProject> CleaningProjects { get; set; } = new List<CleaningProject>();
 
         public LoadCleaningProjectView()
         {
             InitializeComponent();
 
             string[] projectsDirs = System.IO.Directory.GetDirectories(P.PathDirs.CleaningProjects);
-            CleaningProjectNames names = new CleaningProjectNames();
+            CleaningProjectNames names = new CleaningProjectNames("Empty");
 
             for (int i = 0; i < projectsDirs.Length; i++)
             {
                 string cleaningProjectInfoPath = projectsDirs[i] + "\\" + names.CleaningProjectInfo;
                 string serialized = System.IO.File.ReadAllText(cleaningProjectInfoPath);
-                CleaningProjectInfo cleaningProjectInfo = JsonConvert.DeserializeObject<CleaningProjectInfo>(serialized);
-                CleaningProjectInfos.Add(cleaningProjectInfo);
+                CleaningProject cleaningProject = JsonConvert.DeserializeObject<CleaningProject>(serialized);
+                CleaningProjects.Add(cleaningProject);
             }
 
-            CleaningProjectInfos.Sort();
+            CleaningProjects.Sort();
 
-            for (int i = 0; i < CleaningProjectInfos.Count; i++)
+            for (int i = 0; i < CleaningProjects.Count; i++)
             {
                 Button radioButton = new Button();
-                radioButton.Content = $"ID:[{CleaningProjectInfos[i].Id}], UserTag:[{CleaningProjectInfos[i].UserTag}]";
+                radioButton.Content = $"ID:[{CleaningProjects[i].CleaningProjectInfo.Id}], UserTag:[{CleaningProjects[i].CleaningProjectInfo.UserTag}]";
                 radioButton.Click += LoadButtonPressed;
                 radioButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#19000000"));
                 radioButton.Margin = new Thickness(5);
@@ -57,8 +57,14 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View
 
             P.Floats.Logic.IsLoad = true;
 
-            P.CleaningProjectNames = new CleaningProjectNames(FolderOptions.CreateNewFolderById, id);
-            P.CleaningProjectDirs.SetFromPath(P.PathDirs.CleaningProjects, P.CleaningProjectNames);
+            for (int i = 0; i < CleaningProjects.Count; i++)
+            {
+                if (CleaningProjects[i].CleaningProjectInfo.Id == id)
+                {
+                    P.CleaningProject = CleaningProjects[i];
+                    break;
+                }
+            }
 
             PV.UserControl.StartManuView.SetViewToImageProcessingStatus();
         }

@@ -10,7 +10,6 @@ namespace RedsCleaningProject
             public bool IsDrawed { get; set; }
 
 
-
             public CoreConfig()
             {
                 Draw = true;
