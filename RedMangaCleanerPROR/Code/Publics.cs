@@ -1,4 +1,5 @@
-﻿using RedsCleaningProject.Core;
+﻿using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.Core;
 using RedsTools.Utility.WPF.LanguageManager;
 using System;
 using System.Windows.Forms;
@@ -11,15 +12,12 @@ class P
 
     public static PathNames PathNames { get; set; } = new PathNames();
     public static PathDirs PathDirs { get; set; } = new PathDirs();
-    public static CleaningProjectNames CleaningProjectNames { get; set; }
-    public static CleaningProjectDirs CleaningProjectDirs { get; set; } = new CleaningProjectDirs();
 
-    public static StartArguments StartArguments { get; set; }
+    public static CleaningProjectCreationArguments StartArguments { get; set; }
     public static GeneralUIConfig GeneralUIConfig { get; set; } = new GeneralUIConfig();
     public static YoloConfiguration CurrentYoloConfiguration { get; set; } = new YoloConfiguration();
 
-
-    public static CleaningProjectInfo CleaningProjectInfo { get; set; }
+    public static CleaningProject CleaningProject { get; set; }
     public static CleaningProjectsGlobalInfo CleaningProjectsGlobalInfo { get; set; } = new CleaningProjectsGlobalInfo();
     public static ProjectProcessingStatus ProjectProcessingStatus { get; set; }
 
@@ -88,20 +86,6 @@ public class PathCoreClass
     public string LastRetrievedWebData { get; set; }
     public string GeneralUIConfig { get; set; }
 }
-public class CleaningProjectPathCoreClass
-{
-    public string Core { get; set; }
-
-    public string ObjectsData { get; set; }
-    public string CleaningProjectInfo { get; set; }
-
-    public string Images { get; set; }
-    public string Data { get; set; }
-
-    public string BlackAndWhiteImages { get; set; }
-    public string SourceImages { get; set; }
-    public string ResultImages { get; set; }
-}
 
 public class PathNames : PathCoreClass
 {
@@ -135,62 +119,6 @@ public class PathNames : PathCoreClass
         TextBoxFillingConfigs = "TextBoxFillingConfigs";                   //d1234
     }
 }
-public class CleaningProjectNames : CleaningProjectPathCoreClass
-{
-    public FolderOptions FolderOptions { get; set; }
-
-    public CleaningProjectNames(FolderOptions folderOptions, object iValue = null)
-    {
-        FolderOptions = folderOptions;
-
-        if (folderOptions == FolderOptions.CreateNewFolderById)
-        {
-            if (iValue is int)
-            {
-                int newFolderId = (int)iValue;
-
-                ConstructorCore($@"CleaningProject_ID-[{newFolderId}]");
-            }
-            else
-            {
-                P.Logger.Log("CleaningProjectNames:CleaningProjectNames iValue not int", LogLevel.FatalError);
-            }
-        }
-        else if (folderOptions == FolderOptions.CreateNewFolderByName)
-        {
-            if (iValue is string)
-            {
-                string newFolderName = (string)iValue;
-
-                ConstructorCore(newFolderName);
-            }
-            else
-            {
-                P.Logger.Log("CleaningProjectNames:CleaningProjectNames iValue not string", LogLevel.FatalError);
-            }
-        }
-    }
-    public CleaningProjectNames()
-    {
-        ConstructorCore("Empty");
-    }
-
-    private void ConstructorCore(string corePathName)
-    {
-        Core = corePathName;
-        ObjectsData = "ObjectsData.json";
-        CleaningProjectInfo = "CleaningProjectInfo.json";
-
-        Images = "Images";
-        BlackAndWhiteImages = "BlackAndWhiteImages";
-        SourceImages = "SourceImages";
-        ResultImages = "ResultImages";
-
-        Data = "Data";
-    }
-}
-
-
 public class PathDirs : PathCoreClass
 {
     public void SetFromExecutionPath(string inputExecutionPath, PathNames inputPathNames)
@@ -257,23 +185,5 @@ public class PathDirs : PathCoreClass
         {
             return corePathBuffer;
         }
-    }
-}
-public class CleaningProjectDirs : CleaningProjectPathCoreClass
-{
-    public void SetFromPath(string inputProcessingPath, CleaningProjectNames inputCleaningProjectNames)
-    {
-        this.Core = inputProcessingPath + @"\" + inputCleaningProjectNames.Core;
-
-        this.CleaningProjectInfo = this.Core + @"\" + inputCleaningProjectNames.CleaningProjectInfo;
-
-        this.Data = this.Core + @"\" + inputCleaningProjectNames.Data;
-        this.Images = this.Core + @"\" + inputCleaningProjectNames.Images;
-
-        this.ObjectsData = this.Data + @"\" + inputCleaningProjectNames.ObjectsData;
-
-        this.BlackAndWhiteImages = this.Images + @"\" + inputCleaningProjectNames.BlackAndWhiteImages;
-        this.SourceImages = this.Images + @"\" + inputCleaningProjectNames.SourceImages;
-        this.ResultImages = this.Images + @"\" + inputCleaningProjectNames.ResultImages;
     }
 }

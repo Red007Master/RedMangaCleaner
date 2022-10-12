@@ -1,11 +1,16 @@
-﻿class Link
+﻿namespace RedMangaCleanerPROR.Code.Structures
 {
-    public string Name { get; set; }
-    public string Value { get; set; }
-
-    public Link(string name, string value)
+    class Link
     {
-        Name = name;
-        Value = value;
+        public string Name { get; set; }
+        public string Value { get; set; }
+
+        public Link(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
     }
 }
+
+

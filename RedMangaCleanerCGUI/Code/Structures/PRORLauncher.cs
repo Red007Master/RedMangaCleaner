@@ -8,9 +8,9 @@ public class PRORLauncher
 {
     public string PRORPath { get; set; }
     public string StartArgumentsPath { get; set; }
-    public StartArguments Arguments { get; set; }
+    public CleaningProjectCreationArguments Arguments { get; set; }
 
-    public PRORLauncher(string pRORPath, string startArgumentsPath, StartArguments startArguments)
+    public PRORLauncher(string pRORPath, string startArgumentsPath, CleaningProjectCreationArguments startArguments)
     {
         PRORPath = pRORPath;
         StartArgumentsPath = startArgumentsPath;

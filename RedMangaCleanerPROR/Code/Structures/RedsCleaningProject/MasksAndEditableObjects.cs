@@ -1,4 +1,5 @@
-﻿using RedsCleaningProject.DrawingConfigs;
+﻿using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.DrawingConfigs;
 using RedsCleaningProject.MangaCleaning;
 using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.MaskWorking;

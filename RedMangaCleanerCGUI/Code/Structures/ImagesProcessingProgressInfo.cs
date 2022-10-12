@@ -1,4 +1,5 @@
 ﻿using RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View;
+using RedMangaCleanerPROR.Code.Structures;
 using System;
 using System.Windows;
 using System.Windows.Controls;

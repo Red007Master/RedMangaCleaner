@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RedMangaCleanerPROR.Code.Structures;
 using RedsCleaningProject.Core;
 using RedsCleaningProject.DrawingConfigs;
 using System;
@@ -39,12 +40,12 @@ class Initalization
         if (File.Exists(P.PathDirs.StartArguments))
         {
             string serialized = File.ReadAllText(P.PathDirs.StartArguments);
-            P.StartArguments = JsonConvert.DeserializeObject<StartArguments>(serialized);
+            P.StartArguments = JsonConvert.DeserializeObject<CleaningProjectCreationArguments>(serialized);
             //File.Delete(P.PathDirs.StartArguments);
         }
         else
         {
-            StartArguments devSetInputArgs = new StartArguments();
+            CleaningProjectCreationArguments devSetInputArgs = new CleaningProjectCreationArguments();
 
             devSetInputArgs.FolderOptions = FolderOptions.AutoCreateById;
             devSetInputArgs.CleaningProjectId = 7;
@@ -52,12 +53,11 @@ class Initalization
             devSetInputArgs.ConductObjectDetectionOnBlackAndWhiteVariants = true;
             devSetInputArgs.ConductTextBoxFillingOnBlackAndWhiteVariants = true;
             devSetInputArgs.InputPath =
-            @"E:\Other\Translate\I Was Caught up in a Hero Summoning, but That World Is at Peace\I Was Caught up in a Hero Summoning, but That World Is at Peace Chapter 6\MangaOUT1";
-            devSetInputArgs.CleaningProjectFolderName = @"CleaningProject_ID-[0]";
+            @"C:\Users\Red007Master\Desktop\SourceImages";
 
             string devSetInputArgsString = JsonConvert.SerializeObject(devSetInputArgs);
             //string dewSetInputArgsString = File.ReadAllText(@"D:\args.json");
-            P.StartArguments = JsonConvert.DeserializeObject<StartArguments>(devSetInputArgsString);
+            P.StartArguments = JsonConvert.DeserializeObject<CleaningProjectCreationArguments>(devSetInputArgsString);
         }
     }
 

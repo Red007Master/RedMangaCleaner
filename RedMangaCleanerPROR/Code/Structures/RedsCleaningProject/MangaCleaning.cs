@@ -1,4 +1,5 @@
-﻿using RedsCleaningProject.DrawingConfigs;
+﻿using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.DrawingConfigs;
 using System.Collections.Generic;
 using System.Drawing;
 

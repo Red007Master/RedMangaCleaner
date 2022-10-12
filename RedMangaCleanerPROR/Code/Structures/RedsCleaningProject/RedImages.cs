@@ -1,4 +1,5 @@
-﻿using RedsCleaningProject.MasksAndEditableObjects;
+﻿using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.MaskWorking;
 using RedsTools.Images;
 using RedsTools.Types;
@@ -13,21 +14,21 @@ namespace RedsCleaningProject
     {
         public class BasicImageData
         {
-            public string ImageFilePath { get; set; }
+            public string FileName { get; set; }
+            public ImageType ImageType { get; set; }
+
 
             public int Width { get; set; }
             public int Height { get; set; }
 
-            public bool ProcessAsBaW { get; set; }
-
             public List<DetectedObject> DetectedObjects { get; set; }
 
-            public BasicImageData(string imagePath, int width, int height, bool isBlackAndWhite, List<DetectedObject> detectedObjects)
+            public BasicImageData(string imagePath, int width, int height, ImageType imageType, List<DetectedObject> detectedObjects)
             {
-                ImageFilePath = imagePath;
+                FileName = Path.GetFileName(imagePath);
                 Width = width;
                 Height = height;
-                ProcessAsBaW = isBlackAndWhite;
+                ImageType = imageType;
                 DetectedObjects = detectedObjects;
             }
 
@@ -36,8 +37,6 @@ namespace RedsCleaningProject
 
         public class RedImageCore : BasicImageData, IComparable
         {
-            public string ImageFileName { get; set; }
-
             public bool ImageProcessingModeAsBlackAndWhite { get; set; }
 
             //public List<FillPoint> FillPointsUserInput { get; set; } = new List<FillPoint>();
@@ -50,18 +49,29 @@ namespace RedsCleaningProject
             {
                 TypeConverter.ChildParentSetTo<BasicImageData, RedImageCore>(basicImageData, this);
 
-                ImageFileName = Path.GetFileName(ImageFilePath);
-                Bitmap image = new Bitmap(ImageFilePath);
-                Width = image.Width;
-                Height = image.Height;
+                //string imagePath = "";
+
+                //if (ImageType == ImageType.RGB)
+                //{
+                //    imagePath = Path.Combine(P.CleaningProject.CleaningProjectDirs.Images, FileName + NativeExtension); //TODO NativeExtension>WorkExtension (rework image copier)
+                //}
+                //else if (ImageType == ImageType.BaW)
+                //{
+                //    imagePath = Path.Combine(P.CleaningProject.CleaningProjectDirs.BlackAndWhiteImages, FileName + WorkExtension);
+                //}
+
+                //Bitmap image = new Bitmap(imagePath);
+                //Width = image.Width;
+                //Height = image.Height;
 
                 for (int i = 0; i < DetectedObjects.Count; i++)
                 {
                     BaseEditableObjects.Add(new EditableObject(DetectedObjects[i]));
                 }
 
-                image.Dispose();
+                //image.Dispose();
             }
+
             public RedImageCore()
             {
 
@@ -72,7 +82,7 @@ namespace RedsCleaningProject
                 if (obj is RedImageCore)
                 {
                     RedImageCore buffer = (RedImageCore)obj;
-                    return String.Compare(ImageFileName, buffer.ImageFileName);
+                    return String.Compare(FileName, buffer.FileName);
                 }
                 else
                 {
@@ -96,7 +106,7 @@ namespace RedsCleaningProject
 
             public void CompileImageAsDirectBitmap()
             {
-                BaWImageAsDirectBitmap = Images.DirectBitmapFromPath(P.CleaningProjectDirs.BlackAndWhiteImages + @"\" + ImageFileName);
+                BaWImageAsDirectBitmap = Images.DirectBitmapFromPath(P.CleaningProject.CleaningProjectDirs.BlackAndWhiteImages + @"\" + FileName);
                 //RGBImageAsDirectBitmap = Images.DirectBitmapFromPath(P.CleaningProjectDirs.SourceImages + @"\" + ImageFileName);
             }
             public void CompileImageAsByteArray()
@@ -105,7 +115,7 @@ namespace RedsCleaningProject
             }
             public void CompileImageAsColorArray()
             {
-                if (ProcessAsBaW)
+                if (ImageType == ImageType.BaW)
                 {
                     //TODO?
                     ImageAsColorArray = Images.RGB.BitmapToColorArray(BaWImageAsDirectBitmap.Bitmap);
@@ -128,7 +138,7 @@ namespace RedsCleaningProject
                 if (obj is RedImageFull)
                 {
                     RedImageFull buffer = (RedImageFull)obj;
-                    return String.Compare(ImageFileName, buffer.ImageFileName);
+                    return String.Compare(FileName, buffer.FileName);
                 }
                 else
                 {
@@ -173,6 +183,12 @@ namespace RedsCleaningProject
                     MaskWork.FillByMask(DisplayDirectBitmap, EditableObjects[i].TextMask);
                 }
             }
+        }
+
+        public enum ImageType
+        {
+            RGB = 0,
+            BaW = 1
         }
     }
 }

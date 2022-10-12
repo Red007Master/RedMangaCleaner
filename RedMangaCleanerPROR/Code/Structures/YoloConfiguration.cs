@@ -1,5 +1,8 @@
-﻿public class YoloConfiguration
+﻿namespace RedMangaCleanerPROR.Code.Structures
 {
-    public string WeightsPath { get; set; }
-    public string ModelConfigPath { get; set; }
+    public class YoloConfiguration
+    {
+        public string WeightsPath { get; set; }
+        public string ModelConfigPath { get; set; }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RedMangaCleanerPROR.Code.Structures;
 using RedsCleaningProject.RedImages;
 using System;
 using System.Collections.Generic;
@@ -10,24 +11,25 @@ using Yolov5Net.Scorer.Models;
 
 class Work
 {
-    internal static void MainVoid()
+    public static void MainVoid()
     {
-        List<BasicImageData> ImageDataList = new List<BasicImageData>();
+        List<BasicImageData> BasicImageDataList = new List<BasicImageData>();
+        List<string> Filenames = new List<string>();
 
 
-        using (TimeLogger tl = new TimeLogger($"Copying images From=[{P.StartArguments.InputPath}] To=[{P.CleaningProjectDirs.SourceImages}]", LogLevel.Information, P.Logger, 1))
+        using (TimeLogger tl = new TimeLogger($"Copying images From=[{P.StartArguments.InputPath}] To=[{P.CleaningProject.CleaningProjectDirs.SourceImages}]", LogLevel.Information, P.Logger, 1))
         {
-            CopyImages(P.StartArguments.InputPath, P.CleaningProjectDirs.SourceImages);
+            Filenames = CopyImages(P.StartArguments.InputPath, P.CleaningProject.CleaningProjectDirs.SourceImages);
         }
 
         using (TimeLogger tl = new TimeLogger("Grayscale.ConvertRGBImagesToGrayscaleMultithreading", LogLevel.Information, P.Logger, 1))
         {
-            Grayscale.ConvertRGBImagesToGrayscaleMultithreading(P.CleaningProjectDirs.SourceImages);
+            Grayscale.ConvertRGBImagesToGrayscaleMultithreading(Filenames, P.CleaningProject.CleaningProjectDirs.SourceImages);
         }
 
         using (TimeLogger tl = new TimeLogger("ImageRecog.DetectObjectsOnAllImagesInDir", LogLevel.Information, P.Logger, 1))
         {
-            ImageDataList = ObjectRecognition.DetectObjectsOnAllImagesInDir(P.CleaningProjectDirs.BlackAndWhiteImages);
+            BasicImageDataList = ObjectRecognition.DetectObjectsOnImages(Filenames, P.CleaningProject.CleaningProjectDirs.BlackAndWhiteImages);
         }
 
         using (TimeLogger tl = new TimeLogger("JsonConvert.SerializeObject(ImageDataList)", LogLevel.Information, P.Logger, 1))
@@ -35,12 +37,12 @@ class Work
             P.ProjectProcessingStatus.Set(Operation.IsJsonSerializeing);
             P.ProjectProcessingStatus.Save();
 
-            string ImageDataListAsString = JsonConvert.SerializeObject(ImageDataList); //TODO Check JsonConvert.SerializeObject(ImageDataList, Formatting.);
-            File.WriteAllText(P.CleaningProjectDirs.ObjectsData, ImageDataListAsString);
+            string ImageDataListAsString = JsonConvert.SerializeObject(BasicImageDataList); //TODO Check JsonConvert.SerializeObject(ImageDataList, Formatting.);
+            File.WriteAllText(P.CleaningProject.CleaningProjectDirs.ObjectDetectionData, ImageDataListAsString);
         }
 
-        P.CleaningProjectInfo.IsPRORFinished = true;
-        P.CleaningProjectInfo.Save(P.CleaningProjectDirs.CleaningProjectInfo);
+        P.CleaningProject.CleaningProjectInfo.IsPRORFinished = true;
+        P.CleaningProject.Save(P.CleaningProject.CleaningProjectDirs.CleaningProjectInfo);
 
         P.ProjectProcessingStatus.FinishPROR();
     }
@@ -68,7 +70,7 @@ class Work
                 }
             }
 
-            resulImage.Save(outputPath + @"\" + Path.GetFileNameWithoutExtension(inputImagePath) + ".png");
+            resulImage.Save(outputPath + @"\" + Path.GetFileNameWithoutExtension(inputImagePath) + ".png", System.Drawing.Imaging.ImageFormat.Png);
         }
 
 
@@ -78,7 +80,7 @@ class Work
 
             try
             {
-                ConvertRGBImageToGrayscale(inputImagePath, P.CleaningProjectDirs.BlackAndWhiteImages);
+                ConvertRGBImageToGrayscale(inputImagePath, P.CleaningProject.CleaningProjectDirs.BlackAndWhiteImages);
                 P.Floats.Threads.ThreadsEndetSuccessfully++;
 
                 P.ProjectProcessingStatus.Set(P.Floats.Threads.ThreadsEndetSuccessfully);
@@ -92,21 +94,18 @@ class Work
 
             P.Floats.Threads.ThreadCounter++;
         }
-        public static void ConvertRGBImagesToGrayscaleMultithreading(string inputPath)
+        public static void ConvertRGBImagesToGrayscaleMultithreading(List<string> filenames, string inputPath)
         {
             Queue<string> filesToProcess = new Queue<string>();
             int startedThreds = 0;
 
+            for (int i = 0; i < filenames.Count; i++)
             {
-                P.Logger.Log($"Grayscale.ConvertRGBImagesToGrayscaleMultithreading: GetFiles from dir, Dir=[{inputPath}]-Try", LogLevel.Information, 2);
-                string[] buffer = Directory.GetFiles(inputPath);
-                P.Logger.Log($"GetFiles from dir-Success, file count=[{buffer.Length}]", LogLevel.Information, 3);
-                for (int i = 0; i < buffer.Length; i++)
-                    filesToProcess.Enqueue(buffer[i]);
-
-                P.ProjectProcessingStatus.Set(Operation.IsConvertingToGrayscale, buffer.Length, 0);
-                P.ProjectProcessingStatus.Save();
+                filesToProcess.Enqueue(inputPath + @"\" + filenames[i]);
             }
+
+            P.ProjectProcessingStatus.Set(Operation.IsConvertingToGrayscale, filenames.Count, 0);
+            P.ProjectProcessingStatus.Save();
 
             P.Floats.Threads.ThreadsEndetWithError = 0;
             P.Floats.Threads.ThreadsEndetSuccessfully = 0;
@@ -119,11 +118,9 @@ class Work
                 {
                     P.Logger.Log($"Multithreading: ThreadCounter=[{P.Floats.Threads.ThreadCounter}], Starting thread for File=[{filesToProcess.Peek()}]-Try", LogLevel.Information, 5);
 
-                    {
-                        Thread thread = new Thread(new ParameterizedThreadStart(Work.Grayscale.ConvertRGBImageToGrayscaleThread));
-                        thread.Start(filesToProcess.Peek());
-                        startedThreds++;
-                    }
+                    Thread thread = new Thread(new ParameterizedThreadStart(Work.Grayscale.ConvertRGBImageToGrayscaleThread));
+                    thread.Start(filesToProcess.Peek());
+                    startedThreds++;
 
                     filesToProcess.Dequeue();
                     P.Floats.Threads.ThreadCounter--;
@@ -156,15 +153,11 @@ class Work
 
     public static class ObjectRecognition
     {
-        public static List<BasicImageData> DetectObjectsOnAllImagesInDir(string inputPath)
+        public static List<BasicImageData> DetectObjectsOnImages(List<string> filenames, string inputPath)
         {
             List<BasicImageData> result = new List<BasicImageData>();
 
-            P.Logger.Log($"DetectObjectsOnAllImagesInDir: GetFiles from dir, Dir=[{inputPath}]-Try", LogLevel.Information, 1);
-            string[] imagesToProcess = Directory.GetFiles(inputPath);
-            P.Logger.Log($"GetFiles from dir-Success, file count=[{imagesToProcess.Length}]", LogLevel.Information, 2);
-
-            P.ProjectProcessingStatus.Set(Operation.IsDetectingObjects, imagesToProcess.Length, 0);
+            P.ProjectProcessingStatus.Set(Operation.IsDetectingObjects, filenames.Count, 0);
             P.ProjectProcessingStatus.Save();
 
             string config = File.ReadAllText(P.CurrentYoloConfiguration.ModelConfigPath);
@@ -172,15 +165,14 @@ class Work
             YoloScorer<RedsGeneralModel> scorer = new YoloScorer<RedsGeneralModel>(P.CurrentYoloConfiguration.WeightsPath, redsYoloConfig);
 
             Image image = null;
-            for (int i = 0; i < imagesToProcess.Length; i++)
+            for (int i = 0; i < filenames.Count; i++)
             {
-                image = Image.FromFile(imagesToProcess[i]);
-
-                P.Logger.Log($"DetectObjectsOnAllImagesInDir: Detect Objects on image=[{imagesToProcess[i]}]-Try", LogLevel.Information, 1);
+                image = Image.FromFile(inputPath + @"\" + filenames[i]);
+                P.Logger.Log($"Detect Objects on image=[{filenames[i]}]-Try", LogLevel.Information, 2);
                 List<YoloPrediction> predictions = scorer.Predict(image);
-                P.Logger.Log($"Detect Objects on image-Success", LogLevel.Information, 2);
+                P.Logger.Log($"Success", LogLevel.Information, 3);
 
-                result.Add(new BasicImageData(imagesToProcess[i], image.Width, image.Height, P.CleaningProjectInfo.ConductTextBoxFillingOnBlackAndWhiteVariants, DetectedObject.ConvertYPLToDetectedObjectList(predictions)));
+                result.Add(new BasicImageData(inputPath + @"\" + filenames[i], image.Width, image.Height, ImageType.BaW, DetectedObject.ConvertYPLToDetectedObjectList(predictions))); //TODO ImageType.BaW > from start arguments(proj creation args)
 
                 P.ProjectProcessingStatus.Set(i);
                 P.ProjectProcessingStatus.Save();
@@ -194,35 +186,42 @@ class Work
         }
     }
 
-    public static void CopyImages(string inputFrom, string inputTo)
+    public static List<string> CopyImages(string inputFrom, string inputTo)
     {
+        List<string> filenames = new List<string>();
+
         string[] usableImageExtensions = { ".png", ".jpg", ".bmp", ".jpe" };
         string[] files = Directory.GetFiles(inputFrom);
 
         P.ProjectProcessingStatus.Set(Status.IsRunning, Operation.IsCopyingImages, files.Length, 0);
         P.ProjectProcessingStatus.Save();
 
+        Bitmap imageBuffer;
         for (int i = 0; i < files.Length; i++)
         {
-            bool filePassCheck = false;
-            string copyAs = "";
+            bool checkPassed = false;
+            string saveAs = "";
             for (int j = 0; j < usableImageExtensions.Length; j++)
             {
+
                 if (Path.GetExtension(files[i]).ToLower() == usableImageExtensions[j])
                 {
-                    filePassCheck = true;
+                    saveAs = inputTo + @"\" + Path.GetFileNameWithoutExtension(files[i]) + ".png";
 
-                    copyAs = inputTo + @"\" + Path.GetFileName(files[i]);
+                    imageBuffer = new Bitmap(files[i]);
+                    imageBuffer.Save(saveAs, System.Drawing.Imaging.ImageFormat.Png);
 
-                    File.Copy(files[i], copyAs);
+                    filenames.Add(Path.GetFileName(saveAs));
+
+                    checkPassed = true;
 
                     break;
                 }
             }
 
-            if (filePassCheck == true)
+            if (checkPassed)
             {
-                P.Logger.Log($"File=[{files[i]}] pass check as usableImage and copied as=[{copyAs}]", LogLevel.Information, 2);
+                P.Logger.Log($"File=[{files[i]}] pass check as usableImage and copied as=[{saveAs}]", LogLevel.Information, 2);
             }
             else
             {
@@ -232,5 +231,7 @@ class Work
             P.ProjectProcessingStatus.Set(i);
             P.ProjectProcessingStatus.Save();
         }
+
+        return filenames;
     }
 }
