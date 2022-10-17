@@ -21,6 +21,8 @@ class P
     public static CleaningProjectsGlobalInfo CleaningProjectsGlobalInfo { get; set; } = new CleaningProjectsGlobalInfo();
     public static ProjectProcessingStatus ProjectProcessingStatus { get; set; }
 
+    public static Defaults Defaults { get; set; }
+
     public class Floats
     {
         public static class Threads

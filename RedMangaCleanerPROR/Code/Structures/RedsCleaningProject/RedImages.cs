@@ -1,4 +1,5 @@
 ﻿using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.CleaningConfigs;
 using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.MaskWorking;
 using RedsTools.Images;
@@ -45,31 +46,14 @@ namespace RedsCleaningProject
 
             public List<EditableObject> BaseEditableObjects { get; set; } = new List<EditableObject>();
 
-            public RedImageCore(BasicImageData basicImageData)
+            public RedImageCore(BasicImageData basicImageData, RedImageCleaningConfig redImageCleaningConfig)
             {
                 TypeConverter.ChildParentSetTo<BasicImageData, RedImageCore>(basicImageData, this);
 
-                //string imagePath = "";
-
-                //if (ImageType == ImageType.RGB)
-                //{
-                //    imagePath = Path.Combine(P.CleaningProject.CleaningProjectDirs.Images, FileName + NativeExtension); //TODO NativeExtension>WorkExtension (rework image copier)
-                //}
-                //else if (ImageType == ImageType.BaW)
-                //{
-                //    imagePath = Path.Combine(P.CleaningProject.CleaningProjectDirs.BlackAndWhiteImages, FileName + WorkExtension);
-                //}
-
-                //Bitmap image = new Bitmap(imagePath);
-                //Width = image.Width;
-                //Height = image.Height;
-
                 for (int i = 0; i < DetectedObjects.Count; i++)
                 {
-                    BaseEditableObjects.Add(new EditableObject(DetectedObjects[i]));
+                    BaseEditableObjects.Add(new EditableObject(DetectedObjects[i], redImageCleaningConfig.EditableObjectCleaningConfigs[i]));
                 }
-
-                //image.Dispose();
             }
 
             public RedImageCore()
@@ -161,20 +145,20 @@ namespace RedsCleaningProject
                 {
                     if (BaseEditableObjects[i].ObjectType == ObjectType.TextBox)
                     {
-                        EditableObjects.Add(new TextBox(BaseEditableObjects[i].DetectedObject, RGBImageAsDirectBitmap, ImageAsColorArray));
+                        EditableObjects.Add(new TextBox(BaseEditableObjects[i], RGBImageAsDirectBitmap, ImageAsColorArray));
                     }
                 }
 
                 for (int i = 0; i < EditableObjects.Count; i++)
                 {
-                    EditableObjects[i].RectangleMask = MaskWork.DrawRectangleOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].RectangleConfig);
-                    EditableObjects[i].TextMask = MaskWork.DrawTextOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].TextConfig);
+                    EditableObjects[i].RectangleMask = MaskWork.DrawRectangleOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].EditableObjectCleaningConfig.RectangleConfig);
+                    EditableObjects[i].TextMask = MaskWork.DrawTextOnMask(EditableObjects[i].DetectedObject, EditableObjects[i].EditableObjectCleaningConfig.TextConfig);
 
                     if (EditableObjects[i] is TextBox)
                     {
                         TextBox textBox = (TextBox)EditableObjects[i];
 
-                        textBox.FillingMask = MaskWork.DrawFillingOnMask(textBox, ImageAsColorArray, textBox.FillingConfig);
+                        textBox.FillingMask = MaskWork.DrawFillingOnMask(textBox, ImageAsColorArray, textBox.EditableObjectCleaningConfig.TextBoxFillingConfig);
 
                         MaskWork.FillByMask(DisplayDirectBitmap, textBox.FillingMask);
                     }

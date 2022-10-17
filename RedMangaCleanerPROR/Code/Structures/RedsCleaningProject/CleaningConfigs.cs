@@ -1,8 +1,12 @@
-﻿using System.Drawing;
+﻿using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.RedImages;
+using RedsTools.Types;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace RedsCleaningProject
 {
-    namespace DrawingConfigs
+    namespace CleaningConfigs
     {
         public class CoreConfig
         {
@@ -19,7 +23,7 @@ namespace RedsCleaningProject
 
         public class RectangleConfig : CoreConfig
         {
-            public Rectangle Rectangle { get; set; }
+            public Rectangle RectangleShift { get; set; }
 
             public bool AutoRectangleBorderThickness { get; set; }
             public int RectangleBorderThickness { get; set; }
@@ -29,15 +33,27 @@ namespace RedsCleaningProject
 
             public RectangleConfig() : base()
             {
+                RectangleShift = new Rectangle();
+
                 AutoRectangleBorderThickness = false;
                 RectangleBorderThickness = 5;
 
                 AutoBorderColor = false;
                 BorderColor = new ColorConfig(false, Color.Red, Color.Red);
             }
-            public RectangleConfig(Rectangle rectangle) : this()
+            public RectangleConfig(RectangleConfig rectangleConfig) : this()
             {
-                Rectangle = rectangle;
+                TypeConverter.ChildParentSetTo(rectangleConfig, this);
+            }
+
+            public static Rectangle ModifyRectangleAcordingToShiftRectangle(Rectangle rectangleTarget, Rectangle rectangleShift)
+            {
+                int x = rectangleTarget.X + rectangleShift.X;
+                int y = rectangleTarget.Y + rectangleShift.Y;
+                int width = rectangleTarget.Width + rectangleShift.Width;
+                int height = rectangleTarget.Height + rectangleShift.Height;
+
+                return new Rectangle(x, y, width, height);
             }
         }
         public class TextConfig : CoreConfig
@@ -60,6 +76,10 @@ namespace RedsCleaningProject
 
                 BackgroundColor = new ColorConfig(false, Color.DarkRed, Color.DarkRed);
             }
+            public TextConfig(TextConfig textConfig)
+            {
+                TypeConverter.ChildParentSetTo(textConfig, this);
+            }
         }
         public class TextBoxFillingConfig : CoreConfig
         {
@@ -78,6 +98,11 @@ namespace RedsCleaningProject
                 CroshairLineLenght = 10;
 
                 FillingColor = new ColorConfig(true, Color.Green, Color.Green);
+            }
+
+            public TextBoxFillingConfig(TextBoxFillingConfig textBoxFillingConfig)
+            {
+                TypeConverter.ChildParentSetTo(textBoxFillingConfig, this);
             }
         }
 
@@ -119,6 +144,45 @@ namespace RedsCleaningProject
 
                 DisplayColor = displayColor;
                 FinalColor = finalColor;
+            }
+        }
+
+        public class RedImageCleaningConfig
+        {
+            public string FileName { get; set; }
+
+            public List<EditableObjectCleaningConfig> EditableObjectCleaningConfigs { get; set; }
+
+            public RedImageCleaningConfig(BasicImageData basicImageData)
+            {
+                FileName = basicImageData.FileName;
+
+                EditableObjectCleaningConfigs = new List<EditableObjectCleaningConfig>();
+                for (int i = 0; i < basicImageData.DetectedObjects.Count; i++)
+                    EditableObjectCleaningConfigs.Add(new EditableObjectCleaningConfig(P.Defaults));
+            }
+
+            public RedImageCleaningConfig() { }
+        }
+
+        public class EditableObjectCleaningConfig
+        {
+            public RectangleConfig RectangleConfig { get; set; }
+            public TextConfig TextConfig { get; set; }
+            public TextBoxFillingConfig TextBoxFillingConfig { get; set; }
+
+            public EditableObjectCleaningConfig()
+            {
+                RectangleConfig = new RectangleConfig();
+                TextConfig = new TextConfig();
+                TextBoxFillingConfig = new TextBoxFillingConfig();
+            }
+
+            public EditableObjectCleaningConfig(Defaults defaults)
+            {
+                RectangleConfig = new RectangleConfig(defaults.RectangleConfig);
+                TextConfig = new TextConfig(defaults.TextConfig);
+                TextBoxFillingConfig = new TextBoxFillingConfig(defaults.TextBoxFillingConfig);
             }
         }
     }

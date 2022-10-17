@@ -37,7 +37,7 @@ namespace RedMangaCleanerCGUI.WPFDesign.Code.Xaml.MVVM.StartMenuView.View
             else
             {
                 PRORLauncher pRORLauncher = new PRORLauncher(P.PathDirs.PROR, P.PathDirs.StartArguments, P.StartArguments);
-                pRORLauncher = new PRORLauncher(@"C:\Users\Red007Master\source\Red007MasterProjects\!Tools!\RedMangaCleaner\RedMangaCleanerPROR\bin\Debug\RedMangaCleanerPROR.exe", P.PathDirs.StartArguments, P.StartArguments); //DEV
+                pRORLauncher = new PRORLauncher(@"C:\Users\Red007Master\source\Red007MasterProjects\C#\!Tools!\RedMangaCleaner\RedMangaCleanerPROR\bin\Debug\RedMangaCleanerPROR.exe", P.PathDirs.StartArguments, P.StartArguments); //DEV
 
                 pRORLauncher.Start();
 

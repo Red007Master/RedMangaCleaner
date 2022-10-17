@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RedMangaCleanerPROR.Code.Structures;
 using RedsCleaningProject.Core;
-using RedsCleaningProject.DrawingConfigs;
+using RedsCleaningProject.CleaningConfigs;
 using System;
 using System.IO;
 using System.Net;
@@ -22,14 +22,17 @@ class Initalization
         P.Settings = new Settings(P.PathDirs.MainSettings);
         P.ProjectProcessingStatus = new ProjectProcessingStatus(P.PathDirs.ProjectProcessingStatus);
         P.CleaningProjectsGlobalInfo = new CleaningProjectsGlobalInfo(P.PathDirs.CleaningProjectsGlobalInfo);
-
-        P.ProjectProcessingStatus.Status = Status.IsBooting;
-        P.ProjectProcessingStatus.Save();
+        P.Defaults = new Defaults(P.PathDirs);
 
         using (TimeLogger tl = new TimeLogger("FileValidation", LogLevel.Debug, P.Logger, 1))
         {
             FileValidation();
         }
+
+        P.ProjectProcessingStatus.Status = Status.IsBooting;
+        P.ProjectProcessingStatus.Save();
+
+        P.Defaults.LoadDefaults();
 
         InitializationPersonalized.MainInit();
     }
@@ -41,19 +44,18 @@ class Initalization
         {
             string serialized = File.ReadAllText(P.PathDirs.StartArguments);
             P.StartArguments = JsonConvert.DeserializeObject<CleaningProjectCreationArguments>(serialized);
-            //File.Delete(P.PathDirs.StartArguments);
+            File.Delete(P.PathDirs.StartArguments);
         }
         else
         {
             CleaningProjectCreationArguments devSetInputArgs = new CleaningProjectCreationArguments();
 
             devSetInputArgs.FolderOptions = FolderOptions.AutoCreateById;
-            devSetInputArgs.CleaningProjectId = 7;
+            devSetInputArgs.CleaningProjectId = 0;
             devSetInputArgs.OutputBlackAndWhiteImages = true;
             devSetInputArgs.ConductObjectDetectionOnBlackAndWhiteVariants = true;
             devSetInputArgs.ConductTextBoxFillingOnBlackAndWhiteVariants = true;
-            devSetInputArgs.InputPath =
-            @"C:\Users\Red007Master\Desktop\SourceImages";
+            devSetInputArgs.InputPath = @"E:\Other\Translate\I Was Caught up in a Hero Summoning, but That World Is at Peace\I Was Caught up in a Hero Summoning, but That World Is at Peace Chapter 10\MangaINJ";
 
             string devSetInputArgsString = JsonConvert.SerializeObject(devSetInputArgs);
             //string dewSetInputArgsString = File.ReadAllText(@"D:\args.json");
@@ -164,20 +166,14 @@ class Initalization
     }
     private static void DrawingConfigsValidation()
     {
-        string defaultName = "default.json";
+        if (!File.Exists(P.Defaults.DefaultRectangleConfigPath))
+            HandleMissingConfigFile<RectangleConfig>(P.Defaults.DefaultRectangleConfigPath, new RectangleConfig());
 
-        string defaultRectangleConfigPath = P.PathDirs.RectangleConfigs + @"\" + defaultName;
-        string defaultTextConfigPath = P.PathDirs.TextConfigs + @"\" + defaultName;
-        string defaultTextBoxFillingConfigPath = P.PathDirs.TextBoxFillingConfigs + @"\" + defaultName;
+        if (!File.Exists(P.Defaults.DefaultTextConfigPath))
+            HandleMissingConfigFile<TextConfig>(P.Defaults.DefaultTextConfigPath, new TextConfig());
 
-        if (!File.Exists(defaultRectangleConfigPath))
-            HandleMissingConfigFile<RectangleConfig>(defaultRectangleConfigPath, new RectangleConfig());
-
-        if (!File.Exists(defaultTextConfigPath))
-            HandleMissingConfigFile<TextConfig>(defaultTextConfigPath, new TextConfig());
-
-        if (!File.Exists(defaultTextBoxFillingConfigPath))
-            HandleMissingConfigFile<TextBoxFillingConfig>(defaultTextBoxFillingConfigPath, new TextBoxFillingConfig());
+        if (!File.Exists(P.Defaults.DefaultTextBoxFillingConfigPath))
+            HandleMissingConfigFile<TextBoxFillingConfig>(P.Defaults.DefaultTextBoxFillingConfigPath, new TextBoxFillingConfig());
     }
     private static void HandleMissingConfigFile<T>(string path, T fileObject)
     {

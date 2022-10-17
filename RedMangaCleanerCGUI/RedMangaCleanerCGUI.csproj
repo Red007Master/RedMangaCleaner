@@ -90,6 +90,9 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Publics.cs">
       <Link>Code\Publics.cs</Link>
     </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\Defaults.cs">
+      <Link>Code\Structures\Defaults.cs</Link>
+    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\DetectedObject.cs">
       <Link>Code\Structures\DetectedObject.cs</Link>
     </Compile>
@@ -111,11 +114,11 @@
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\ProjectProcessingStatus.cs">
       <Link>Code\Structures\ProjectProcessingStatus.cs</Link>
     </Compile>
+    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\CleaningConfigs.cs">
+      <Link>Code\Structures\RedsCleaningProject\CleaningConfigs.cs</Link>
+    </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\CleaningProject.cs">
       <Link>Code\Structures\RedsCleaningProject\CleaningProject.cs</Link>
-    </Compile>
-    <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\DrawingConfigs.cs">
-      <Link>Code\Structures\RedsCleaningProject\DrawingConfigs.cs</Link>
     </Compile>
     <Compile Include="..\RedMangaCleanerPROR\Code\Structures\RedsCleaningProject\MangaCleaning.cs">
       <Link>Code\Structures\RedsCleaningProject\MangaCleaning.cs</Link>

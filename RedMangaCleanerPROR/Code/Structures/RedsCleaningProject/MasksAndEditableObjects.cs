@@ -1,9 +1,12 @@
 ﻿using RedMangaCleanerPROR.Code.Structures;
-using RedsCleaningProject.DrawingConfigs;
+using RedsCleaningProject.CleaningConfigs;
 using RedsCleaningProject.MangaCleaning;
 using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.MaskWorking;
+using RedsCleaningProject.RedImages;
+using RedsTools.Types;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace RedsCleaningProject
@@ -99,6 +102,7 @@ namespace RedsCleaningProject
         public class EditableObject
         {
             public ObjectType ObjectType { get; set; }
+            public EditableObjectCleaningConfig EditableObjectCleaningConfig { get; set; }
 
             public DirectBitmap ParentDirectBitmap { get; set; }
 
@@ -106,20 +110,17 @@ namespace RedsCleaningProject
 
             public DetectedObject DetectedObject { get; set; }
 
-            public RectangleConfig RectangleConfig { get; set; }
             public RedsMask RectangleMask { get; set; }
-
-            public TextConfig TextConfig { get; set; }
             public RedsMask TextMask { get; set; }
 
             public void CalculateRectangleMask()
             {
-                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, RectangleConfig);
+                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, EditableObjectCleaningConfig.RectangleConfig);
             }
 
             public void CalculateTextMask()
             {
-                TextMask = MaskWork.DrawTextOnMask(DetectedObject, TextConfig);
+                TextMask = MaskWork.DrawTextOnMask(DetectedObject, EditableObjectCleaningConfig.TextConfig);
             }
 
             public void UnApplyOverlayPixels(DirectBitmap targetDirectBitmap)
@@ -128,39 +129,32 @@ namespace RedsCleaningProject
                 MaskWork.UnFillByMask(targetDirectBitmap, TextMask, ParentColorArray);
             }
 
-            public EditableObject(DetectedObject detectedObject)
+            public EditableObject(DetectedObject detectedObject, EditableObjectCleaningConfig editableObjectCleaningConfig)
             {
                 DetectedObject = detectedObject;
-                RectangleConfig = new RectangleConfig(detectedObject.Rectangle);
-                TextConfig = new TextConfig();
+                EditableObjectCleaningConfig = editableObjectCleaningConfig;
 
                 ObjectType = (ObjectType)detectedObject.Id;
             }
-            public EditableObject(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : this(detectedObject)
+            public EditableObject(DetectedObject detectedObject, EditableObjectCleaningConfig editableObjectCleaningConfig, DirectBitmap parentDirectBitmap, Color[,] parentColorArray) : this(detectedObject, editableObjectCleaningConfig)
             {
                 ParentDirectBitmap = parentDirectBitmap;
                 ParentColorArray = parentColorArray;
             }
+
+            public EditableObject() { }
         }
         public class TextBox : EditableObject
         {
             public RedsMask FillingMask { get; set; }
 
-            public TextBoxFillingConfig FillingConfig { get; set; } = new TextBoxFillingConfig();
-
             public void CalculateTextBoxFillingMask()
             {
-                FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, FillingConfig);
+                FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, EditableObjectCleaningConfig.TextBoxFillingConfig);
             }
 
-            public TextBox(DetectedObject detectedObject) : base(detectedObject) { }
-            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray)
-            : base(detectedObject, parentDirectBitmap, parentColorArray) { }
-            public TextBox(DetectedObject detectedObject, DirectBitmap parentDirectBitmap, Color[,] parentColorArray, TextBoxFillingConfig textBoxFillingConfig)
-            : base(detectedObject, parentDirectBitmap, parentColorArray)
-            {
-                FillingConfig = textBoxFillingConfig;
-            }
+            public TextBox(EditableObject editableObject, DirectBitmap rGBImageAsDirectBitmap, Color[,] imageAsColorArray)
+            : base(editableObject.DetectedObject, editableObject.EditableObjectCleaningConfig, rGBImageAsDirectBitmap, imageAsColorArray) {}
         }
 
         public enum ObjectType
@@ -175,24 +169,26 @@ namespace RedsCleaningProject
     {
         public class MaskWork
         {
-            public static RedsMask DrawRectangleOnMask(DetectedObject detectedObject, RectangleConfig rectangleConfig, Point shift = new Point())
+            public static RedsMask DrawRectangleOnMask(DetectedObject detectedObject, RectangleConfig rectangleConfig)
             {
                 RedsMask result = new RedsMask(detectedObject.Rectangle);
 
-                for (int i = 0; i < rectangleConfig.Rectangle.Width; i++)
+                Rectangle useRectangle = RectangleConfig.ModifyRectangleAcordingToShiftRectangle(detectedObject.Rectangle, rectangleConfig.RectangleShift);
+
+                for (int i = 0; i < useRectangle.Width; i++)
                 {
                     for (int j = 0; j < rectangleConfig.RectangleBorderThickness; j++)
                     {
-                        result.Mask[i, j + shift.Y] = 1;
+                        result.Mask[i, j] = 1;
                     }
 
                     for (int j = rectangleConfig.RectangleBorderThickness; j > 0; j--)
                     {
-                        result.Mask[i, rectangleConfig.Rectangle.Height - j + shift.Y] = 1;
+                        result.Mask[i, useRectangle.Height - j] = 1;
                     }
                 }
 
-                for (int i = shift.Y; i < rectangleConfig.Rectangle.Height + shift.Y; i++)
+                for (int i = 0; i < useRectangle.Height; i++)
                 {
                     for (int j = 0; j < rectangleConfig.RectangleBorderThickness; j++)
                     {
@@ -201,7 +197,7 @@ namespace RedsCleaningProject
 
                     for (int j = rectangleConfig.RectangleBorderThickness; j > 0; j--)
                     {
-                        result.Mask[rectangleConfig.Rectangle.Width - j, i] = 1;
+                        result.Mask[useRectangle.Width - j, i] = 1;
                     }
                 }
 

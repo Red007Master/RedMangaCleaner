@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RedMangaCleanerPROR.Code.Structures;
+using RedsCleaningProject.CleaningConfigs;
+using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.RedImages;
 using System;
 using System.Collections.Generic;
@@ -12,9 +14,11 @@ class Work
 
     public static void MainVoid()
     {
+        List<BasicImageData> BasicImageDatas = new List<BasicImageData>();
+        List<RedImageCleaningConfig> redImageCleaningConfigs = new List<RedImageCleaningConfig>();
+
         RedImageFulls = new List<RedImageFull>();
         List<RedImageCore> redImageCores = new List<RedImageCore>();
-        List<BasicImageData> BasicImageDatas = new List<BasicImageData>();
 
         using (TimeLogger tl = new TimeLogger($"ImageData: File.ReadAllText = [{P.CleaningProject.CleaningProjectDirs.ObjectDetectionData}] and JsonConvert.DeserializeObject", LogLevel.Information, P.Logger, 1))
         {
@@ -22,11 +26,16 @@ class Work
             BasicImageDatas = JsonConvert.DeserializeObject<List<BasicImageData>>(serialized);
         }
 
+        using (TimeLogger tl = new TimeLogger($"RedImageCleaningConfigs: Loading", LogLevel.Information, P.Logger, 1))
+        {
+            redImageCleaningConfigs = JsonConvert.DeserializeObject<List<RedImageCleaningConfig>>(File.ReadAllText(P.CleaningProject.CleaningProjectDirs.CleaningConfigs));
+        }
+
         using (TimeLogger tl = new TimeLogger("RedImageCore: Formating.GetRedImageCoreFromImgDataObjList", LogLevel.Information, P.Logger, 1))
         {
             for (int i = 0; i < BasicImageDatas.Count; i++)
             {
-                redImageCores.Add(new RedImageCore(BasicImageDatas[i]));
+                redImageCores.Add(new RedImageCore(BasicImageDatas[i], redImageCleaningConfigs[i]));
             }
         }
 

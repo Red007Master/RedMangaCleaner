@@ -13,7 +13,7 @@ namespace RedsCleaningProject
 
             public string Data { get; set; }
             public string ObjectDetectionData { get; set; }
-            public string CleaningConfig { get; set; }
+            public string CleaningConfigs { get; set; }
             public string PathToIdMap { get; set; }
             public string CleaningProjectInfo { get; set; }
             public string Images { get; set; }
@@ -33,7 +33,7 @@ namespace RedsCleaningProject
                 this.Images = this.Core + @"\" + inputCleaningProjectNames.Images;
 
                 this.ObjectDetectionData = this.Data + @"\" + inputCleaningProjectNames.ObjectDetectionData;
-                this.CleaningConfig = this.Data + @"\" + inputCleaningProjectNames.CleaningConfig;
+                this.CleaningConfigs = this.Data + @"\" + inputCleaningProjectNames.CleaningConfigs;
                 this.PathToIdMap = this.Data + @"\" + inputCleaningProjectNames.PathToIdMap;
 
                 this.BlackAndWhiteImages = this.Images + @"\" + inputCleaningProjectNames.BlackAndWhiteImages;
@@ -51,7 +51,7 @@ namespace RedsCleaningProject
 
                 Data = "Data";                                         //1d
                 ObjectDetectionData = "ObjectDetectionData.json";      //12f
-                CleaningConfig = "CleaningConfig.json";                //12f
+                CleaningConfigs = "CleaningConfigs.json";              //12f
                 PathToIdMap = "PathToIdMap.json";                      //12f
                 CleaningProjectInfo = "CleaningProjectInfo.json";      //1f
                 Images = "Images";                                     //1d
@@ -78,7 +78,7 @@ namespace RedsCleaningProject
             public CleaningProjectCreationArguments()
             {
                 FolderOptions = FolderOptions.AutoCreateById;
-                
+
                 CleaningProjectId = -1;
 
                 OutputBlackAndWhiteImages = true;
