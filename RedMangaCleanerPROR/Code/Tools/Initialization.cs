@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RedMangaCleanerPROR.Code.Structures;
-using RedsCleaningProject.Core;
 using RedsCleaningProject.CleaningConfigs;
+using RedsCleaningProject.Core;
 using System;
 using System.IO;
 using System.Net;

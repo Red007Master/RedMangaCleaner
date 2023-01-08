@@ -3,10 +3,7 @@ using RedsCleaningProject.CleaningConfigs;
 using RedsCleaningProject.MangaCleaning;
 using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.MaskWorking;
-using RedsCleaningProject.RedImages;
-using RedsTools.Types;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace RedsCleaningProject
@@ -113,14 +110,29 @@ namespace RedsCleaningProject
             public RedsMask RectangleMask { get; set; }
             public RedsMask TextMask { get; set; }
 
-            public void CalculateRectangleMask()
+            public void PrecalculateMasks(bool reactangle, bool text)
             {
-                RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, EditableObjectCleaningConfig.RectangleConfig);
-            }
+                if (reactangle)
+                {
+                    RectangleMask = MaskWork.DrawRectangleOnMask(DetectedObject, EditableObjectCleaningConfig.RectangleConfig);
+                }
 
-            public void CalculateTextMask()
+                if (text)
+                {
+                    TextMask = MaskWork.DrawTextOnMask(DetectedObject, EditableObjectCleaningConfig.TextConfig);
+                }
+            }
+            public void FillMasksTo(DirectBitmap displayDirectBitmap, bool reactangle, bool text)
             {
-                TextMask = MaskWork.DrawTextOnMask(DetectedObject, EditableObjectCleaningConfig.TextConfig);
+                if (reactangle)
+                {
+                    MaskWork.FillByMask(displayDirectBitmap, RectangleMask);
+                }
+
+                if (text)
+                {
+                    MaskWork.FillByMask(displayDirectBitmap, TextMask);
+                }
             }
 
             public void UnApplyOverlayPixels(DirectBitmap targetDirectBitmap)
@@ -148,13 +160,26 @@ namespace RedsCleaningProject
         {
             public RedsMask FillingMask { get; set; }
 
-            public void CalculateTextBoxFillingMask()
+            public void PrecalculateMasks(bool reactangle, bool text, bool filling)
             {
-                FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, EditableObjectCleaningConfig.TextBoxFillingConfig);
+                PrecalculateMasks(reactangle, text);
+                if (filling)
+                {
+                    FillingMask = MaskWork.DrawFillingOnMask(this, ParentColorArray, EditableObjectCleaningConfig.TextBoxFillingConfig, EditableObjectCleaningConfig.RectangleConfig);
+                }
+            }
+            public void FillMasksTo(DirectBitmap displayDirectBitmap, bool reactangle, bool text, bool filling)
+            {
+                FillMasksTo(displayDirectBitmap, reactangle, text);
+
+                if (filling)
+                {
+                    MaskWork.FillByMask(displayDirectBitmap, FillingMask);
+                }
             }
 
             public TextBox(EditableObject editableObject, DirectBitmap rGBImageAsDirectBitmap, Color[,] imageAsColorArray)
-            : base(editableObject.DetectedObject, editableObject.EditableObjectCleaningConfig, rGBImageAsDirectBitmap, imageAsColorArray) {}
+            : base(editableObject.DetectedObject, editableObject.EditableObjectCleaningConfig, rGBImageAsDirectBitmap, imageAsColorArray) { }
         }
 
         public enum ObjectType
@@ -206,14 +231,15 @@ namespace RedsCleaningProject
                 return result;
             }
 
-            public static RedsMask DrawFillingOnMask(TextBox textBox, Color[,] parentImage, TextBoxFillingConfig textBoxFillingConfig)
+            public static RedsMask DrawFillingOnMask(TextBox textBox, Color[,] parentImage, TextBoxFillingConfig textBoxFillingConfig, RectangleConfig rectangleConfig)
             {
-                Color[,] imagePartOcupiedByMyYoloItem = Genral.GetImagePartOccupiedByDetectedObject(parentImage, textBox.DetectedObject);
+                Rectangle rectangle = RectangleConfig.ModifyRectangleAcordingToShiftRectangle(textBox.DetectedObject.Rectangle, rectangleConfig.RectangleShift);
+                Color[,] imagePartOcupiedByMyYoloItem = Genral.GetImagePartOccupiedByDetectedObject(parentImage, rectangle);
                 byte[,] textBoxPixels = TextBoxes.GetTextBoxPixels(imagePartOcupiedByMyYoloItem, textBoxFillingConfig);
                 textBoxPixels = Genral.FillGapsInsideGrid(textBoxPixels);
 
                 RedsMask result = new RedsMask(textBoxPixels);
-                result.ShiftRelativelyToBitmap = new Point(textBox.DetectedObject.Rectangle.X, textBox.DetectedObject.Rectangle.Y);
+                result.ShiftRelativelyToBitmap = new Point(rectangle.X, rectangle.Y);
                 result.Palette[1] = textBoxFillingConfig.FillingColor.DisplayColor;
 
                 return result;
@@ -227,8 +253,8 @@ namespace RedsCleaningProject
                 string type = detectedObject.Type;
                 string confidence = Convert.ToString(Math.Round(detectedObject.Confidence, 2));
 
-                int typeWidth = System.Windows.Forms.TextRenderer.MeasureText(type, textConfig.ClassNameFontSettings.Font).Width;
-                int confWidth = System.Windows.Forms.TextRenderer.MeasureText(confidence, textConfig.ConfidenceFontSettings.Font).Width;
+                int typeWidth = System.Windows.Forms.TextRenderer.MeasureText(type, textConfig.ClassNameFontSettings.GetAsDrawingFont()).Width;
+                int confWidth = System.Windows.Forms.TextRenderer.MeasureText(confidence, textConfig.ConfidenceFontSettings.GetAsDrawingFont()).Width;
 
                 int totalWidth = 0;
 
@@ -236,10 +262,10 @@ namespace RedsCleaningProject
                     totalWidth += typeWidth;
 
                 if (textConfig.ConfidenceFontSettings.Draw)
-                    totalWidth += confWidth;
+                    totalWidth += confWidth - 5;
 
-                int width = totalWidth;
-                int height = maxFontSize + 6;
+                int width = totalWidth + 5;
+                int height = maxFontSize + 5;
 
                 RedsMask result = new RedsMask(width, height);
                 result.ShiftRelativelyToBitmap = new Point(detectedObject.Rectangle.X, detectedObject.Rectangle.Y - maxFontSize - 6);
@@ -253,13 +279,13 @@ namespace RedsCleaningProject
 
                 if (textConfig.ClassNameFontSettings.Draw)
                 {
-                    graphics.DrawString(type, textConfig.ClassNameFontSettings.Font, new SolidBrush(textConfig.ClassNameFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
+                    graphics.DrawString(type, textConfig.ClassNameFontSettings.GetAsDrawingFont(), new SolidBrush(textConfig.ClassNameFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
                     shift += typeWidth + 5;
                 }
 
                 if (textConfig.ConfidenceFontSettings.Draw)
                 {
-                    graphics.DrawString(confidence, textConfig.ConfidenceFontSettings.Font, new SolidBrush(textConfig.ConfidenceFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
+                    graphics.DrawString(confidence, textConfig.ConfidenceFontSettings.GetAsDrawingFont(), new SolidBrush(textConfig.ConfidenceFontSettings.FontColor.DisplayColor), new PointF(shift, 0));
                     shift += typeWidth + 5;
                 }
 
