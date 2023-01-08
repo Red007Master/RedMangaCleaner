@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RedMangaCleanerPROR.Code.Structures;
 using RedsCleaningProject.CleaningConfigs;
-using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.RedImages;
 using System;
 using System.Collections.Generic;
@@ -28,7 +27,26 @@ class Work
 
         using (TimeLogger tl = new TimeLogger($"RedImageCleaningConfigs: Loading", LogLevel.Information, P.Logger, 1))
         {
-            redImageCleaningConfigs = JsonConvert.DeserializeObject<List<RedImageCleaningConfig>>(File.ReadAllText(P.CleaningProject.CleaningProjectDirs.CleaningConfigs));
+            if (File.Exists(P.CleaningProject.CleaningProjectDirs.CleaningConfigs))
+            {
+                P.Logger.Log("Config found, loading", LogLevel.Information, 2);
+                redImageCleaningConfigs = JsonConvert.DeserializeObject<List<RedImageCleaningConfig>>(File.ReadAllText(P.CleaningProject.CleaningProjectDirs.CleaningConfigs));
+                P.Logger.Log("Loaded", LogLevel.Information, 3);
+            }
+            else
+            {
+                P.Logger.Log("Config not found, creating new", LogLevel.Warning, 2);
+
+                for (int i = 0; i < BasicImageDatas.Count; i++)
+                {
+                    redImageCleaningConfigs.Add(new RedImageCleaningConfig(BasicImageDatas[i]));
+                }
+
+                P.Logger.Log($"Created, saving to [{P.CleaningProject.CleaningProjectDirs.CleaningConfigs}]", LogLevel.Information, 3);
+                string serialized = JsonConvert.SerializeObject(redImageCleaningConfigs);
+                File.WriteAllText(P.CleaningProject.CleaningProjectDirs.CleaningConfigs, serialized);
+                P.Logger.Log("Saved", LogLevel.Information, 4);
+            }
         }
 
         using (TimeLogger tl = new TimeLogger("RedImageCore: Formating.GetRedImageCoreFromImgDataObjList", LogLevel.Information, P.Logger, 1))
@@ -46,6 +64,8 @@ class Work
             RedImageFulls.Sort();
         }
 
+        //redImageCleaningConfigs[0].EditableObjectCleaningConfigs[2].RectangleConfig.RectangleShift = new System.Drawing.Rectangle(69, 69, 69, 69);
+
         PV.UserControl.ImagesProcessingView.ImagesProcessingProgressInfo.IsFinished = true;
     }
 
@@ -57,16 +77,12 @@ class Work
         {
             RedImageCore inputRedImageCore = (RedImageCore)inputObj;
 
-            #region TryDebLog
-
             try
             {
                 P.Logger.Log($"Precompile [{inputRedImageCore.FileName}] - Try", LogLevel.Information, 1);
             }
             catch (Exception)
             { }
-
-            #endregion
 
             try
             {
@@ -80,16 +96,12 @@ class Work
                 P.Logger.Log($"ERROR:Thread for [{inputRedImageCore.FileName}] catch exeption ex=[{ex}]", LogLevel.Error, 2);
             }
 
-            #region TryDebLog
-
             try
             {
                 P.Logger.Log($"Precompile [{inputRedImageCore.FileName}] - Success", LogLevel.Information, 3);
             }
             catch (Exception)
             { }
-
-            #endregion
 
             CompiledImagesCount++;
 

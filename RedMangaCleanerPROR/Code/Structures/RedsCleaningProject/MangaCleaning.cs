@@ -1,5 +1,4 @@
-﻿using RedMangaCleanerPROR.Code.Structures;
-using RedsCleaningProject.CleaningConfigs;
+﻿using RedsCleaningProject.CleaningConfigs;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -89,22 +88,22 @@ namespace RedsCleaningProject
                 return inputGrid;
             }
 
-            public static Color[,] GetImagePartOccupiedByDetectedObject(Color[,] iImageAsColorArray, DetectedObject iDetectedObject)
+            public static Color[,] GetImagePartOccupiedByDetectedObject(Color[,] iImageAsColorArray, Rectangle objectRectangle)
             {
                 int counterX = 0, counterY = 0;
-                Color[,] textBoxAsColorArray = new Color[iDetectedObject.Rectangle.Width, iDetectedObject.Rectangle.Height];
+                Color[,] textBoxAsColorArray = new Color[objectRectangle.Width, objectRectangle.Height];
 
-                int endPointOfX = iDetectedObject.Rectangle.X + iDetectedObject.Rectangle.Width;
+                int endPointOfX = objectRectangle.X + objectRectangle.Width;
                 if (endPointOfX > iImageAsColorArray.GetLength(0))
                     endPointOfX = iImageAsColorArray.GetLength(0);
 
-                int endPointOfY = iDetectedObject.Rectangle.Y + iDetectedObject.Rectangle.Height;
+                int endPointOfY = objectRectangle.Y + objectRectangle.Height;
                 if (endPointOfY > iImageAsColorArray.GetLength(1))
                     endPointOfY = iImageAsColorArray.GetLength(1);
 
-                for (int x = iDetectedObject.Rectangle.X; x < endPointOfX; x++)
+                for (int x = objectRectangle.X; x < endPointOfX; x++)
                 {
-                    for (int y = iDetectedObject.Rectangle.Y; y < endPointOfY; y++)
+                    for (int y = objectRectangle.Y; y < endPointOfY; y++)
                     {
                         textBoxAsColorArray[counterX, counterY] = iImageAsColorArray[x, y];
                         counterY++;

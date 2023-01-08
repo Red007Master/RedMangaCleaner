@@ -58,20 +58,16 @@ namespace RedsCleaningProject
         }
         public class TextConfig : CoreConfig
         {
-            public bool DrawConfidence { get; set; }
             public FontConfig ConfidenceFontSettings { get; set; }
 
-            public bool DrawClassName { get; set; }
             public FontConfig ClassNameFontSettings { get; set; }
 
             public ColorConfig BackgroundColor { get; set; }
 
             public TextConfig()
             {
-                DrawConfidence = true;
                 ConfidenceFontSettings = new FontConfig();
 
-                DrawClassName = true;
                 ClassNameFontSettings = new FontConfig();
 
                 BackgroundColor = new ColorConfig(false, Color.DarkRed, Color.DarkRed);
@@ -111,14 +107,17 @@ namespace RedsCleaningProject
         {
             public bool Draw { get; set; }
 
-            public Font Font { get { return new Font(FontName, FontSize, GraphicsUnit.Pixel); } }
-
             public string FontName { get; set; }
 
             public bool AutoFontSize { get; set; }
             public int FontSize { get; set; }
 
             public ColorConfig FontColor { get; set; }
+
+            public Font GetAsDrawingFont()
+            {
+                return new Font(FontName, FontSize, GraphicsUnit.Pixel);
+            }
 
             public FontConfig()
             {
@@ -153,16 +152,43 @@ namespace RedsCleaningProject
 
             public List<EditableObjectCleaningConfig> EditableObjectCleaningConfigs { get; set; }
 
-            public RedImageCleaningConfig(BasicImageData basicImageData)
+            public RedImageCleaningConfig(BasicImageData basicImageData) : this(basicImageData.FileName)
             {
-                FileName = basicImageData.FileName;
-
-                EditableObjectCleaningConfigs = new List<EditableObjectCleaningConfig>();
                 for (int i = 0; i < basicImageData.DetectedObjects.Count; i++)
                     EditableObjectCleaningConfigs.Add(new EditableObjectCleaningConfig(P.Defaults));
             }
 
+            public RedImageCleaningConfig(string fileName)
+            {
+                EditableObjectCleaningConfigs = new List<EditableObjectCleaningConfig>();
+                FileName = fileName;
+            }
+
             public RedImageCleaningConfig() { }
+
+            public static List<RedImageCleaningConfig> GetCleaningConfigs(List<RedImageFull> redImageFulls)
+            {
+                List<RedImageCleaningConfig> result = new List<RedImageCleaningConfig>();
+
+                for (int i = 0; i < redImageFulls.Count; i++)
+                {
+                    result.Add(GetRedImageCleaninConfig(redImageFulls[i]));
+                }
+
+                return result;
+            }
+
+            private static RedImageCleaningConfig GetRedImageCleaninConfig(RedImageFull redImageFull)
+            {
+                RedImageCleaningConfig result = new RedImageCleaningConfig(redImageFull.FileName);
+
+                for (int i = 0; i < redImageFull.EditableObjects.Count; i++)
+                {
+                    result.EditableObjectCleaningConfigs.Add(redImageFull.EditableObjects[i].EditableObjectCleaningConfig);
+                }
+
+                return result;
+            }
         }
 
         public class EditableObjectCleaningConfig

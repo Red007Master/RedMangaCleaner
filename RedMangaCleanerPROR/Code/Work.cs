@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RedMangaCleanerPROR.Code.Structures;
 using RedsCleaningProject.CleaningConfigs;
-using RedsCleaningProject.MasksAndEditableObjects;
 using RedsCleaningProject.RedImages;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ class Work
     public static void MainVoid()
     {
         List<BasicImageData> BasicImageDataList = new List<BasicImageData>();
-        List<RedImageCleaningConfig> redImageCleaningConfigs = new List<RedImageCleaningConfig>();
+        List<RedImageCleaningConfig> RedImageCleaningConfigs = new List<RedImageCleaningConfig>();
         List<string> Filenames = new List<string>();
 
 
@@ -30,20 +29,10 @@ class Work
             Grayscale.ConvertRGBImagesToGrayscaleMultithreading(Filenames, P.CleaningProject.CleaningProjectDirs.SourceImages);
         }
 
-        using (TimeLogger tl = new TimeLogger("ImageRecog.DetectObjectsOnAllImagesInDir", LogLevel.Information, P.Logger, 1))
+        using (TimeLogger tl = new TimeLogger("ObjectRecog.DetectObjectsOnAllImagesInDir", LogLevel.Information, P.Logger, 1))
         {
             BasicImageDataList = ObjectRecognition.DetectObjectsOnImages(Filenames, P.CleaningProject.CleaningProjectDirs.BlackAndWhiteImages);
-        }
-
-        using (TimeLogger tl = new TimeLogger($"RedImageCleaningConfigs: Creating and Saving", LogLevel.Information, P.Logger, 1))
-        {
-            for (int i = 0; i < BasicImageDataList.Count; i++)
-                redImageCleaningConfigs.Add(new RedImageCleaningConfig(BasicImageDataList[i]));
-            P.Logger.Log("Created", LogLevel.Information, 2);
-
-            string serialized = JsonConvert.SerializeObject(redImageCleaningConfigs);
-            File.WriteAllText(P.CleaningProject.CleaningProjectDirs.CleaningConfigs, serialized);
-            P.Logger.Log("Saved", LogLevel.Information, 2);
+            GC.Collect();
         }
 
         using (TimeLogger tl = new TimeLogger("JsonConvert.SerializeObject(ImageDataList)", LogLevel.Information, P.Logger, 1))
@@ -51,8 +40,17 @@ class Work
             P.ProjectProcessingStatus.Set(Operation.IsJsonSerializeing);
             P.ProjectProcessingStatus.Save();
 
-            string ImageDataListAsString = JsonConvert.SerializeObject(BasicImageDataList); //TODO Check JsonConvert.SerializeObject(ImageDataList, Formatting.);
+            string ImageDataListAsString = JsonConvert.SerializeObject(BasicImageDataList, Formatting.Indented);
             File.WriteAllText(P.CleaningProject.CleaningProjectDirs.ObjectDetectionData, ImageDataListAsString);
+        }
+
+        using (TimeLogger tl = new TimeLogger($"JsonConvert.SerializeObject(RedImageCleaningConfigs)", LogLevel.Information, P.Logger, 1))
+        {
+            for (int i = 0; i < BasicImageDataList.Count; i++)
+                RedImageCleaningConfigs.Add(new RedImageCleaningConfig(BasicImageDataList[i]));
+
+            string serialized = JsonConvert.SerializeObject(RedImageCleaningConfigs, Formatting.Indented);
+            File.WriteAllText(P.CleaningProject.CleaningProjectDirs.CleaningConfigs, serialized);
         }
 
         P.CleaningProject.CleaningProjectInfo.IsPRORFinished = true;
@@ -194,7 +192,6 @@ class Work
 
             image.Dispose();
             scorer.Dispose();
-            GC.Collect();
 
             return result;
         }
